@@ -1,3 +1,3 @@
 Rails.application.routes.draw do
-  mount RssTogether::Engine => "/rss_together"
+  mount RssTogether::Engine => "/"
 end

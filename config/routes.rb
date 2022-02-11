@@ -6,15 +6,15 @@ RssTogether::Engine.routes.draw do
     resource :password, only: [:new, :create], controller: "/devise/passwords"
   end
 
-  # resources :groups, only: [:index] do
-  #   resources :feeds, only: [:index] do
-  #     resources :items, only: [:show] do
-  #       resource :bookmarks, only: [:create, :destroy]
-  #       resource :reaction, only: [:create, :update]
-  #       resources :comments, only: [:index, :create, :edit ,:update, :destroy]
-  #     end
-  #   end
-  # end
+  resources :groups, only: [:index] do
+    # resources :feeds, only: [:index] do
+    #   resources :items, only: [:show] do
+    #     resource :bookmarks, only: [:create, :destroy]
+    #     resource :reaction, only: [:create, :update]
+    #     resources :comments, only: [:index, :create, :edit ,:update, :destroy]
+    #   end
+    # end
+  end
 
   # resources :bookmarks, only: [:index, :show]
 

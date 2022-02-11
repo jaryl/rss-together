@@ -9,10 +9,15 @@ gem "sprockets-rails"
 # Start debugger with binding.b [https://github.com/ruby/debug]
 # gem "debug", ">= 1.0.0"
 
-# Simple one-liner tests for common Rails functionality
-gem "shoulda-matchers", "~> 5.0"
-
-# A library for setting up Ruby objects as test data
-gem "factory_bot_rails"
-
 gem "slim"
+
+group :development, :test do
+  # Simple one-liner tests for common Rails functionality
+  gem "shoulda-matchers", "~> 5.0"
+
+  # A library for setting up Ruby objects as test data
+  gem "factory_bot_rails"
+
+  # Brings back `assigns` and `assert_template` to your Rails tests
+  gem "rails-controller-testing"
+end

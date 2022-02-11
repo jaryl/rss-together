@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_02_11_103004) do
+ActiveRecord::Schema[7.0].define(version: 2022_02_11_103723) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -37,5 +37,16 @@ ActiveRecord::Schema[7.0].define(version: 2022_02_11_103004) do
     t.index ["feed_id"], name: "index_rss_together_items_on_feed_id"
   end
 
+  create_table "rss_together_subscriptions", force: :cascade do |t|
+    t.bigint "group_id", null: false
+    t.bigint "feed_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["feed_id"], name: "index_rss_together_subscriptions_on_feed_id"
+    t.index ["group_id"], name: "index_rss_together_subscriptions_on_group_id"
+  end
+
   add_foreign_key "rss_together_items", "rss_together_feeds", column: "feed_id"
+  add_foreign_key "rss_together_subscriptions", "rss_together_feeds", column: "feed_id"
+  add_foreign_key "rss_together_subscriptions", "rss_together_groups", column: "group_id"
 end

@@ -22,6 +22,7 @@ Gem::Specification.new do |spec|
   end
 
   spec.add_dependency "rails", ">= 7.0.2"
+  spec.add_dependency "devise"
 
   spec.add_development_dependency "rspec-rails", "~> 5.0.0"
   spec.add_development_dependency "factory_bot_rails"

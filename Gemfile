@@ -10,3 +10,6 @@ gem "sprockets-rails"
 
 # Start debugger with binding.b [https://github.com/ruby/debug]
 # gem "debug", ">= 1.0.0"
+
+# Simple one-liner tests for common Rails functionality
+gem "shoulda-matchers", "~> 5.0"

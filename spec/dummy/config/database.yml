@@ -23,13 +23,13 @@ default: &default
 
 development:
   <<: *default
-  database: rss-together-web_dummy_development
+  database: rss-together_dummy_development
 
   # The specified database role being used to connect to postgres.
   # To create additional roles in postgres see `$ createuser --help`.
   # When left blank, postgres will use the default role. This is
   # the same name as the operating system user running Rails.
-  #username: rss-together-web
+  #username: rss-together
 
   # The password associated with the postgres role (username).
   #password:
@@ -57,7 +57,7 @@ development:
 # Do not set this db to the same as development or production.
 test:
   <<: *default
-  database: rss-together-web_dummy_test
+  database: rss-together_dummy_test
 
 # As with config/credentials.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
@@ -81,6 +81,6 @@ test:
 #
 production:
   <<: *default
-  database: rss-together-web_dummy_production
-  username: rss-together-web
-  password: <%= ENV["rss-together-web_dummy_DATABASE_PASSWORD"] %>
+  database: rss-together_dummy_production
+  username: rss-together
+  password: <%= ENV["rss-together_dummy_DATABASE_PASSWORD"] %>

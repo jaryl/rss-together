@@ -1,5 +1,10 @@
 RssTogether::Engine.routes.draw do
-  devise_for :accounts, class_name: "RssTogether::Account", module: :devise
+  devise_for :accounts, class_name: "RssTogether::Account", skip: [:registrations, :password], module: :devise
+
+  devise_scope :account do
+    resource :registration, only: [:new, :create], controller: "/devise/registrations"
+    resource :password, only: [:new, :create], controller: "/devise/passwords"
+  end
 
   # resources :groups, only: [:index] do
   #   resources :feeds, only: [:index] do
@@ -13,19 +18,27 @@ RssTogether::Engine.routes.draw do
 
   # resources :bookmarks, only: [:index, :show]
 
-  # namespace :my do
-  #   resource :account, only: [:show, :update, :destroy] do
-  #     resource :cancel, only: [:show, :destroy]
-  #   end
+  namespace :my do
+    # devise_scope :account do
+    #   resource :registration,
+    #     only: [:edit, :update, :destroy],
+    #     controller: "devise/registrations",
+    #     path: "account",
+    #     as: :account
 
-  #   resources :groups, only: [:index, :new, :create, :edit, :update] do
-  #     resource :leave, only: [:show, :destroy]
-  #     resource :delete, only: [:show, :destroy]
+    #   resource :password,
+    #     only: [:edit, :update],
+    #     controller: "devise/passwords",
+    # end
 
-  #     resources :invitations, only: [:index, :new, :create, :destroy]
-  #     resources :members, only: [:index, :destroy]
+    # resources :groups, only: [:index, :new, :create, :edit, :update] do
+    #   resource :leave, only: [:show, :destroy]
+    #   resource :delete, only: [:show, :destroy]
 
-  #     resources :subscriptions, only: [:index, :new, :create, :destroy]
-  #   end
-  # end
+    #   resources :invitations, only: [:index, :new, :create, :destroy]
+    #   resources :members, only: [:index, :destroy]
+
+    #   resources :subscriptions, only: [:index, :new, :create, :destroy]
+    # end
+  end
 end

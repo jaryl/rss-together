@@ -14,3 +14,5 @@ gem "shoulda-matchers", "~> 5.0"
 
 # A library for setting up Ruby objects as test data
 gem "factory_bot_rails"
+
+gem "slim"

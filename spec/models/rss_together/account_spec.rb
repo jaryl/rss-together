@@ -2,6 +2,7 @@ require 'rails_helper'
 
 module RssTogether
   RSpec.describe Account, type: :model do
-    pending "add some examples to (or delete) #{__FILE__}"
+    it { is_expected.to have_many(:memberships) }
+    it { is_expected.to have_many(:groups).through(:memberships) }
   end
 end

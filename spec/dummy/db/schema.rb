@@ -10,9 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_02_11_103723) do
+ActiveRecord::Schema[7.0].define(version: 2022_02_11_130923) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "rss_together_accounts", force: :cascade do |t|
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["email"], name: "index_rss_together_accounts_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_rss_together_accounts_on_reset_password_token", unique: true
+  end
 
   create_table "rss_together_feeds", force: :cascade do |t|
     t.string "url", null: false
@@ -37,6 +49,15 @@ ActiveRecord::Schema[7.0].define(version: 2022_02_11_103723) do
     t.index ["feed_id"], name: "index_rss_together_items_on_feed_id"
   end
 
+  create_table "rss_together_memberships", force: :cascade do |t|
+    t.bigint "account_id", null: false
+    t.bigint "group_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_rss_together_memberships_on_account_id"
+    t.index ["group_id"], name: "index_rss_together_memberships_on_group_id"
+  end
+
   create_table "rss_together_subscriptions", force: :cascade do |t|
     t.bigint "group_id", null: false
     t.bigint "feed_id", null: false
@@ -47,6 +68,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_02_11_103723) do
   end
 
   add_foreign_key "rss_together_items", "rss_together_feeds", column: "feed_id"
+  add_foreign_key "rss_together_memberships", "rss_together_accounts", column: "account_id"
+  add_foreign_key "rss_together_memberships", "rss_together_groups", column: "group_id"
   add_foreign_key "rss_together_subscriptions", "rss_together_feeds", column: "feed_id"
   add_foreign_key "rss_together_subscriptions", "rss_together_groups", column: "group_id"
 end

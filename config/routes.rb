@@ -2,9 +2,11 @@ RssTogether::Engine.routes.draw do
   devise_for :accounts, class_name: "RssTogether::Account", skip: [:registrations, :password], module: :devise
 
   devise_scope :account do
-    resource :registration, only: [:new, :create], controller: "/devise/registrations"
+    resource :registration, only: [:new, :create], controller: "/devise/registrations", as: :account_registration
     resource :password, only: [:new, :create], controller: "/devise/passwords"
   end
+
+  root to: "dashboards#show"
 
   resources :groups, only: [:index] do
     # resources :feeds, only: [:index] do
@@ -21,25 +23,22 @@ RssTogether::Engine.routes.draw do
   resource :join, only: [:show, :create]
 
   namespace :my do
-    # devise_scope :account do
-    #   resource :registration,
-    #     only: [:edit, :update, :destroy],
-    #     controller: "devise/registrations",
-    #     path: "account",
-    #     as: :account
-
-    #   resource :password,
-    #     only: [:edit, :update],
-    #     controller: "devise/passwords",
-    # end
+    devise_scope :account do
+      resource :registration,
+        only: [:edit, :update, :destroy],
+        controller: "/devise/registrations",
+        path: "account",
+        path_names: { edit: "/" }
+    end
 
     resources :groups, only: [:index, :new, :create, :edit, :update, :destroy] do
       # resource :leave, only: [:show, :destroy]
 
-      resources :invitations, only: [:index, :new, :create, :destroy], controller: "groups/invitations"
-      resources :members, only: [:index, :destroy], controller: "groups/members"
-
-      resources :subscriptions, only: [:index, :new, :create, :destroy], controller: "groups/subscriptions"
+      scope module: :groups do
+        resources :invitations, only: [:index, :new, :create, :destroy]
+        resources :members, only: [:index, :destroy]
+        resources :subscriptions, only: [:index, :new, :create, :destroy]
+      end
     end
   end
 end

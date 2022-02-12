@@ -35,7 +35,7 @@ RssTogether::Engine.routes.draw do
       # resource :leave, only: [:show, :destroy]
       # resource :delete, only: [:show, :destroy]
 
-      # resources :invitations, only: [:index, :new, :create, :destroy]
+      resources :invitations, only: [:index, :new, :create, :destroy], controller: "groups/invitations"
       # resources :members, only: [:index, :destroy]
 
       # resources :subscriptions, only: [:index, :new, :create, :destroy]

@@ -8,7 +8,7 @@ module RssTogether
     private
 
     def generate_token
-      @token = SecureRandom.urlsafe_base64
+      self.token = SecureRandom.urlsafe_base64
     end
   end
 end

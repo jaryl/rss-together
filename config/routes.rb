@@ -18,6 +18,8 @@ RssTogether::Engine.routes.draw do
 
   # resources :bookmarks, only: [:index, :show]
 
+  resource :join, only: [:show, :create]
+
   namespace :my do
     # devise_scope :account do
     #   resource :registration,

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_02_12_072852) do
+ActiveRecord::Schema[7.0].define(version: 2022_02_12_154647) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -24,6 +24,15 @@ ActiveRecord::Schema[7.0].define(version: 2022_02_12_072852) do
     t.datetime "updated_at", null: false
     t.index ["email"], name: "index_rss_together_accounts_on_email", unique: true
     t.index ["reset_password_token"], name: "index_rss_together_accounts_on_reset_password_token", unique: true
+  end
+
+  create_table "rss_together_bookmarks", force: :cascade do |t|
+    t.bigint "account_id", null: false
+    t.bigint "item_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_rss_together_bookmarks_on_account_id"
+    t.index ["item_id"], name: "index_rss_together_bookmarks_on_item_id"
   end
 
   create_table "rss_together_feeds", force: :cascade do |t|
@@ -78,6 +87,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_02_12_072852) do
     t.index ["group_id"], name: "index_rss_together_subscriptions_on_group_id"
   end
 
+  add_foreign_key "rss_together_bookmarks", "rss_together_accounts", column: "account_id"
+  add_foreign_key "rss_together_bookmarks", "rss_together_items", column: "item_id"
   add_foreign_key "rss_together_invitations", "rss_together_groups", column: "group_id"
   add_foreign_key "rss_together_items", "rss_together_feeds", column: "feed_id"
   add_foreign_key "rss_together_memberships", "rss_together_accounts", column: "account_id"

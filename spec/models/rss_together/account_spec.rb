@@ -5,6 +5,8 @@ module RssTogether
     it { is_expected.to have_many(:memberships) }
     it { is_expected.to have_many(:groups).through(:memberships) }
 
+    it { is_expected.to have_many(:bookmarks) }
+
     it { expect(build(:account)).to be_valid }
     it { expect(build(:account, :invalid)).not_to be_valid }
   end

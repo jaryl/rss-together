@@ -4,6 +4,7 @@ FactoryBot.define do
     feed
 
     trait :invalid do
+      group { nil }
     end
   end
 end

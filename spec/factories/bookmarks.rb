@@ -1,7 +1,7 @@
 FactoryBot.define do
-  factory :membership, class: "RssTogether::Membership" do
+  factory :bookmark, class: "RssTogether::Bookmark" do
     account
-    group
+    item
 
     trait :invalid do
       account { nil }

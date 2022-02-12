@@ -2,7 +2,7 @@ FactoryBot.define do
   factory :invitation, class: "RssTogether::Invitation" do
     group
 
-    email { "john.doe@example.net" }
+    email { Faker::Internet.safe_email }
 
     trait :invalid do
       email { "" }

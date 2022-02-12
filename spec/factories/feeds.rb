@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :feed, class: "RssTogether::Feed" do
-    url { "https://example.net" }
+    url { Faker::Internet.url }
 
     trait :invalid do
       url { "" }

@@ -20,4 +20,7 @@ group :development, :test do
 
   # Brings back `assigns` and `assert_template` to your Rails tests
   gem "rails-controller-testing"
+
+  # A library for generating fake data such as names, addresses, and phone numbers
+  gem "faker"
 end

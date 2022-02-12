@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :group, class: "RssTogether::Group" do
-    name { "Group name" }
+    name { Faker::Hobby.activity }
 
     trait :invalid do
       name { "" }

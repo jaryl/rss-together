@@ -11,5 +11,8 @@ module RssTogether
     it { is_expected.to have_many(:invitations) }
 
     it { is_expected.to validate_presence_of(:name) }
+
+    it { expect(build(:group)).to be_valid }
+    it { expect(build(:group, :invalid)).not_to be_valid }
   end
 end

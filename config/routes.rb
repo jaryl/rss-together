@@ -33,9 +33,8 @@ RssTogether::Engine.routes.draw do
     #     controller: "devise/passwords",
     # end
 
-    resources :groups, only: [:index, :new, :create, :edit, :update] do
+    resources :groups, only: [:index, :new, :create, :edit, :update, :destroy] do
       # resource :leave, only: [:show, :destroy]
-      # resource :delete, only: [:show, :destroy]
 
       resources :invitations, only: [:index, :new, :create, :destroy], controller: "groups/invitations"
       resources :members, only: [:index, :destroy], controller: "groups/members"

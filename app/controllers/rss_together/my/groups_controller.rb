@@ -30,6 +30,12 @@ module RssTogether
       end
     end
 
+    def destroy
+      @group = current_account.groups.find(params[:id])
+      @group.destroy
+      redirect_to my_groups_path
+    end
+
     private
 
     def group_params

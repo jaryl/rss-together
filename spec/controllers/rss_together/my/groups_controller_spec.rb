@@ -62,5 +62,11 @@ module RssTogether
         it { expect(response).to render_template(:new) }
       end
     end
+
+    describe "DELETE #destroy" do
+      before { delete :destroy, params: { id: group.id } }
+      it { expect(assigns(:group)).to be_destroyed }
+      it { expect(response).to redirect_to(my_groups_path) }
+    end
   end
 end

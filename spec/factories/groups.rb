@@ -3,6 +3,7 @@ FactoryBot.define do
     name { "Group name" }
 
     trait :invalid do
+      name { "" }
     end
   end
 end

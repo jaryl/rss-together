@@ -7,5 +7,11 @@ module RssTogether
     def show
       @bookmark = current_account.bookmarks.find(params[:id])
     end
+
+    def destroy
+      @bookmark = current_account.bookmarks.find(params[:id])
+      @bookmark.destroy
+      redirect_to bookmarks_path
+    end
   end
 end

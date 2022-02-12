@@ -8,17 +8,17 @@ RssTogether::Engine.routes.draw do
 
   root to: "dashboards#show"
 
-  resources :groups, only: [:index] do
+  resources :groups, only: [:index, :destroy] do
     # resources :feeds, only: [:index] do
     #   resources :items, only: [:show] do
-    #     resource :bookmarks, only: [:create, :destroy]
+    #     resource :bookmarks, only: [:create]
     #     resource :reaction, only: [:create, :update]
     #     resources :comments, only: [:index, :create, :edit ,:update, :destroy]
     #   end
     # end
   end
 
-  resources :bookmarks, only: [:index, :show]
+  resources :bookmarks, only: [:index, :show, :destroy]
 
   resource :join, only: [:show, :create]
 
@@ -32,8 +32,6 @@ RssTogether::Engine.routes.draw do
     end
 
     resources :groups, only: [:index, :new, :create, :edit, :update, :destroy] do
-      # resource :leave, only: [:show, :destroy]
-
       scope module: :groups do
         resources :invitations, only: [:index, :new, :create, :destroy]
         resources :members, only: [:index, :destroy]

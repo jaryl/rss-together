@@ -24,5 +24,12 @@ module RssTogether
       it { expect(assigns(:bookmark)).to be_present }
       it { expect(response).to render_template(:show) }
     end
+
+    describe "DELETE #destroy" do
+      before { delete :destroy, params: { id: bookmark.id } }
+
+      it { expect(assigns(:bookmark)).to be_destroyed }
+      it { expect(response).to redirect_to(bookmarks_path) }
+    end
   end
 end

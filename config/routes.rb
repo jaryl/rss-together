@@ -18,7 +18,7 @@ RssTogether::Engine.routes.draw do
     # end
   end
 
-  # resources :bookmarks, only: [:index, :show]
+  resources :bookmarks, only: [:index, :show]
 
   resource :join, only: [:show, :create]
 

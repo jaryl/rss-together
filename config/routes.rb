@@ -3,20 +3,24 @@ RssTogether::Engine.routes.draw do
 
   devise_scope :account do
     resource :registration, only: [:new, :create], controller: "/devise/registrations", as: :account_registration
-    resource :password, only: [:new, :create], controller: "/devise/passwords"
+    resource :password, only: [:new, :create], controller: "/devise/passwords", as: :account_password
   end
 
   root to: "dashboards#show"
 
+  # resource :reader, only: [:show]
+
   resources :groups, only: [:index, :destroy] do
-    # resources :feeds, only: [:index] do
-    #   resources :items, only: [:show] do
-    #     resource :bookmarks, only: [:create]
-    #     resource :reaction, only: [:create, :update]
-    #     resources :comments, only: [:index, :create, :edit ,:update, :destroy]
-    #   end
-    # end
+    # resources :feeds, only: [:index]
   end
+
+  # resources :items, only: [:show] do
+  #   scope module: :items do
+  #     resource :bookmarks, only: [:create]
+  #     resource :reaction, only: [:create, :update]
+  #     resources :comments, only: [:index, :new, :create, :edit ,:update, :destroy]
+  #   end
+  # end
 
   resources :bookmarks, only: [:index, :show, :destroy]
 

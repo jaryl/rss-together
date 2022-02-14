@@ -24,6 +24,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "rails", ">= 7.0.2"
   spec.add_dependency "devise"
   spec.add_dependency "pg"
+  spec.add_dependency "simple_form"
 
   spec.add_development_dependency "rspec-rails", "~> 5.0.0"
   spec.add_development_dependency "puma", "~> 5.2"

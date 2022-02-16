@@ -35,7 +35,7 @@ RssTogether::Engine.routes.draw do
         path_names: { edit: "/" }
     end
 
-    resources :groups, only: [:index, :new, :create, :edit, :update, :destroy] do
+    resources :groups, only: [:index, :show, :new, :create, :edit, :update, :destroy] do
       scope module: :groups do
         resources :invitations, only: [:index, :new, :create, :destroy]
         resources :members, only: [:index, :destroy]

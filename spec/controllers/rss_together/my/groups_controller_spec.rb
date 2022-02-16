@@ -17,6 +17,13 @@ module RssTogether
       it { expect(response).to render_template(:index) }
     end
 
+    describe "GET #show" do
+      before { get :show, params: { id: group.id } }
+
+      it { expect(assigns(:group)).to be_present }
+      it { expect(response).to render_template(:show) }
+    end
+
     describe "GET #new" do
       before { get :new }
 
@@ -30,7 +37,7 @@ module RssTogether
       context "with valid params" do
         let(:params) { attributes_for(:group) }
         it { expect(assigns(:group)).to be_valid }
-        it { expect(response).to redirect_to(my_groups_path) }
+        it { expect(response).to redirect_to(my_group_path(assigns(:group))) }
       end
 
       context "with invalid params" do
@@ -53,13 +60,13 @@ module RssTogether
       context "with valid params" do
         let(:params) { attributes_for(:group) }
         it { expect(assigns(:group)).to be_valid }
-        it { expect(response).to redirect_to(my_groups_path) }
+        it { expect(response).to redirect_to(my_group_path(assigns(:group))) }
       end
 
       context "with invalid params" do
         let(:params) { attributes_for(:group, :invalid) }
         it { expect(assigns(:group)).not_to be_valid }
-        it { expect(response).to render_template(:new) }
+        it { expect(response).to render_template(:edit) }
       end
     end
 

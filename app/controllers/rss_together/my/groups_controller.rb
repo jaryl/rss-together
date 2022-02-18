@@ -14,11 +14,13 @@ module RssTogether
 
     def create
       @group = current_account.groups.build(group_params)
-      if @group.save
-        redirect_to my_group_path(@group)
-      else
-        render :new
+      ActiveRecord::Base.transaction do
+        @group.save!
+        current_account.groups << @group
       end
+      redirect_to my_group_path(@group)
+    rescue ActiveRecord::RecordInvalid
+      render :new
     end
 
     def edit
@@ -44,7 +46,7 @@ module RssTogether
     end
 
     def group_params
-      params.require(:group).permit(:name)
+      params.require(:group).permit(:name).merge(owner: current_account)
     end
   end
 end

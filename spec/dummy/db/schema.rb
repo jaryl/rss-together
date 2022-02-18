@@ -53,9 +53,11 @@ ActiveRecord::Schema[7.0].define(version: 2022_02_12_164032) do
   end
 
   create_table "rss_together_groups", force: :cascade do |t|
+    t.bigint "owner_id", null: false
     t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["owner_id"], name: "index_rss_together_groups_on_owner_id"
   end
 
   create_table "rss_together_invitations", force: :cascade do |t|
@@ -101,6 +103,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_02_12_164032) do
   add_foreign_key "rss_together_bookmarks", "rss_together_items", column: "item_id"
   add_foreign_key "rss_together_comments", "rss_together_accounts", column: "account_id"
   add_foreign_key "rss_together_comments", "rss_together_items", column: "item_id"
+  add_foreign_key "rss_together_groups", "rss_together_accounts", column: "owner_id"
   add_foreign_key "rss_together_invitations", "rss_together_groups", column: "group_id"
   add_foreign_key "rss_together_items", "rss_together_feeds", column: "feed_id"
   add_foreign_key "rss_together_memberships", "rss_together_accounts", column: "account_id"

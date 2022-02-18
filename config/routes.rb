@@ -30,9 +30,10 @@ RssTogether::Engine.routes.draw do
     devise_scope :account do
       resource :registration,
         only: [:edit, :update, :destroy],
-        controller: "/devise/registrations",
+        controller: "accounts",
         path: "account",
-        path_names: { edit: "/" }
+        path_names: { edit: "/" },
+        as: :account
     end
 
     resources :groups, only: [:index, :show, :new, :create, :edit, :update, :destroy] do

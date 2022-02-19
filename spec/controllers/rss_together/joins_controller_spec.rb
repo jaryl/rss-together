@@ -23,30 +23,30 @@ module RssTogether
       context "with invalid token" do
         let(:token) { "some invalid token" }
         it { expect(assigns(:invitation)).not_to be_present }
-        it { expect(response).to render_template(:show) }
+        it { expect(response).to redirect_to(my_groups_path) }
       end
 
       context "with no token" do
         let(:token) { "" }
         it { expect(assigns(:invitation)).not_to be_present }
-        it { expect(response).to render_template(:show) }
+        it { expect(response).to redirect_to(my_groups_path) }
       end
     end
 
     describe "POST #create" do
-      before { post :create, params: { invitation: params } }
+      before { post :create, params: { accept_invitation_form: params } }
 
       context "with valid params" do
-        let(:params) { { id: invitation.id } }
-        it { expect(assigns(:invitation)).to be_present }
-        it { expect(assigns(:membership)).to be_valid }
+        let(:params) { { token: invitation.token, display_name: Faker::Internet.username } }
+        it { expect(assigns(:form).membership).to be_valid }
+        it { expect(assigns(:form).errors).to be_empty }
         it { expect(response).to redirect_to(my_groups_path) }
       end
 
       context "with invalid params" do
-        let(:params) { { id: "some invalid id" } }
-        it { expect(assigns(:invitation)).not_to be_present }
-        it { expect(assigns(:membership)).not_to be_valid }
+        let(:params) { { token: "some invalid token", display_name: "." } }
+        it { expect(assigns(:form).membership).not_to be_valid }
+        it { expect(assigns(:form).errors).not_to be_empty }
         it { expect(response).to render_template(:show) }
       end
     end

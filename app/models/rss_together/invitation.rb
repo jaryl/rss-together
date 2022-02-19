@@ -1,6 +1,8 @@
 module RssTogether
   class Invitation < ApplicationRecord
     belongs_to :group
+    belongs_to :sender, class_name: "Account"
+
     validates :email, presence: true, email: { mode: :strict }
 
     before_validation :generate_token, on: :create

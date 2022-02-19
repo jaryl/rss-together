@@ -13,7 +13,7 @@ module RssTogether
     describe "GET #index" do
       before { get :index, params: { group_id: group.id } }
 
-      it { expect(assigns(:members)).not_to be_empty }
+      it { expect(assigns(:memberships)).not_to be_empty }
       it { expect(response).to render_template(:index) }
     end
 

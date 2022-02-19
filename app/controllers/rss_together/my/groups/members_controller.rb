@@ -3,7 +3,7 @@ module RssTogether
     before_action :prepare_group
 
     def index
-      @members = @group.accounts
+      @memberships = @group.memberships
     end
 
     def destroy

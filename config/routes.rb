@@ -38,6 +38,7 @@ RssTogether::Engine.routes.draw do
 
     resources :groups, only: [:index, :show, :new, :create, :edit, :update, :destroy] do
       scope module: :groups do
+        resource :membership, only: [:edit, :update, :destroy]
         resources :invitations, only: [:index, :new, :create, :destroy]
         resources :members, only: [:index, :destroy]
         resources :subscriptions, only: [:index, :new, :create, :destroy]

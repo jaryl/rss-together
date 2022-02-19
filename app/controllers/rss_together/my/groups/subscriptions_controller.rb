@@ -13,16 +13,16 @@ module RssTogether
     def create
       @subscription = @group.subscriptions.build(subscription_params)
       if @subscription.save
-        redirect_to my_group_subscriptions_path(@group)
+        redirect_to my_group_subscriptions_path(@group), status: :see_other
       else
-        render :new
+        render :new, status: :unprocessable_entity
       end
     end
 
     def destroy
       @subscription = @group.subscriptions.find(params[:id])
       @subscription.destroy
-      redirect_to my_group_subscriptions_path(@group)
+      redirect_to my_group_subscriptions_path(@group), status: :see_other
     end
 
     private

@@ -8,9 +8,9 @@ module RssTogether
       @invitation = Invitation.find_by(invitation_params)
       @membership = Membership.new(account: current_account, group: @invitation&.group)
       if @membership.save
-        redirect_to my_groups_path
+        redirect_to my_groups_path, status: :see_other
       else
-        render :show
+        render :show, status: :unprocessable_entity
       end
     end
 

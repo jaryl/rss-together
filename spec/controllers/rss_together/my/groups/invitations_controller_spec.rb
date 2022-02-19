@@ -21,22 +21,22 @@ module RssTogether
     describe "GET #new" do
       before { get :new, params: { group_id: group.id } }
 
-      it { expect(assigns(:invitation)).to be_new_record }
+      it { expect(assigns(:form).invitation).to be_new_record }
       it { expect(response).to render_template(:new) }
     end
 
     describe "POST #create" do
-      before { post :create, params: { group_id: group.id, invitation: params } }
+      before { post :create, params: { group_id: group.id, new_invitation_form: params } }
 
       context "with valid params" do
         let(:params) { attributes_for(:invitation) }
-        it { expect(assigns(:invitation)).to be_valid }
+        it { expect(assigns(:form).invitation).to be_valid }
         it { expect(response).to redirect_to(my_group_invitations_path(group)) }
       end
 
       context "with invalid params" do
         let(:params) { attributes_for(:invitation, :invalid) }
-        it { expect(assigns(:invitation)).not_to be_valid }
+        it { expect(assigns(:form).invitation).not_to be_valid }
         it { expect(response).to render_template(:new) }
       end
     end

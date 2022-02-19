@@ -9,7 +9,7 @@ module RssTogether
     def destroy
       @membership = @group.memberships.find_by(account_id: params[:id])
       @membership.destroy
-      redirect_to my_group_members_path(@group)
+      redirect_to my_group_members_path(@group), status: :see_other
     end
   end
 end

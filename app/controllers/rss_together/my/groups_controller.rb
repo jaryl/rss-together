@@ -20,7 +20,7 @@ module RssTogether
       end
       redirect_to my_group_path(@group)
     rescue ActiveRecord::RecordInvalid
-      render :new
+      render :new, status: :unprocessable_entity
     end
 
     def edit
@@ -28,15 +28,15 @@ module RssTogether
 
     def update
       if @group.update(group_params)
-        redirect_to my_group_path(@group)
+        redirect_to my_group_path(@group), status: :see_other
       else
-        render :edit
+        render :edit, status: :unprocessable_entity
       end
     end
 
     def destroy
       @group.destroy
-      redirect_to my_groups_path
+      redirect_to my_groups_path, status: :see_other
     end
 
     private

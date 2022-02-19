@@ -11,7 +11,7 @@ module RssTogether
     def destroy
       @bookmark = current_account.bookmarks.find(params[:id])
       @bookmark.destroy
-      redirect_to bookmarks_path
+      redirect_to bookmarks_path, status: :see_other
     end
   end
 end

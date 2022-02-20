@@ -46,10 +46,14 @@ ActiveRecord::Schema[7.0].define(version: 2022_02_12_164032) do
   end
 
   create_table "rss_together_feeds", force: :cascade do |t|
-    t.string "url", null: false
+    t.string "link", null: false
+    t.string "title"
+    t.string "description"
+    t.string "language"
     t.datetime "last_refreshed_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["link"], name: "index_rss_together_feeds_on_link", unique: true
   end
 
   create_table "rss_together_groups", force: :cascade do |t|
@@ -77,7 +81,10 @@ ActiveRecord::Schema[7.0].define(version: 2022_02_12_164032) do
     t.bigint "feed_id", null: false
     t.string "title", null: false
     t.string "description", null: false
-    t.string "url", null: false
+    t.string "link", null: false
+    t.string "author"
+    t.datetime "published_at"
+    t.string "guid"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["feed_id"], name: "index_rss_together_items_on_feed_id"
@@ -96,9 +103,12 @@ ActiveRecord::Schema[7.0].define(version: 2022_02_12_164032) do
   create_table "rss_together_subscriptions", force: :cascade do |t|
     t.bigint "group_id", null: false
     t.bigint "feed_id", null: false
+    t.bigint "account_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_rss_together_subscriptions_on_account_id"
     t.index ["feed_id"], name: "index_rss_together_subscriptions_on_feed_id"
+    t.index ["group_id", "feed_id"], name: "index_rss_together_subscriptions_on_group_id_and_feed_id", unique: true
     t.index ["group_id"], name: "index_rss_together_subscriptions_on_group_id"
   end
 
@@ -112,6 +122,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_02_12_164032) do
   add_foreign_key "rss_together_items", "rss_together_feeds", column: "feed_id"
   add_foreign_key "rss_together_memberships", "rss_together_accounts", column: "account_id"
   add_foreign_key "rss_together_memberships", "rss_together_groups", column: "group_id"
+  add_foreign_key "rss_together_subscriptions", "rss_together_accounts", column: "account_id"
   add_foreign_key "rss_together_subscriptions", "rss_together_feeds", column: "feed_id"
   add_foreign_key "rss_together_subscriptions", "rss_together_groups", column: "group_id"
 end

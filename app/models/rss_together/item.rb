@@ -4,6 +4,6 @@ module RssTogether
     has_many :bookmarks
     has_many :comments
 
-    validates :title, :description, :url, presence: true
+    validates :title, :description, :link, presence: true
   end
 end

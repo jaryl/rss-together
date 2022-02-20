@@ -4,6 +4,6 @@ module RssTogether
     has_many :subscriptions
     has_many :groups, through: :subscriptions
 
-    validates :url, presence: true
+    validates :link, presence: true
   end
 end

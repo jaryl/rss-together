@@ -22,22 +22,23 @@ module RssTogether
     describe "GET #new" do
       before { get :new, params: { group_id: group.id } }
 
-      it { expect(assigns(:subscription)).to be_new_record }
+      it { expect(assigns(:form)).to be_present }
       it { expect(response).to render_template(:new) }
     end
 
     describe "POST #create" do
-      before { post :create, params: { group_id: group.id, subscription: params } }
+      before { FeedProcessor.any_instance.stub(:process!).and_return(true) }
+      before { post :create, params: { group_id: group.id, new_subscription_form: params } }
 
       context "with valid params" do
-        let(:params) { { feed_id: feed.id } }
-        it { expect(assigns(:subscription)).to be_valid }
+        let(:params) { { url: Faker::Internet.url } }
+        it { expect(assigns(:form)).to be_valid }
         it { expect(response).to redirect_to(my_group_subscriptions_path(group)) }
       end
 
       context "with invalid params" do
-        let(:params) { { feed_id: "some invalid id" } }
-        it { expect(assigns(:subscription)).not_to be_valid }
+        let(:params) { { url: "" } }
+        it { expect(assigns(:form)).not_to be_valid }
         it { expect(response).to render_template(:new) }
       end
     end

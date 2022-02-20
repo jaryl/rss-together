@@ -7,12 +7,12 @@ module RssTogether
     end
 
     def new
-      @subscription = @group.subscriptions.build
+      @form = NewSubscriptionForm.new(current_account, @group)
     end
 
     def create
-      @subscription = @group.subscriptions.build(subscription_params)
-      if @subscription.save
+      @form = NewSubscriptionForm.new(current_account, @group, new_subscription_form_params)
+      if @form.submit
         redirect_to my_group_subscriptions_path(@group), status: :see_other
       else
         render :new, status: :unprocessable_entity
@@ -29,6 +29,10 @@ module RssTogether
 
     def subscription_params
       params.require(:subscription).permit(:feed_id)
+    end
+
+    def new_subscription_form_params
+      params.require(:new_subscription_form).permit(:url)
     end
   end
 end

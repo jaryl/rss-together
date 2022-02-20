@@ -4,12 +4,12 @@ FactoryBot.define do
 
     title { Faker::Book.title }
     description { Faker::Lorem.sentences }
-    url { Faker::Internet.url }
+    link { Faker::Internet.url }
 
     trait :invalid do
       title { "" }
       description { "" }
-      url { "" }
+      link { "" }
     end
   end
 end

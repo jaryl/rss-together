@@ -5,7 +5,11 @@ class CreateRssTogetherItems < ActiveRecord::Migration[7.0]
 
       t.string :title, null: false
       t.string :description, null: false
-      t.string :url, null: false
+      t.string :link, null: false
+
+      t.string :author, null: true
+      t.datetime :published_at, null: true
+      t.string :guid, null: true
 
       t.timestamps
     end

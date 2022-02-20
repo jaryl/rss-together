@@ -9,7 +9,12 @@ gem "sprockets-rails"
 # Start debugger with binding.b [https://github.com/ruby/debug]
 # gem "debug", ">= 1.0.0"
 
+#  Slim is a template language whose goal is to reduce the syntax to the essential parts without becoming cryptic.
 gem "slim"
+# RSS reading and writing
+gem "rss"
+# URL Validation for Rails
+gem "validate_url"
 
 group :development, :test do
   # Simple one-liner tests for common Rails functionality

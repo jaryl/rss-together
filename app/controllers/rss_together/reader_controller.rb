@@ -1,5 +1,5 @@
 module RssTogether
-  class ReadersController < ApplicationController
+  class ReaderController < ApplicationController
     def show
     end
   end

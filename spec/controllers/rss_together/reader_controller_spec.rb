@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 module RssTogether
-  RSpec.describe ReadersController, type: :controller do
-    routes { RssTogether::Engine.routes }
+  RSpec.describe ReaderController, type: :controller do
+    routes { Engine.routes }
 
     let(:account) { create(:account) }
 

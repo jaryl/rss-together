@@ -8,10 +8,12 @@ RssTogether::Engine.routes.draw do
 
   root to: "dashboards#show"
 
-  resource :reader, only: [:show]
-
-  resources :groups, only: [:index, :destroy] do
-    # resources :feeds, only: [:index]
+  resource :reader, only: [:show], controller: "/rss_together/reader" do
+    scope module: :reader do
+      resources :groups, only: [:index] do
+        resources :items, only: [:index, :show]
+      end
+    end
   end
 
   # resources :items, only: [:show] do

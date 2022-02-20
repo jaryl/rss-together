@@ -2,7 +2,7 @@ require 'rails_helper'
 
 module RssTogether
   RSpec.describe My::Groups::MembershipsController, type: :controller do
-    routes { RssTogether::Engine.routes }
+    routes { Engine.routes }
 
     let(:membership) { create(:membership) }
     let(:group) { membership.group }

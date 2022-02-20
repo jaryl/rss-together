@@ -9,6 +9,7 @@ module RssTogether
 
     it { is_expected.to have_many(:subscriptions) }
     it { is_expected.to have_many(:feeds).through(:subscriptions) }
+    it { is_expected.to have_many(:items).through(:feeds) }
 
     it { is_expected.to have_many(:invitations) }
 

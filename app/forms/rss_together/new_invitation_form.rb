@@ -28,6 +28,10 @@ module RssTogether
       invitation.persisted?
     end
 
+    def limit_reached?
+      group.accounts.size + group.invitations.size > MAX_GROUP_SIZE
+    end
+
     private
 
     def member_does_not_already_exist
@@ -36,8 +40,7 @@ module RssTogether
     end
 
     def within_maximum_group_size
-      total_count = group.accounts.size + group.invitations.size
-      errors.add(:base, "You have reached the maximum group size") if total_count > MAX_GROUP_SIZE
+      errors.add(:base, "You have reached the maximum group size") if limit_reached?
     end
 
     def invitation_is_valid

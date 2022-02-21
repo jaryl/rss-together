@@ -5,5 +5,13 @@ module RssTogether
     has_many :comments
 
     validates :title, :description, :link, presence: true
+
+    def preview
+      @preview ||= Nokogiri::HTML(description).text
+    end
+
+    def website
+      @website ||= URI.parse(link).host
+    end
   end
 end

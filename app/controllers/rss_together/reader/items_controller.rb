@@ -5,7 +5,7 @@ module RssTogether
 
       def index
         # TODO: retrieve only latest n items, pagination, etc
-        @items = @group.items
+        @items = @group.items.order(published_at: :desc)
       end
 
       def show

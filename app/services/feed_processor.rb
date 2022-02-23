@@ -10,13 +10,16 @@ class FeedProcessor
 
   def process!
     rss_feed.items.each do |rss_item|
+      # TODO: check updated at date
       next if feed.items.exists?(link: rss_item.link)
 
       feed.items.build do |item|
         item.title = rss_item.title
-        item.description = rss_item.description
+        item.content = rss_item.content_encoded || rss_item.description
         item.link = rss_item.link
-        item.author = rss_item.author
+
+        item.description = Nokogiri::HTML(rss_item.description || rss_item.content_encoded).text
+        item.author = rss_item.author || rss_item.dc_creator
         item.published_at = rss_item.pubDate
         item.guid = rss_item.guid
       end
@@ -46,6 +49,8 @@ class FeedProcessor
   private
 
   def rss_feed
+    # TODO: follow <link>s to find rss url
+    # TODO: process images
     return @rss_feed if defined? @rss_feed
 
     URI.open(raw_url) do |content|

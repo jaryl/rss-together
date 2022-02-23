@@ -81,8 +81,9 @@ ActiveRecord::Schema[7.0].define(version: 2022_02_12_164032) do
   create_table "rss_together_items", force: :cascade do |t|
     t.bigint "feed_id", null: false
     t.string "title", null: false
-    t.string "description", null: false
+    t.string "content", null: false
     t.string "link", null: false
+    t.string "description"
     t.string "author"
     t.datetime "published_at"
     t.string "guid"

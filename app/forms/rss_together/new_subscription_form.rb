@@ -22,9 +22,8 @@ module RssTogether
       ActiveRecord::Base.transaction do
         feed.save!
         subscription.save!
+        FeedProcessor.new(url).process! # TODO: kick off background task to process feed
       end
-
-      FeedProcessor.new(url).process! # TODO: kick off background task to process feed
 
       true
     rescue ActiveRecord::RecordInvalid

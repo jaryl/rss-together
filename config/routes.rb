@@ -11,18 +11,15 @@ RssTogether::Engine.routes.draw do
   resource :reader, only: [:show], controller: "/rss_together/reader" do
     scope module: :reader do
       resources :groups, only: [:index] do
-        resources :items, only: [:index, :show]
+        resources :items, only: [:index, :show] do
+          resource :bookmark, only: [:create, :destroy]
+          # resource :read, only: [:create, :destroy]
+          # resource :reaction, only: [:create, :destroy]
+          # resources :comments, only: [:index, :new, :create, :edit ,:update, :destroy]
+        end
       end
     end
   end
-
-  # resources :items, only: [:show] do
-  #   scope module: :items do
-  #     resource :bookmarks, only: [:create]
-  #     resource :reaction, only: [:create, :update]
-  #     resources :comments, only: [:index, :new, :create, :edit ,:update, :destroy]
-  #   end
-  # end
 
   resources :bookmarks, only: [:index, :show, :destroy]
 

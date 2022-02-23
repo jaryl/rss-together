@@ -4,6 +4,8 @@ class CreateRssTogetherBookmarks < ActiveRecord::Migration[7.0]
       t.references :account, null: false, foreign_key: { to_table: :rss_together_accounts }, index: true
       t.references :item, null: false, foreign_key: { to_table: :rss_together_items }, index: true
 
+      t.index [:account_id, :item_id], unique: true
+
       t.timestamps
     end
   end

@@ -31,6 +31,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_02_12_164032) do
     t.bigint "item_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["account_id", "item_id"], name: "index_rss_together_bookmarks_on_account_id_and_item_id", unique: true
     t.index ["account_id"], name: "index_rss_together_bookmarks_on_account_id"
     t.index ["item_id"], name: "index_rss_together_bookmarks_on_item_id"
   end

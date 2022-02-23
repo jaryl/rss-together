@@ -13,7 +13,9 @@ module RssTogether
       end
 
       def show
+        # TODO: move into a presenter
         @item = @group.items.find(params[:id])
+        @bookmark = @item.bookmarks.find_by(account: current_account)
       end
 
       private

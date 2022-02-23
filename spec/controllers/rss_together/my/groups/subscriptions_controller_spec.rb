@@ -27,7 +27,7 @@ module RssTogether
     end
 
     describe "POST #create" do
-      before { FeedProcessor.any_instance.stub(:process!).and_return(true) }
+      before { allow_any_instance_of(FeedProcessor).to receive(:process!).and_return(true) }
       before { post :create, params: { group_id: group.id, new_subscription_form: params } }
 
       context "with valid params" do

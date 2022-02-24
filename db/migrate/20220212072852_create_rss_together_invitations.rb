@@ -8,8 +8,8 @@ class CreateRssTogetherInvitations < ActiveRecord::Migration[7.0]
       t.string :token, null: false, index: { unique: true }
 
       t.timestamps
-    end
 
-    add_index :rss_together_invitations, [:group_id, :email], unique: true
+      t.index [:group_id, :email], unique: true
+    end
   end
 end

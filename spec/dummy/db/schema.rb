@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_02_12_164032) do
+ActiveRecord::Schema[7.0].define(version: 2022_02_24_100707) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -89,7 +89,17 @@ ActiveRecord::Schema[7.0].define(version: 2022_02_12_164032) do
     t.string "guid"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["created_at"], name: "index_rss_together_items_on_created_at"
     t.index ["feed_id"], name: "index_rss_together_items_on_feed_id"
+  end
+
+  create_table "rss_together_marks", force: :cascade do |t|
+    t.bigint "account_id", null: false
+    t.bigint "item_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_rss_together_marks_on_account_id"
+    t.index ["item_id"], name: "index_rss_together_marks_on_item_id"
   end
 
   create_table "rss_together_memberships", force: :cascade do |t|
@@ -100,6 +110,17 @@ ActiveRecord::Schema[7.0].define(version: 2022_02_12_164032) do
     t.datetime "updated_at", null: false
     t.index ["account_id"], name: "index_rss_together_memberships_on_account_id"
     t.index ["group_id"], name: "index_rss_together_memberships_on_group_id"
+  end
+
+  create_table "rss_together_reactions", force: :cascade do |t|
+    t.bigint "membership_id", null: false
+    t.bigint "item_id", null: false
+    t.string "value"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["item_id", "membership_id"], name: "index_rss_together_reactions_on_item_id_and_membership_id", unique: true
+    t.index ["item_id"], name: "index_rss_together_reactions_on_item_id"
+    t.index ["membership_id"], name: "index_rss_together_reactions_on_membership_id"
   end
 
   create_table "rss_together_subscriptions", force: :cascade do |t|
@@ -122,8 +143,12 @@ ActiveRecord::Schema[7.0].define(version: 2022_02_12_164032) do
   add_foreign_key "rss_together_invitations", "rss_together_accounts", column: "sender_id"
   add_foreign_key "rss_together_invitations", "rss_together_groups", column: "group_id"
   add_foreign_key "rss_together_items", "rss_together_feeds", column: "feed_id"
+  add_foreign_key "rss_together_marks", "rss_together_accounts", column: "account_id"
+  add_foreign_key "rss_together_marks", "rss_together_items", column: "item_id"
   add_foreign_key "rss_together_memberships", "rss_together_accounts", column: "account_id"
   add_foreign_key "rss_together_memberships", "rss_together_groups", column: "group_id"
+  add_foreign_key "rss_together_reactions", "rss_together_items", column: "item_id"
+  add_foreign_key "rss_together_reactions", "rss_together_memberships", column: "membership_id"
   add_foreign_key "rss_together_subscriptions", "rss_together_accounts", column: "account_id"
   add_foreign_key "rss_together_subscriptions", "rss_together_feeds", column: "feed_id"
   add_foreign_key "rss_together_subscriptions", "rss_together_groups", column: "group_id"

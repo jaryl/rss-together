@@ -1,8 +1,10 @@
 module RssTogether
   class Item < ApplicationRecord
     belongs_to :feed
+
     has_many :bookmarks
     has_many :comments
+    has_many :reactions
 
     validates :title, :description, :link, presence: true
 

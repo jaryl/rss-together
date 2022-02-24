@@ -12,9 +12,9 @@ RssTogether::Engine.routes.draw do
     scope module: :reader do
       resources :groups, only: [:index] do
         resources :items, only: [:index, :show] do
-          resource :bookmark, only: [:create, :destroy]
+          resource :bookmark, only: [:show, :create, :destroy]
+          resource :reaction, only: [:show, :edit, :update, :destroy]
           # resource :read, only: [:create, :destroy]
-          # resource :reaction, only: [:create, :destroy]
           # resources :comments, only: [:index, :new, :create, :edit ,:update, :destroy]
         end
       end

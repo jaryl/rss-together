@@ -3,9 +3,17 @@ module RssTogether
     class BookmarksController < BaseController
       before_action :prepare_group, :prepare_item
 
+      def show
+        @bookmark = current_account.bookmarks.find_by(item: @item)
+      end
+
       def create
-        @bookmark = current_account.bookmarks.find_or_create_by(item: @item)
-        render :show
+        @bookmark = current_account.bookmarks.find_or_initialize_by(item: @item)
+        if @bookmark.save
+          redirect_to reader_group_item_bookmark_path(@group, @item)
+        else
+          render :show
+        end
       end
 
       def destroy

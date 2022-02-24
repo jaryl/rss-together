@@ -13,6 +13,8 @@ class CreateRssTogetherItems < ActiveRecord::Migration[7.0]
       t.string :guid, null: true
 
       t.timestamps
+
+      t.index :created_at
     end
   end
 end

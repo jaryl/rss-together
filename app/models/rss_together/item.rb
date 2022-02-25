@@ -3,6 +3,7 @@ module RssTogether
     belongs_to :feed
 
     has_many :bookmarks
+    has_many :marks
     has_many :comments
     has_many :reactions
 

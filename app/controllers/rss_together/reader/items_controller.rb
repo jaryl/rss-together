@@ -9,11 +9,14 @@ module RssTogether
         paginate_with_cursor do |query|
           @items = @group.items.order(published_at: :desc).limit(ITEM_LIMIT)
           @items = @items.where("published_at < ?", query[:published_at]) if query[:published_at].present?
+          @items = @items.left_joins(:marks)
+            .where("rss_together_marks.account_id = ? OR rss_together_marks.account_id IS NULL", current_account.id)
+            .references(:marks)
         end
       end
 
       def show
-        # TODO: move into a presenter
+        # TODO: move into a presenter, display partials inline
         @item = @group.items.find(params[:id])
         @bookmark = @item.bookmarks.find_by(account: current_account)
       end

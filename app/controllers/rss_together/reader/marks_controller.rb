@@ -8,7 +8,10 @@ module RssTogether
       end
 
       def create
-        @mark = current_account.marks.find_or_initialize_by(item: @item)
+        @mark = current_account.marks.find_or_initialize_by(item: @item) do |mark|
+          mark.source = :user
+        end
+
         if @mark.save
           redirect_to reader_group_item_mark_path(@group, @item)
         else

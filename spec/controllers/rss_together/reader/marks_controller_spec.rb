@@ -13,18 +13,18 @@ module RssTogether
     before { sign_in account }
 
     describe "GET #show" do
-      context "with an existing bookmark" do
-        before { create(:bookmark, account: account, item: item) }
+      context "with an existing mark" do
+        before { create(:mark, account: account, item: item) }
         before { get :show, params: { group_id: group.id, item_id: item.id } }
 
-        it { expect(assigns(:bookmark)).to be_present }
+        it { expect(assigns(:mark)).to be_present }
         it { is_expected.to render_template(:show) }
       end
 
-      context "with no existing bookmark" do
+      context "with no existing mark" do
         before { get :show, params: { group_id: group.id, item_id: item.id } }
 
-        it { expect(assigns(:bookmark)).not_to be_present }
+        it { expect(assigns(:mark)).not_to be_present }
         it { is_expected.to render_template(:show) }
       end
     end

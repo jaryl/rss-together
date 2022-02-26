@@ -7,7 +7,7 @@ class CreateRssTogetherFeeds < ActiveRecord::Migration[7.0]
       t.string :description, null: true
       t.string :language, null: true
 
-      t.datetime :last_refreshed_at
+      t.datetime :processed_at
 
       t.timestamps
 

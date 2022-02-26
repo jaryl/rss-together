@@ -10,7 +10,6 @@ class FeedProcessor
 
   def process!
     rss_feed.items.each do |rss_item|
-      # TODO: check updated at date
       next if feed.items.exists?(link: rss_item.link)
 
       feed.items.build do |item|
@@ -25,7 +24,7 @@ class FeedProcessor
       end
     end
 
-    feed.last_refreshed_at = Time.current
+    feed.processed_at = Time.current
 
     feed.save!
 

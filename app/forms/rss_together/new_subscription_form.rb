@@ -22,7 +22,7 @@ module RssTogether
       ActiveRecord::Base.transaction do
         feed.save!
         subscription.save!
-        FeedProcessor.new(url).process! # TODO: kick off background task to process feed
+        FeedProcessJob.perform_later(feed)
       end
 
       true

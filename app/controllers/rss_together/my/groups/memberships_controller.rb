@@ -1,14 +1,17 @@
 module RssTogether
   class My::Groups::MembershipsController < My::Groups::BaseController
     before_action :prepare_group
-    before_action :prepare_membership
+    before_action :prepare_membership, only: [:show, :edit, :update, :destroy]
+
+    def show
+    end
 
     def edit
     end
 
     def update
       if @membership.update(membership_params)
-        redirect_to my_group_path(@group)
+        redirect_to my_group_membership_path(@group)
       else
         render :edit, status: :unprocessable_entity
       end

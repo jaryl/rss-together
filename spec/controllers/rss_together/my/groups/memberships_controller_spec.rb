@@ -10,6 +10,13 @@ module RssTogether
 
     before { sign_in account }
 
+    describe "GET #show" do
+      before { get :show, params: { group_id: group.id } }
+
+      it { expect(assigns(:membership)).to eq(membership) }
+      it { expect(response).to render_template(:show) }
+    end
+
     describe "GET #edit" do
       before { get :edit, params: { group_id: group.id } }
 
@@ -23,7 +30,7 @@ module RssTogether
       context "with valid params" do
         let(:params) { attributes_for(:membership) }
         it { expect(assigns(:membership)).to be_valid }
-        it { expect(response).to redirect_to(my_group_path(group)) }
+        it { expect(response).to redirect_to(my_group_membership_path(group)) }
       end
 
       context "with invalid params" do

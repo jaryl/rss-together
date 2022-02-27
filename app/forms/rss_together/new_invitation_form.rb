@@ -6,6 +6,7 @@ module RssTogether
     MAX_GROUP_SIZE = 8
 
     validate :member_does_not_already_exist
+    validate :invitation_already_sent
     validate :within_maximum_group_size
     validate :invitation_is_valid
 
@@ -36,7 +37,13 @@ module RssTogether
 
     def member_does_not_already_exist
       existing_member = group.accounts.find_by(email: self.email)
+      existing_invitation = group.invitations.find_by(email: self.email)
       errors.add(:base, "#{existing_member.email} is already part of the group") if existing_member.present?
+    end
+
+    def invitation_already_sent
+      existing_invitation = group.invitations.find_by(email: self.email)
+      errors.add(:base, "#{existing_invitation.email} has already been invited") if existing_invitation.present?
     end
 
     def within_maximum_group_size

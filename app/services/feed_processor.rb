@@ -14,12 +14,12 @@ class FeedProcessor
 
       feed.items.build do |item|
         item.title = rss_item.title
-        item.content = rss_item.content_encoded || rss_item.description
+        item.content = rss_item.content
         item.link = rss_item.link
 
-        item.description = Nokogiri::HTML(rss_item.description || rss_item.content_encoded).text
-        item.author = rss_item.author || rss_item.dc_creator
-        item.published_at = rss_item.pubDate
+        item.description = rss_item.description
+        item.author = rss_item.author
+        item.published_at = rss_item.published_at
         item.guid = rss_item.guid
       end
     end
@@ -36,11 +36,12 @@ class FeedProcessor
   def feed
     return @feed if defined? @feed
 
-    @feed = RssTogether::Feed.find_by(link: raw_url) || RssTogether::Feed.find_or_initialize_by(link: rss_feed.channel.link)
+    @feed = RssTogether::Feed.find_by(link: raw_url) || RssTogether::Feed.find_or_initialize_by(link: rss_feed.link)
 
-    @feed.title = rss_feed.channel.title
-    @feed.description = rss_feed.channel.description
-    @feed.language = rss_feed.channel.language
+
+    @feed.title = rss_feed.title
+    @feed.description = rss_feed.description
+    @feed.language = rss_feed.language
 
     @feed
   end
@@ -53,7 +54,14 @@ class FeedProcessor
     return @rss_feed if defined? @rss_feed
 
     URI.open(raw_url) do |content|
-      @rss_feed = RSS::Parser.parse(content)
+      raw_feed = RSS::Parser.parse(content)
+
+      case raw_feed.feed_type
+      when "rss"
+        @rss_feed = RssFeed.new(raw_feed)
+      when "atom"
+        @rss_feed = AtomFeed.new(raw_feed)
+      end
     end
 
     @rss_feed

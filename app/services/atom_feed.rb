@@ -17,7 +17,7 @@ class AtomFeed < SimpleDelegator
     end
 
     def author
-      __getobj__.author.name.content || __getobj__.dc_creator
+      __getobj__.author&.name&.content || __getobj__.dc_creator
     end
 
     def published_at
@@ -44,10 +44,10 @@ class AtomFeed < SimpleDelegator
   end
 
   def description
-    __getobj__.subtitle.content
+    __getobj__.subtitle&.content
   end
 
   def language
-    nil
+    __getobj__.lang
   end
 end

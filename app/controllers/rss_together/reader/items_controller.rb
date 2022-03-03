@@ -23,7 +23,7 @@ module RssTogether
 
       def show
         # TODO: move into a presenter, display partials inline
-        @item = @group.items.find(params[:id])
+        @item = Item.find(params[:id])
         @bookmark = @item.bookmarks.find_by(account: current_account)
         @mark = @item.marks.find_by(account: current_account)
         @reaction = @item.reactions.find_by(membership: current_membership)
@@ -50,6 +50,8 @@ module RssTogether
 
           @next_cursor = construct_cursor(next_params)
         end
+
+        params.merge!(current_params)
       end
 
       def construct_cursor(params)

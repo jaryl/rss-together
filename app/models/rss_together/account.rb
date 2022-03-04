@@ -1,5 +1,9 @@
 module RssTogether
   class Account < ApplicationRecord
+    include Rodauth::Rails.model
+
+    enum :status, unverified: 1, verified: 2, closed: 3
+
     has_many :memberships
     has_many :groups, through: :memberships
     has_many :owned_groups, class_name: "Group", foreign_key: "owner_id", dependent: :destroy

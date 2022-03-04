@@ -22,7 +22,6 @@ Gem::Specification.new do |spec|
   end
 
   spec.add_dependency "rails", ">= 7.0.2"
-  spec.add_dependency "devise"
   spec.add_dependency "pg"
   spec.add_dependency "email_validator"
   spec.add_dependency "validate_url"

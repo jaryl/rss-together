@@ -12,6 +12,8 @@ module RssTogether
     it { is_expected.to have_many(:owned_groups) }
     it { is_expected.to have_many(:sent_invitations) }
 
+    it { is_expected.to validate_presence_of(:email) }
+
     it { expect(build(:account)).to be_valid }
     it { expect(build(:account, :invalid)).not_to be_valid }
   end

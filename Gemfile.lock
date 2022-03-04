@@ -5,6 +5,7 @@ PATH
       email_validator
       pg
       rails (>= 7.0.2)
+      rodauth-rails (~> 1.2)
       rss
       validate_url
 

@@ -15,6 +15,8 @@ gem "slim"
 gem "rss"
 # URL Validation for Rails
 gem "validate_url"
+# Rails integration for Rodauth authentication framework
+gem "rodauth-rails", "~> 1.2"
 
 group :development, :test do
   # Simple one-liner tests for common Rails functionality
@@ -29,5 +31,3 @@ group :development, :test do
   # A library for generating fake data such as names, addresses, and phone numbers
   gem "faker"
 end
-
-gem "rodauth-rails", "~> 1.2"

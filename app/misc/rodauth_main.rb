@@ -30,6 +30,8 @@ class RodauthMain < Rodauth::Rails::Auth
 
     enable :internal_request if Rails.env.test?
 
+    reset_password_email_last_sent_column nil if Rails.env.development?
+
     # Redirect back to originally requested location after authentication.
     # login_return_to_requested_location? true
     # two_factor_auth_return_to_requested_location? true # if using MFA

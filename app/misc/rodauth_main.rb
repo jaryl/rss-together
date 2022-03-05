@@ -6,6 +6,8 @@ class RodauthMain < Rodauth::Rails::Auth
       :reset_password, :change_password, :change_password_notify,
       :change_login, :verify_login_change, :close_account
 
+    login_route "sign_in"
+
     # See the Rodauth documentation for the list of available config options:
     # http://rodauth.jeremyevans.net/documentation.html
 
@@ -26,7 +28,7 @@ class RodauthMain < Rodauth::Rails::Auth
     # Set password when creating account instead of when verifying.
     verify_account_set_password? false
 
-    enable :internal_request
+    enable :internal_request if Rails.env.test?
 
     # Redirect back to originally requested location after authentication.
     # login_return_to_requested_location? true
@@ -39,7 +41,7 @@ class RodauthMain < Rodauth::Rails::Auth
     # delete_account_on_close? true
 
     # Redirect to the app from login and registration pages if already logged in.
-    # already_logged_in { redirect login_redirect }
+    already_logged_in { redirect login_redirect }
 
     # ==> Emails
     # Use a custom mailer for delivering authentication emails.
@@ -98,9 +100,11 @@ class RodauthMain < Rodauth::Rails::Auth
 
     # ==> Hooks
     # Validate custom fields in the create account form.
-    # before_create_account do
-    #   throw_error_status(422, "name", "must be present") if param("name").empty?
-    # end
+    before_create_account do
+      account[:created_at] = Time.current
+      account[:updated_at] = Time.current
+      # throw_error_status(422, "name", "must be present") if param("name").empty?
+    end
 
     # Perform additional actions after the account is created.
     # after_create_account do
@@ -114,13 +118,18 @@ class RodauthMain < Rodauth::Rails::Auth
 
     # ==> Redirects
     # Redirect to home page after logout.
-    logout_redirect "/"
+    logout_redirect "/sign_in"
+
+    login_redirect { rails_routes.reader_path }
+
+    require_login_redirect { login_path }
 
     # Redirect to wherever login redirects to after account verification.
     verify_account_redirect { login_redirect }
 
     # Redirect to login page after password reset.
     reset_password_redirect { login_path }
+    reset_password_email_sent_redirect { login_path }
 
     # ==> Deadlines
     # Change default deadlines for some actions.
@@ -129,6 +138,10 @@ class RodauthMain < Rodauth::Rails::Auth
     # verify_login_change_deadline_interval Hash[days: 2]
     # remember_deadline_interval Hash[days: 30]
 
+    login_label "Email"
+
+    create_account_route "sign_up"
+
     accounts_table :rss_together_accounts
     password_hash_table :rss_together_account_password_hashes
     reset_password_table :rss_together_account_password_reset_keys
@@ -136,6 +149,6 @@ class RodauthMain < Rodauth::Rails::Auth
     verify_login_change_table :rss_together_account_login_change_keys
     remember_table :rss_together_account_remember_keys
 
-    rails_account_model RssTogether::Account
+    rails_account_model { RssTogether::Account }
   end
 end

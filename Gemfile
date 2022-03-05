@@ -17,6 +17,8 @@ gem "rss"
 gem "validate_url"
 # Rails integration for Rodauth authentication framework
 gem "rodauth-rails", "~> 1.2"
+# Use ActiveRecord transactional callbacks outside of models, literally everywhere in your application
+gem "after_commit_everywhere"
 
 group :development, :test do
   # Simple one-liner tests for common Rails functionality
@@ -30,4 +32,7 @@ group :development, :test do
 
   # A library for generating fake data such as names, addresses, and phone numbers
   gem "faker"
+
+  # Detect non-atomic interactions within DB transactions
+  gem "isolator"
 end

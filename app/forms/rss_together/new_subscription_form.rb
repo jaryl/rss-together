@@ -4,6 +4,7 @@ module RssTogether
   class NewSubscriptionForm
     include ActiveModel::Model
     include ActiveModel::Validations
+    include AfterCommitEverywhere
 
     attr_accessor :url
     attr_reader :account, :group, :feed
@@ -22,7 +23,7 @@ module RssTogether
       ActiveRecord::Base.transaction do
         feed.save!
         subscription.save!
-        FeedProcessJob.perform_later(feed)
+        after_commit { FeedProcessJob.perform_later(feed) }
       end
 
       true

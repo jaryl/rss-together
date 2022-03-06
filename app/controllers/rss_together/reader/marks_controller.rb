@@ -13,7 +13,7 @@ module RssTogether
         end
 
         if @mark.save
-          redirect_to reader_group_item_mark_path(@group, @item)
+          redirect_to reader_group_item_mark_path(@group, @item), status: :see_other
         else
           render :show
         end

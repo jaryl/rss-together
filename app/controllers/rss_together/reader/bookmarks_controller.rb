@@ -10,7 +10,7 @@ module RssTogether
       def create
         @bookmark = current_account.bookmarks.find_or_initialize_by(item: @item)
         if @bookmark.save
-          redirect_to reader_group_item_bookmark_path(@group, @item)
+          redirect_to reader_group_item_bookmark_path(@group, @item), status: :see_other
         else
           render :show
         end

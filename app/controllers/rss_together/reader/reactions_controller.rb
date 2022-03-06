@@ -15,7 +15,7 @@ module RssTogether
         @reaction = current_membership.reactions.find_or_initialize_by(item: @item)
         @reaction.attributes = reaction_params
         if @reaction.save
-          redirect_to reader_group_item_reaction_path(@group, @item)
+          redirect_to reader_group_item_reaction_path(@group, @item), status: :see_other
         else
           render :show
         end

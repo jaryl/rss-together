@@ -11,7 +11,7 @@ module RssTogether
 
     def update
       if @membership.update(membership_params)
-        redirect_to my_group_membership_path(@group)
+        redirect_to my_group_membership_path(@group), status: :see_other
       else
         render :edit, status: :unprocessable_entity
       end

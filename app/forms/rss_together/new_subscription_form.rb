@@ -1,5 +1,3 @@
-require "validate_url"
-
 module RssTogether
   class NewSubscriptionForm
     include ActiveModel::Model

@@ -123,7 +123,9 @@ class RodauthMain < Rodauth::Rails::Auth
     logout_redirect "/sign_in"
 
     login_redirect { rails_routes.reader_path }
+    change_login_redirect { rails_routes.settings_email_path }
     change_password_redirect { change_password_path }
+    remember_redirect { remember_path }
 
     require_login_redirect { login_path }
 

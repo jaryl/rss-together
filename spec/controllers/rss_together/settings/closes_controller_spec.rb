@@ -1,12 +1,10 @@
 require 'rails_helper'
 
 module RssTogether
-  RSpec.describe DashboardsController, type: :controller do
+  RSpec.describe Settings::ClosesController, type: :controller do
     routes { Engine.routes }
 
-    let(:membership) { create(:membership) }
-    let(:group) { membership.group }
-    let(:account) { membership.account }
+    let(:account) { create(:account) }
 
     before { sign_in account }
 

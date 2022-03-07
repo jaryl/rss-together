@@ -1,6 +1,6 @@
 RssTogether::Engine.routes.draw do
   constraints Rodauth::Rails.authenticated do
-    root to: "dashboards#show"
+    root to: "reader#show"
 
     resource :reader, only: [:show], controller: "/rss_together/reader" do
       scope module: :reader do
@@ -19,7 +19,21 @@ RssTogether::Engine.routes.draw do
 
     resource :join, only: [:show, :create]
 
+    namespace :settings do
+      resource :email, only: [:show, :destroy]
+      resource :close, only: [:show]
+      # resource :password, only: [:show]
+    end
+
     namespace :my do
+      # resource :account, only: [:show] do
+      #   scope module: :accounts do
+      #     resource :email, only: [:show, :destroy]
+      #     resource :close, only: [:show]
+      #     resource :password, only: [:show]
+      #   end
+      # end
+
       resources :groups, only: [:index, :show, :new, :create, :edit, :update, :destroy] do
         scope module: :groups do
           resource :membership, only: [:show, :edit, :update, :destroy]

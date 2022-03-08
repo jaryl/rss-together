@@ -18,7 +18,7 @@ module RssTogether
         @group.save!
         current_account.groups << @group
       end
-      redirect_to group_path(@group), status: :see_other
+      redirect_to reader_path(group_id: @group.id), status: :see_other
     rescue ActiveRecord::RecordInvalid
       render :new, status: :unprocessable_entity
     end

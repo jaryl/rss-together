@@ -37,7 +37,7 @@ module RssTogether
       context "with valid params" do
         let(:params) { attributes_for(:group) }
         it { expect(assigns(:group)).to be_valid }
-        it { expect(response).to redirect_to(group_path(assigns(:group))) }
+        it { expect(response).to redirect_to(reader_path(group_id: assigns(:group).id)) }
       end
 
       context "with invalid params" do

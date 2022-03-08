@@ -23,13 +23,13 @@ module RssTogether
       context "with invalid token" do
         let(:token) { "some invalid token" }
         it { expect(assigns(:invitation)).not_to be_present }
-        it { expect(response).to redirect_to(my_groups_path) }
+        it { expect(response).to redirect_to(groups_path) }
       end
 
       context "with no token" do
         let(:token) { "" }
         it { expect(assigns(:invitation)).not_to be_present }
-        it { expect(response).to redirect_to(my_groups_path) }
+        it { expect(response).to redirect_to(groups_path) }
       end
     end
 
@@ -40,7 +40,7 @@ module RssTogether
         let(:params) { { token: invitation.token, display_name: Faker::Internet.username } }
         it { expect(assigns(:form).membership).to be_valid }
         it { expect(assigns(:form).errors).to be_empty }
-        it { expect(response).to redirect_to(my_groups_path) }
+        it { expect(response).to redirect_to(groups_path) }
       end
 
       context "with invalid params" do

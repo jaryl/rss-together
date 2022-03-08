@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 module RssTogether
-  RSpec.describe My::Groups::MembersController, type: :controller do
+  RSpec.describe Groups::MembersController, type: :controller do
     routes { Engine.routes }
 
     let(:membership) { create(:membership) }
@@ -21,7 +21,7 @@ module RssTogether
       before { delete :destroy, params: { group_id: group.id, id: account.id } }
 
       it { expect(assigns(:membership)).to be_destroyed }
-      it { expect(response).to redirect_to(my_group_members_path(group)) }
+      it { expect(response).to redirect_to(group_members_path(group)) }
     end
   end
 end

@@ -1,5 +1,5 @@
 module RssTogether
-  class My::GroupsController < ApplicationController
+  class GroupsController < ApplicationController
     before_action :prepare_group, only: [:show, :edit, :update, :destroy]
     def index
       @groups = current_account.groups
@@ -18,7 +18,7 @@ module RssTogether
         @group.save!
         current_account.groups << @group
       end
-      redirect_to my_group_path(@group), status: :see_other
+      redirect_to group_path(@group), status: :see_other
     rescue ActiveRecord::RecordInvalid
       render :new, status: :unprocessable_entity
     end
@@ -28,7 +28,7 @@ module RssTogether
 
     def update
       if @group.update(group_params)
-        redirect_to my_group_path(@group), status: :see_other
+        redirect_to group_path(@group), status: :see_other
       else
         render :edit, status: :unprocessable_entity
       end
@@ -36,7 +36,7 @@ module RssTogether
 
     def destroy
       @group.destroy
-      redirect_to my_groups_path, status: :see_other
+      redirect_to groups_path, status: :see_other
     end
 
     private

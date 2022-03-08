@@ -25,22 +25,12 @@ RssTogether::Engine.routes.draw do
       # resource :password, only: [:show]
     end
 
-    namespace :my do
-      # resource :account, only: [:show] do
-      #   scope module: :accounts do
-      #     resource :email, only: [:show, :destroy]
-      #     resource :close, only: [:show]
-      #     resource :password, only: [:show]
-      #   end
-      # end
-
-      resources :groups, only: [:index, :show, :new, :create, :edit, :update, :destroy] do
-        scope module: :groups do
-          resource :membership, only: [:show, :edit, :update, :destroy]
-          resources :invitations, only: [:index, :new, :create, :destroy]
-          resources :members, only: [:index, :destroy]
-          resources :subscriptions, only: [:index, :new, :create, :destroy]
-        end
+    resources :groups, only: [:index, :show, :new, :create, :edit, :update, :destroy] do
+      scope module: "groups" do
+        resource :membership, only: [:show, :edit, :update, :destroy]
+        resources :invitations, only: [:index, :new, :create, :destroy]
+        resources :members, only: [:index, :destroy]
+        resources :subscriptions, only: [:index, :new, :create, :destroy]
       end
     end
   end

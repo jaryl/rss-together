@@ -9,7 +9,7 @@ module RssTogether
     def create
       @form = AcceptInvitationForm.new(current_account, accept_invitation_form_params)
       if @form.submit
-        redirect_to my_groups_path, status: :see_other
+        redirect_to groups_path, status: :see_other
       else
         render :show, status: :unprocessable_entity
       end
@@ -19,7 +19,7 @@ module RssTogether
 
     def prepare_invitation
       @invitation = Invitation.find_by(token: params[:token])
-      redirect_to my_groups_path if @invitation.blank?
+      redirect_to groups_path if @invitation.blank?
     end
 
     def invitation_params

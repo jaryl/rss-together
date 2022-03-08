@@ -1,5 +1,5 @@
 module RssTogether
-  class My::Groups::InvitationsController < My::Groups::BaseController
+  class Groups::InvitationsController < Groups::BaseController
     before_action :prepare_group
 
     def index
@@ -13,7 +13,7 @@ module RssTogether
     def create
       @form = NewInvitationForm.new(@group, current_account, new_invitation_form_params)
       if @form.submit
-        redirect_to my_group_invitations_path(@group), status: :see_other
+        redirect_to group_invitations_path(@group), status: :see_other
       else
         render :new, status: :unprocessable_entity
       end
@@ -22,7 +22,7 @@ module RssTogether
     def destroy
       @invitation = @group.invitations.find(params[:id])
       @invitation.destroy
-      redirect_to my_group_invitations_path(@group), status: :see_other
+      redirect_to group_invitations_path(@group), status: :see_other
     end
 
     private

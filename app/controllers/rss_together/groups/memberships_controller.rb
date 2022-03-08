@@ -1,5 +1,5 @@
 module RssTogether
-  class My::Groups::MembershipsController < My::Groups::BaseController
+  class Groups::MembershipsController < Groups::BaseController
     before_action :prepare_group
     before_action :prepare_membership, only: [:show, :edit, :update, :destroy]
 
@@ -11,7 +11,7 @@ module RssTogether
 
     def update
       if @membership.update(membership_params)
-        redirect_to my_group_membership_path(@group), status: :see_other
+        redirect_to group_membership_path(@group), status: :see_other
       else
         render :edit, status: :unprocessable_entity
       end
@@ -19,7 +19,7 @@ module RssTogether
 
     def destroy
       @membership.destroy
-      redirect_to my_groups_path, status: :see_other
+      redirect_to groups_path, status: :see_other
     end
 
     private

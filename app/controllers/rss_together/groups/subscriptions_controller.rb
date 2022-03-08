@@ -1,5 +1,5 @@
 module RssTogether
-  class My::Groups::SubscriptionsController < My::Groups::BaseController
+  class Groups::SubscriptionsController < Groups::BaseController
     before_action :prepare_group
 
     def index
@@ -13,7 +13,7 @@ module RssTogether
     def create
       @form = NewSubscriptionForm.new(current_account, @group, new_subscription_form_params)
       if @form.submit
-        redirect_to my_group_subscriptions_path(@group), status: :see_other
+        redirect_to group_subscriptions_path(@group), status: :see_other
       else
         render :new, status: :unprocessable_entity
       end
@@ -22,7 +22,7 @@ module RssTogether
     def destroy
       @subscription = @group.subscriptions.find(params[:id])
       @subscription.destroy
-      redirect_to my_group_subscriptions_path(@group), status: :see_other
+      redirect_to group_subscriptions_path(@group), status: :see_other
     end
 
     private

@@ -1,5 +1,5 @@
 module RssTogether
-  class My::Groups::BaseController < ApplicationController
+  class Groups::BaseController < ApplicationController
     private
 
     def prepare_group

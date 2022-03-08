@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 module RssTogether
-  RSpec.describe My::GroupsController, type: :controller do
+  RSpec.describe GroupsController, type: :controller do
     routes { Engine.routes }
 
     let(:membership) { create(:membership) }
@@ -37,7 +37,7 @@ module RssTogether
       context "with valid params" do
         let(:params) { attributes_for(:group) }
         it { expect(assigns(:group)).to be_valid }
-        it { expect(response).to redirect_to(my_group_path(assigns(:group))) }
+        it { expect(response).to redirect_to(group_path(assigns(:group))) }
       end
 
       context "with invalid params" do
@@ -60,7 +60,7 @@ module RssTogether
       context "with valid params" do
         let(:params) { attributes_for(:group) }
         it { expect(assigns(:group)).to be_valid }
-        it { expect(response).to redirect_to(my_group_path(assigns(:group))) }
+        it { expect(response).to redirect_to(group_path(assigns(:group))) }
       end
 
       context "with invalid params" do
@@ -73,7 +73,7 @@ module RssTogether
     describe "DELETE #destroy" do
       before { delete :destroy, params: { id: group.id } }
       it { expect(assigns(:group)).to be_destroyed }
-      it { expect(response).to redirect_to(my_groups_path) }
+      it { expect(response).to redirect_to(groups_path) }
     end
   end
 end

@@ -9,6 +9,8 @@ module RssTogether
 
     validates :url, url: { no_local: true }, presence: true
 
+    validate :already_subscribed
+
     def initialize(account, group, params = {})
       @account = account
       @group = group
@@ -39,6 +41,11 @@ module RssTogether
 
     def subscription
       @subscription ||= group.subscriptions.build(feed: feed, account: account)
+    end
+
+    def already_subscribed
+      return if feed.new_record?
+      errors.add(:url, "is already subscribed") if group.subscriptions.exists?(feed: feed)
     end
   end
 end

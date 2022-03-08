@@ -8,7 +8,6 @@ module RssTogether
     let(:group) { membership.group }
     let(:account) { membership.account }
     let(:subscription) { create(:subscription, group: group) }
-    let(:feed) { subscription.feed }
 
     before { sign_in account }
 
@@ -31,8 +30,11 @@ module RssTogether
       before { post :create, params: { group_id: group.id, new_subscription_form: params } }
 
       context "with valid params" do
-        let(:params) { { url: Faker::Internet.url } }
-        it { expect(assigns(:form)).to be_valid }
+        let(:url) { Faker::Internet.url }
+        let(:params) { { url: url } }
+        let(:feed) { Feed.find_by(link: url) }
+
+        it { expect(assigns(:group).subscriptions.collect(&:feed)).to include(feed) }
         it { expect(response).to redirect_to(group_subscriptions_path(group)) }
       end
 

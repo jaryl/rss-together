@@ -13,6 +13,7 @@ module RssTogether
 
     it { is_expected.to have_many(:owned_groups) }
     it { is_expected.to have_many(:sent_invitations) }
+    it { is_expected.to have_many(:group_transfers) }
 
     it { is_expected.to validate_presence_of(:email) }
 

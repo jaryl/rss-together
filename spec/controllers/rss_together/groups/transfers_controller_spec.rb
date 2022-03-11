@@ -80,5 +80,27 @@ module RssTogether
       it { expect(assigns(:transfer)).to be_destroyed }
       it { expect(response).to redirect_to(group_transfer_path(group)) }
     end
+
+    describe "GET #pending" do
+      let(:account) { membership.account }
+      let(:perform_request) { get :pending, params: { group_id: group } }
+
+      before { create(:group_transfer, group: group, recipient: membership); perform_request }
+
+      it { expect(assigns(:transfer)).to be_present }
+      it { expect(assigns(:transfer).recipient).to eq(membership) }
+      it { expect(response).to render_template(:pending) }
+    end
+
+    describe "POST #accept" do
+      let(:account) { membership.account }
+      let(:perform_request) { post :accept, params: { group_id: group } }
+
+      before { create(:group_transfer, group: group, recipient: membership); perform_request }
+
+      it { expect(assigns(:transfer)).to be_destroyed }
+      it { expect(assigns(:group).owner).to eq(account) }
+      it { expect(response).to redirect_to(group_transfer_path(group)) }
+    end
   end
 end

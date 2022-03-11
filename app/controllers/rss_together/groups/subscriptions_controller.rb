@@ -3,7 +3,7 @@ module RssTogether
     before_action :prepare_group
 
     def index
-      @subscriptions = @group.subscriptions
+      @subscriptions = @group.subscriptions.includes([:feed])
     end
 
     def new

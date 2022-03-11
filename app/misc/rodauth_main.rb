@@ -115,7 +115,7 @@ class RodauthMain < Rodauth::Rails::Auth
       RssTogether::Profile.create!(
         account_id: account_id,
         display_name: param("display_name"),
-        timezone: param("timezone").blank? ? "Etc/UTC" : param("timezone"),
+        timezone: param("timezone").blank? ? "UTC" : param("timezone"),
       )
     end
 

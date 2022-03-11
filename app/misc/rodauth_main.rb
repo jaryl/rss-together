@@ -31,6 +31,7 @@ class RodauthMain < Rodauth::Rails::Auth
     enable :internal_request if Rails.env.test?
 
     reset_password_email_last_sent_column nil if Rails.env.development?
+    verify_account_email_last_sent_column nil if Rails.env.development?
 
     # Redirect back to originally requested location after authentication.
     # login_return_to_requested_location? true
@@ -105,18 +106,24 @@ class RodauthMain < Rodauth::Rails::Auth
     before_create_account do
       account[:created_at] = Time.current
       account[:updated_at] = Time.current
-      # throw_error_status(422, "name", "must be present") if param("name").empty?
+
+      throw_error_status(422, "display_name", "must be present") if param("display_name").empty?
+      throw_error_status(422, "timezone", "must be present") if param("timezone").empty?
     end
 
     # Perform additional actions after the account is created.
-    # after_create_account do
-    #   Profile.create!(account_id: account_id, name: param("name"))
-    # end
+    after_create_account do
+      RssTogether::Profile.create!(
+        account_id: account_id,
+        display_name: param("display_name"),
+        timezone: param("timezone"),
+      )
+    end
 
     # Do additional cleanup after the account is closed.
-    # after_close_account do
-    #   Profile.find_by!(account_id: account_id).destroy
-    # end
+    after_close_account do
+      RssTogether::Profile.find_by!(account_id: account_id).destroy
+    end
 
     # ==> Redirects
     # Redirect to home page after logout.
@@ -131,6 +138,8 @@ class RodauthMain < Rodauth::Rails::Auth
 
     # Redirect to wherever login redirects to after account verification.
     verify_account_redirect { login_redirect }
+    verify_account_email_sent_redirect { rails_routes.settings_email_path }
+    verify_account_email_recently_sent_redirect { rails_routes.settings_email_path }
 
     # Redirect to login page after password reset.
     reset_password_redirect { login_path }

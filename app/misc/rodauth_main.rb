@@ -108,7 +108,6 @@ class RodauthMain < Rodauth::Rails::Auth
       account[:updated_at] = Time.current
 
       throw_error_status(422, "display_name", "must be present") if param("display_name").empty?
-      throw_error_status(422, "timezone", "must be present") if param("timezone").empty?
     end
 
     # Perform additional actions after the account is created.
@@ -116,7 +115,7 @@ class RodauthMain < Rodauth::Rails::Auth
       RssTogether::Profile.create!(
         account_id: account_id,
         display_name: param("display_name"),
-        timezone: param("timezone"),
+        timezone: param("timezone").blank? ? "Etc/UTC" : param("timezone"),
       )
     end
 

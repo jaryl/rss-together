@@ -36,6 +36,7 @@ RssTogether::Engine.routes.draw do
 
     namespace :settings do
       resource :email, only: [:show, :destroy]
+      resource :profile, only: [:show, :edit, :update]
       resource :close, only: [:show]
       # resource :password, only: [:show]
     end

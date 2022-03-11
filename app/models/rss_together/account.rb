@@ -4,6 +4,7 @@ module RssTogether
 
     enum :status, unverified: 1, verified: 2, closed: 3
 
+    has_one :profile
     has_many :memberships
     has_many :groups, through: :memberships
     has_many :owned_groups, class_name: "Group", foreign_key: "owner_id", dependent: :destroy

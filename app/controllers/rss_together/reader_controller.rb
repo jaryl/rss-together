@@ -3,6 +3,7 @@ module RssTogether
     layout "reader"
 
     before_action :prepare_group, :prepare_item
+    before_action :redirect_if_not_onboarded, only: [:show, :bookmarks]
     before_action :redirect_if_no_group_id, only: [:show]
 
     def show
@@ -22,8 +23,13 @@ module RssTogether
       @item = Item.find(params[:item_id]) if params[:item_id].present?
     end
 
+    def redirect_if_not_onboarded
+      # redirect_to onboarding_path if currrent_account.groups.empty?
+    end
+
     def redirect_if_no_group_id
-      redirect_to reader_path(group_id: current_account.groups.first.id) if params[:group_id].blank?
+      return if params[:group_id].present?
+      redirect_to reader_path(group_id: current_account.groups.first.id) if current_account.groups.present?
     end
   end
 end

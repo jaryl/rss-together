@@ -8,6 +8,7 @@ FactoryBot.define do
 
     description { Faker::Lorem.sentences }
     author { Faker::Name.name }
+    published_at { Faker::Date.backward(days: 365 * 8) }
 
     trait :invalid do
       title { "" }

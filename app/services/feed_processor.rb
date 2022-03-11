@@ -54,7 +54,7 @@ class FeedProcessor
     return @rss_feed if defined? @rss_feed
 
     URI.open(raw_url, 'User-Agent' => 'RSS Together') do |content|
-      raw_feed = RSS::Parser.parse(content)
+      raw_feed = RSS::Parser.parse(content, validate: false)
 
       case raw_feed.feed_type
       when "rss"

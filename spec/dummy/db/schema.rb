@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_03_11_025039) do
+ActiveRecord::Schema[7.0].define(version: 2022_03_11_121825) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "plpgsql"
@@ -83,6 +83,15 @@ ActiveRecord::Schema[7.0].define(version: 2022_03_11_025039) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["link"], name: "index_rss_together_feeds_on_link", unique: true
+  end
+
+  create_table "rss_together_group_transfers", force: :cascade do |t|
+    t.bigint "group_id", null: false
+    t.bigint "recipient_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["group_id"], name: "index_rss_together_group_transfers_on_group_id"
+    t.index ["recipient_id"], name: "index_rss_together_group_transfers_on_recipient_id"
   end
 
   create_table "rss_together_groups", force: :cascade do |t|
@@ -183,6 +192,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_03_11_025039) do
   add_foreign_key "rss_together_bookmarks", "rss_together_items", column: "item_id"
   add_foreign_key "rss_together_comments", "rss_together_accounts", column: "account_id"
   add_foreign_key "rss_together_comments", "rss_together_items", column: "item_id"
+  add_foreign_key "rss_together_group_transfers", "rss_together_groups", column: "group_id"
+  add_foreign_key "rss_together_group_transfers", "rss_together_memberships", column: "recipient_id"
   add_foreign_key "rss_together_groups", "rss_together_accounts", column: "owner_id"
   add_foreign_key "rss_together_invitations", "rss_together_accounts", column: "sender_id"
   add_foreign_key "rss_together_invitations", "rss_together_groups", column: "group_id"

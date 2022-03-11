@@ -1,6 +1,7 @@
 module RssTogether
   class Group < ApplicationRecord
     belongs_to :owner, class_name: "Account"
+    has_one :group_transfer
     has_many :memberships, dependent: :destroy
     has_many :accounts, through: :memberships
     has_many :subscriptions, dependent: :destroy

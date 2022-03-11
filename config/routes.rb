@@ -47,6 +47,7 @@ RssTogether::Engine.routes.draw do
         resources :invitations, only: [:index, :new, :create, :destroy]
         resources :members, only: [:index, :destroy]
         resources :subscriptions, only: [:index, :new, :create, :destroy]
+        resource :transfer, only: [:show, :new, :create, :destroy]
       end
     end
   end

@@ -3,10 +3,7 @@ FactoryBot.define do
     account
 
     display_name { Faker::Internet.username }
-    timezone do
-      val = Faker::Address.time_zone
-      ActiveSupport::TimeZone::MAPPING.find { |k, v| v == val }.first
-    end
+    timezone { Faker::Address.time_zone }
 
     trait :invalid do
       account { nil }

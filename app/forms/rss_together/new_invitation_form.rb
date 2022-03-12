@@ -2,6 +2,7 @@ module RssTogether
   class NewInvitationForm
     include ActiveModel::Model
     include ActiveModel::Validations
+    include AfterCommitEverywhere
 
     MAX_GROUP_SIZE = 8
 
@@ -21,12 +22,17 @@ module RssTogether
     end
 
     def submit
-      if valid?
-        invitation.save
-      else
-        errors.merge!(invitation)
+      raise ActiveRecord::RecordInvalid if invalid?
+
+      ActiveRecord::Base.transaction do
+        invitation.save!
+        after_commit { GroupMailer.with(invitation: invitation).invitation_email.deliver_later }
       end
+
       invitation.persisted?
+    rescue ActiveRecord::RecordInvalid
+      errors.merge!(invitation)
+      false
     end
 
     def limit_reached?

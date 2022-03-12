@@ -3,14 +3,14 @@ module RssTogether
     include ActiveModel::Model
     include ActiveModel::Validations
 
-    validate :token_is_valid
     validate :membership_is_valid
 
-    attr_accessor :display_name, :token
-    attr_reader :account, :membership
+    attr_accessor :display_name
+    attr_reader :account, :invitation, :membership
 
-    def initialize(account, params = {})
+    def initialize(account, invitation, params = {})
       @account = account
+      @invitation = invitation
       super(params)
       @membership = Membership.new(membership_params)
     end
@@ -27,22 +27,12 @@ module RssTogether
     rescue ActiveRecord::RecordInvalid
       errors.merge!(membership)
       false
+    rescue ActiveRecord::StatementInvalid
+      errors.add(:base, "Something went wrong")
+      false
     end
 
     private
-
-    def invitation
-      # TODO: find should take into account expiry period
-      @invitation ||= Invitation.find_by(token: token)
-    end
-
-    def group
-      @group ||= invitation&.group
-    end
-
-    def token_is_valid
-      errors.add(:token, "is invalid") if invitation.blank?
-    end
 
     def membership_is_valid
       errors.add(:membership, "is invalid") if membership.invalid?
@@ -51,7 +41,7 @@ module RssTogether
     def membership_params
       {
         account: account,
-        group: group,
+        group: invitation.group,
         display_name: display_name,
       }
     end

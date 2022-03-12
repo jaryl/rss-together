@@ -1,4 +1,6 @@
 RssTogether::Engine.routes.draw do
+  resource :join, only: [:show]
+
   constraints Rodauth::Rails.authenticated do
     root to: "reader#show"
 
@@ -32,13 +34,11 @@ RssTogether::Engine.routes.draw do
 
     resources :bookmarks, only: [:index, :show, :destroy]
 
-    resource :join, only: [:show, :create]
-
     namespace :settings do
       resource :email, only: [:show, :destroy]
       resource :profile, only: [:show, :edit, :update]
       resource :close, only: [:show]
-      # resource :password, only: [:show]
+      resources :invitations, only: [:index, :show, :destroy]
     end
 
     resources :groups, only: [:index, :show, :new, :create, :edit, :update, :destroy] do

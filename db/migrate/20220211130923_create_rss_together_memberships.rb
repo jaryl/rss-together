@@ -7,6 +7,8 @@ class CreateRssTogetherMemberships < ActiveRecord::Migration[7.0]
       t.string :display_name, null: true
 
       t.timestamps
+
+      t.index [:group_id, :account_id], unique: true
     end
   end
 end

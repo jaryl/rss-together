@@ -148,6 +148,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_03_11_121825) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["account_id"], name: "index_rss_together_memberships_on_account_id"
+    t.index ["group_id", "account_id"], name: "index_rss_together_memberships_on_group_id_and_account_id", unique: true
     t.index ["group_id"], name: "index_rss_together_memberships_on_group_id"
   end
 

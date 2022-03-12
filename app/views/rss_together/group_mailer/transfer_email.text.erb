@@ -1,0 +1,6 @@
+Hey <%= @recipient.profile.display_name %>,
+
+The owner of the group "<%= @group.name %>" has initiated a transfer of its ownership to you.
+
+Please review and accept the request here:
+<%= rss_together.reader_url(group_id: @group.id, anchor: "group-transfer") %>

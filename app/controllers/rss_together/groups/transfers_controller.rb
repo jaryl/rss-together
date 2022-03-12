@@ -1,5 +1,7 @@
 module RssTogether
   class Groups::TransfersController < Groups::BaseController
+    include AfterCommitEverywhere
+
     before_action :prepare_group
     before_action :prepare_transfer, only: [:show, :new, :create, :destroy]
     before_action :prepare_membership, only: [:pending, :accept]
@@ -14,11 +16,13 @@ module RssTogether
 
     def create
       @transfer = @group.build_group_transfer(group_transfer_params)
-      if @transfer.save
-        redirect_to group_transfer_path(@group)
-      else
-        render :new
+      ActiveRecord::Base.transaction do
+        @transfer.save!
+        after_commit { GroupMailer.with(transfer: @transfer).transfer_email.deliver_later }
       end
+      redirect_to group_transfer_path(@group)
+    rescue ActiveRecord::RecordInvalid
+      render :new, status: :unprocessable_entity
     end
 
     def destroy

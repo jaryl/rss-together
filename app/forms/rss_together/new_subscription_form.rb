@@ -5,7 +5,7 @@ module RssTogether
     include AfterCommitEverywhere
 
     attr_accessor :url
-    attr_reader :account, :group, :feed
+    attr_reader :account, :group, :feed, :subscription
 
     validates :url, url: { no_local: true }, presence: true
 
@@ -15,6 +15,7 @@ module RssTogether
       @account = account
       @group = group
       super(params)
+      @subscription = group.subscriptions.build(feed: feed, account: account)
     end
 
     def submit
@@ -37,10 +38,6 @@ module RssTogether
     def feed
       return @feed if defined? @feed
       @feed = Feed.find_or_initialize_by(link: url)
-    end
-
-    def subscription
-      @subscription ||= group.subscriptions.build(feed: feed, account: account)
     end
 
     def already_subscribed

@@ -7,7 +7,7 @@ module RssTogether
     let(:membership) { create(:membership) }
     let(:group) { membership.group }
     let(:account) { membership.account }
-    let(:invitation) { create(:invitation, group: group) }
+    let(:invitation) { create(:invitation, group: group, sender: account) }
 
     before { sign_in account }
 

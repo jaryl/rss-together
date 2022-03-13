@@ -4,12 +4,15 @@ module RssTogether
     before_action :prepare_membership, only: [:show, :edit, :update, :destroy]
 
     def show
+      authorize @membership
     end
 
     def edit
+      authorize @membership
     end
 
     def update
+      authorize @membership
       if @membership.update(membership_params)
         redirect_to group_membership_path(@group), status: :see_other
       else
@@ -18,6 +21,7 @@ module RssTogether
     end
 
     def destroy
+      authorize @membership, :leave?
       @membership.destroy
       redirect_to groups_path, status: :see_other
     end

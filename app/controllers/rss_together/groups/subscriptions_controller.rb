@@ -3,15 +3,17 @@ module RssTogether
     before_action :prepare_group
 
     def index
-      @subscriptions = @group.subscriptions.includes([:feed])
+      @subscriptions = policy_scope(@group.subscriptions.includes([:feed]))
     end
 
     def new
       @form = NewSubscriptionForm.new(current_account, @group)
+      authorize @form.subscription
     end
 
     def create
       @form = NewSubscriptionForm.new(current_account, @group, new_subscription_form_params)
+      authorize @form.subscription
       if @form.submit
         redirect_to group_subscriptions_path(@group), status: :see_other
       else
@@ -21,6 +23,7 @@ module RssTogether
 
     def destroy
       @subscription = @group.subscriptions.find(params[:id])
+      authorize @subscription
       @subscription.destroy
       redirect_to group_subscriptions_path(@group), status: :see_other
     end

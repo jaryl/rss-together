@@ -3,15 +3,17 @@ module RssTogether
     before_action :prepare_group
 
     def index
-      @invitations = @group.invitations
+      @invitations = policy_scope(@group.invitations)
     end
 
     def new
       @form = NewInvitationForm.new(@group, current_account)
+      authorize @form.invitation
     end
 
     def create
       @form = NewInvitationForm.new(@group, current_account, new_invitation_form_params)
+      authorize @form.invitation
       if @form.submit
         redirect_to group_invitations_path(@group), status: :see_other
       else
@@ -21,6 +23,7 @@ module RssTogether
 
     def destroy
       @invitation = @group.invitations.find(params[:id])
+      authorize @invitation
       @invitation.destroy
       redirect_to group_invitations_path(@group), status: :see_other
     end

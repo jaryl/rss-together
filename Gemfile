@@ -19,6 +19,8 @@ gem "validate_url"
 gem "rodauth-rails", "~> 1.2"
 # Use ActiveRecord transactional callbacks outside of models, literally everywhere in your application
 gem "after_commit_everywhere"
+# Minimal authorization through OO design and pure Ruby classes
+gem "pundit"
 
 group :development, :test do
   # Simple one-liner tests for common Rails functionality

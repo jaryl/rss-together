@@ -4,38 +4,53 @@ module RssTogether
 
     before_action :prepare_group
     before_action :prepare_transfer, only: [:show, :new, :create, :destroy]
+    before_action :prepare_pending_transfer, only: [:pending, :accept]
     before_action :prepare_membership, only: [:pending, :accept]
     before_action :redirect_if_transfer_in_flight, only: [:new, :create]
 
     def show
+      if @transfer.present?
+        authorize @transfer
+      else
+        skip_authorization
+      end
     end
 
     def new
       @transfer = @group.build_group_transfer
+      authorize @transfer
     end
 
     def create
       @transfer = @group.build_group_transfer(group_transfer_params)
+      authorize @transfer
+
       ActiveRecord::Base.transaction do
         @transfer.save!
         after_commit { GroupMailer.with(transfer: @transfer).transfer_email.deliver_later }
       end
+
       redirect_to group_transfer_path(@group)
     rescue ActiveRecord::RecordInvalid
       render :new, status: :unprocessable_entity
     end
 
     def destroy
+      authorize @transfer
       @transfer.destroy
       redirect_to group_transfer_path(@group), status: :see_other
     end
 
     def pending
-      @transfer = @membership.group_transfer
+      if @transfer.present?
+        authorize @transfer
+      else
+        skip_authorization
+      end
     end
 
     def accept
-      @transfer = @membership.group_transfer
+      authorize @transfer
 
       ActiveRecord::Base.transaction do
         @transfer.destroy!
@@ -49,6 +64,10 @@ module RssTogether
 
     def prepare_transfer
       @transfer = @group.group_transfer
+    end
+
+    def prepare_pending_transfer
+      @transfer = @group.group_transfer if @group.group_transfer&.recipient&.account == current_account
     end
 
     def prepare_membership

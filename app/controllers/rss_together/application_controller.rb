@@ -4,6 +4,8 @@ module RssTogether
 
     # after_action :verify_authorized
 
+    private
+
     def pundit_user
       current_account
     end

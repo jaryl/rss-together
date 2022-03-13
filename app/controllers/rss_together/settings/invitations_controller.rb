@@ -1,17 +1,20 @@
 module RssTogether
-  class Settings::InvitationsController < ApplicationController
+  class Settings::InvitationsController < Settings::BaseController
     include InvitationTokens
 
     before_action :prepare_invitation, only: [:show, :destroy]
 
     def index
+      skip_policy_scope
     end
 
     def show
+      authorize @invitation, :accept?
       @form = AcceptInvitationForm.new(current_account, @invitation)
     end
 
     def destroy
+      authorize @invitation, :accept?
       @form = AcceptInvitationForm.new(current_account, @invitation, accept_invitation_form_params)
       if @form.submit
         @invitation_tokens.delete(@invitation.token)

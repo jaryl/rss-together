@@ -1,14 +1,17 @@
 module RssTogether
-  class Settings::ProfilesController < ApplicationController
+  class Settings::ProfilesController < Settings::BaseController
     before_action :prepare_profile
 
     def show
+      authorize @profile
     end
 
     def edit
+      authorize @profile
     end
 
     def update
+      authorize @profile
       if @profile.update(profile_params)
         redirect_to settings_profile_path
       else

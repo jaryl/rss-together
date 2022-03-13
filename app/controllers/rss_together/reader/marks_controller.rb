@@ -5,6 +5,11 @@ module RssTogether
 
       def show
         @mark = current_account.marks.find_by(item: @item)
+        if @mark.present?
+          authorize @mark
+        else
+          skip_authorization
+        end
       end
 
       def create

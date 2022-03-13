@@ -5,16 +5,23 @@ module RssTogether
       before_action :prepare_reaction, only: [:show, :destroy]
 
       def show
+        if @reaction.present?
+          authorize @reaction
+        else
+          skip_authorization
+        end
       end
 
       def edit
         @reaction = current_membership.reactions.find_or_initialize_by(item: @item)
+        authorize @reaction
       end
 
       def update
         @reaction = current_membership.reactions.find_or_initialize_by(item: @item)
-        @reaction.attributes = reaction_params
-        if @reaction.save
+        authorize @reaction
+
+        if @reaction.update(reaction_params)
           redirect_to reader_group_item_reaction_path(@group, @item), status: :see_other
         else
           render :show
@@ -23,7 +30,14 @@ module RssTogether
 
       def destroy
         @reaction = current_membership.reactions.find_by(item: @item)
-        @reaction.destroy if @reaction.present?
+
+        if @reaction.present?
+          authorize @reaction
+          @reaction.destroy
+        else
+          skip_authorization
+        end
+
         render :show
       end
 

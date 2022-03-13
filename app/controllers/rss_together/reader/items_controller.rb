@@ -19,11 +19,15 @@ module RssTogether
               .includes(:marks)
           end
         end
+
+        @items = policy_scope(@items)
       end
 
       def show
         # TODO: move into a presenter, display partials inline
         @item = Item.find(params[:id])
+        authorize @item
+
         @bookmark = @item.bookmarks.find_by(account: current_account)
         @mark = @item.marks.find_by(account: current_account)
         @reaction = @item.reactions.find_by(membership: current_membership)

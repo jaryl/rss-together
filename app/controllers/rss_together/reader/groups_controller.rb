@@ -2,7 +2,7 @@ module RssTogether
   module Reader
     class GroupsController < BaseController
       def index
-        @groups = current_account.groups
+        @groups = policy_scope(current_account.groups)
       end
     end
   end

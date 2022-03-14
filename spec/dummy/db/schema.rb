@@ -65,12 +65,12 @@ ActiveRecord::Schema[7.0].define(version: 2022_03_11_121825) do
   end
 
   create_table "rss_together_comments", force: :cascade do |t|
-    t.bigint "account_id", null: false
+    t.bigint "author_id", null: false
     t.bigint "item_id", null: false
     t.string "content", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["account_id"], name: "index_rss_together_comments_on_account_id"
+    t.index ["author_id"], name: "index_rss_together_comments_on_author_id"
     t.index ["item_id"], name: "index_rss_together_comments_on_item_id"
   end
 
@@ -131,14 +131,14 @@ ActiveRecord::Schema[7.0].define(version: 2022_03_11_121825) do
   end
 
   create_table "rss_together_marks", force: :cascade do |t|
-    t.bigint "account_id", null: false
+    t.bigint "reader_id", null: false
     t.bigint "item_id", null: false
     t.enum "source", default: "system", null: false, enum_type: "mark_source"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["account_id", "item_id"], name: "index_rss_together_marks_on_account_id_and_item_id", unique: true
-    t.index ["account_id"], name: "index_rss_together_marks_on_account_id"
     t.index ["item_id"], name: "index_rss_together_marks_on_item_id"
+    t.index ["reader_id", "item_id"], name: "index_rss_together_marks_on_reader_id_and_item_id", unique: true
+    t.index ["reader_id"], name: "index_rss_together_marks_on_reader_id"
   end
 
   create_table "rss_together_memberships", force: :cascade do |t|
@@ -191,16 +191,16 @@ ActiveRecord::Schema[7.0].define(version: 2022_03_11_121825) do
   add_foreign_key "rss_together_account_verification_keys", "rss_together_accounts", column: "id"
   add_foreign_key "rss_together_bookmarks", "rss_together_accounts", column: "account_id"
   add_foreign_key "rss_together_bookmarks", "rss_together_items", column: "item_id"
-  add_foreign_key "rss_together_comments", "rss_together_accounts", column: "account_id"
   add_foreign_key "rss_together_comments", "rss_together_items", column: "item_id"
+  add_foreign_key "rss_together_comments", "rss_together_memberships", column: "author_id"
   add_foreign_key "rss_together_group_transfers", "rss_together_groups", column: "group_id"
   add_foreign_key "rss_together_group_transfers", "rss_together_memberships", column: "recipient_id"
   add_foreign_key "rss_together_groups", "rss_together_accounts", column: "owner_id"
-  add_foreign_key "rss_together_invitations", "rss_together_accounts", column: "sender_id"
   add_foreign_key "rss_together_invitations", "rss_together_groups", column: "group_id"
+  add_foreign_key "rss_together_invitations", "rss_together_memberships", column: "sender_id"
   add_foreign_key "rss_together_items", "rss_together_feeds", column: "feed_id"
-  add_foreign_key "rss_together_marks", "rss_together_accounts", column: "account_id"
   add_foreign_key "rss_together_marks", "rss_together_items", column: "item_id"
+  add_foreign_key "rss_together_marks", "rss_together_memberships", column: "reader_id"
   add_foreign_key "rss_together_memberships", "rss_together_accounts", column: "account_id"
   add_foreign_key "rss_together_memberships", "rss_together_groups", column: "group_id"
   add_foreign_key "rss_together_profiles", "rss_together_accounts", column: "account_id"

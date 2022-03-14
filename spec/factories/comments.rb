@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :comment, class: "RssTogether::Comment" do
-    account
+    author factory: :membership
     item
 
     content { Faker::Lorem.sentences }

@@ -1,7 +1,8 @@
 module RssTogether
   class Invitation < ApplicationRecord
     belongs_to :group
-    belongs_to :sender, class_name: "Account"
+    belongs_to :sender, class_name: "Membership"
+    has_one :account, through: :sender
 
     validates :email, presence: true, email: { mode: :strict }
 

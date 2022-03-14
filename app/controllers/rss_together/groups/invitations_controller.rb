@@ -7,12 +7,12 @@ module RssTogether
     end
 
     def new
-      @form = NewInvitationForm.new(@group, current_account)
+      @form = NewInvitationForm.new(@group, current_membership)
       authorize @form.invitation
     end
 
     def create
-      @form = NewInvitationForm.new(@group, current_account, new_invitation_form_params)
+      @form = NewInvitationForm.new(@group, current_membership, new_invitation_form_params)
       authorize @form.invitation
       if @form.submit
         redirect_to group_invitations_path(@group), status: :see_other

@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :invitation, class: "RssTogether::Invitation" do
     group
-    sender factory: :account
+    sender factory: :membership
 
     email { Faker::Internet.safe_email }
 

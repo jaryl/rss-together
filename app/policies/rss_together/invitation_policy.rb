@@ -5,7 +5,7 @@ module RssTogether
     end
 
     def destroy?
-      record.sender == user
+      record.account == user
     end
 
     def accept?

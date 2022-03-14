@@ -1,10 +1,10 @@
 FactoryBot.define do
   factory :mark, class: "RssTogether::Mark" do
-    account
+    reader factory: :membership
     item
 
     trait :invalid do
-      account { nil }
+      reader { nil }
     end
   end
 end

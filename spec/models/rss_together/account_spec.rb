@@ -8,8 +8,6 @@ module RssTogether
     it { is_expected.to have_many(:groups).through(:memberships) }
 
     it { is_expected.to have_many(:bookmarks) }
-    it { is_expected.to have_many(:marks) }
-    it { is_expected.to have_many(:comments) }
 
     it { is_expected.to have_many(:owned_groups) }
     it { is_expected.to have_many(:sent_invitations) }

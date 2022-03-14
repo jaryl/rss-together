@@ -8,7 +8,7 @@ module RssTogether
       end
 
       def create
-        @mark = current_account.marks.find_or_initialize_by(item: @item) do |mark|
+        @mark = current_membership.marks.find_or_initialize_by(item: @item) do |mark|
           mark.source = :user
         end
         authorize @mark
@@ -28,7 +28,7 @@ module RssTogether
       private
 
       def prepare_mark
-        @mark = current_account.marks.find_by(item: @item)
+        @mark = current_membership.marks.find_by(item: @item)
         @mark.present? ? authorize(@mark) : skip_authorization
       end
     end

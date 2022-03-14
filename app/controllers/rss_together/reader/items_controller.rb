@@ -11,12 +11,9 @@ module RssTogether
           @items = @items.where("published_at < ?", query[:published_at]) if query[:published_at].present?
 
           if "unread" == query[:filter]
-            @items = @items.joins(:marks).includes(:marks)
+            @items = @items.includes(marks: :reader).where(marks: { reader_id: current_membership })
           else
-            @items = @items.left_joins(:marks)
-              .where("rss_together_marks.account_id = ? OR rss_together_marks.account_id IS NULL", current_account.id)
-              .references(:marks)
-              .includes(:marks)
+            @items = @items.includes(marks: :reader)
           end
         end
 
@@ -29,7 +26,7 @@ module RssTogether
         authorize @item
 
         @bookmark = @item.bookmarks.find_by(account: current_account)
-        @mark = @item.marks.find_by(account: current_account)
+        @mark = @item.marks.find_by(reader: current_membership)
         @reaction = @item.reactions.find_by(membership: current_membership)
       end
 

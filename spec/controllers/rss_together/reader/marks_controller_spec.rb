@@ -14,7 +14,7 @@ module RssTogether
 
     describe "GET #show" do
       context "with an existing mark" do
-        before { create(:mark, account: account, item: item) }
+        before { create(:mark, reader: membership, item: item) }
         before { get :show, params: { group_id: group.id, item_id: item.id } }
 
         it { expect(assigns(:mark)).to be_present }
@@ -31,7 +31,7 @@ module RssTogether
 
     describe "POST #create" do
       context "with an existing mark" do
-        before { create(:mark, account: account, item: item) }
+        before { create(:mark, reader: membership, item: item) }
         before { post :create, params: { group_id: group.id, item_id: item.id } }
 
         it { expect(assigns(:mark)).to be_persisted }
@@ -47,7 +47,7 @@ module RssTogether
     end
 
     describe "DELETE #destroy" do
-      before { create(:mark, account: account, item: item) }
+      before { create(:mark, reader: membership, item: item) }
       before { delete :destroy, params: { group_id: group.id, item_id: item.id } }
 
       it { expect(assigns(:mark)).to be_destroyed }

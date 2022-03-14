@@ -1,6 +1,6 @@
 Hey there,
 
-<%= @sender.profile.display_name %> has invited to their group.
+<%= @sender.display_name %> has invited to their group.
 
 Join the group with this link:
 <%= rss_together.join_url(token: @invitation.token) %>

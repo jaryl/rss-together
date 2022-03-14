@@ -42,7 +42,7 @@ module RssTogether
       {
         account: account,
         group: invitation.group,
-        display_name: display_name,
+        display_name_override: display_name,
       }
     end
   end

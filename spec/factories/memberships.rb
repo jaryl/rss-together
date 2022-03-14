@@ -3,11 +3,11 @@ FactoryBot.define do
     account
     group { association :group, owner: account }
 
-    display_name { Faker::Internet.username }
+    display_name_override { Faker::Internet.username }
 
     trait :invalid do
       account { nil }
-      display_name { "." }
+      display_name_override { "." }
     end
   end
 end

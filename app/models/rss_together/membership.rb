@@ -9,6 +9,10 @@ module RssTogether
     has_many :reactions
     has_many :comments, foreign_key: "author_id"
 
-    validates :display_name, length: { minimum: 2, maximum: 32 }, allow_blank: true
+    validates :display_name_override, length: { minimum: 2, maximum: 32 }, allow_blank: true
+
+    def display_name
+      display_name_override || account&.profile&.display_name
+    end
   end
 end

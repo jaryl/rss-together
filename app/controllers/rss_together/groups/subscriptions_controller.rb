@@ -1,6 +1,7 @@
 module RssTogether
   class Groups::SubscriptionsController < Groups::BaseController
     before_action :prepare_group
+    before_action :prepare_subscription, only: [:destroy]
 
     def index
       @subscriptions = policy_scope(@group.subscriptions.includes([:feed]))
@@ -22,8 +23,6 @@ module RssTogether
     end
 
     def destroy
-      @subscription = @group.subscriptions.find(params[:id])
-      authorize @subscription
       @subscription.destroy
       redirect_to group_subscriptions_path(@group), status: :see_other
     end
@@ -36,6 +35,11 @@ module RssTogether
 
     def new_subscription_form_params
       params.require(:new_subscription_form).permit(:url)
+    end
+
+    def prepare_subscription
+      @subscription = @group.subscriptions.find(params[:id])
+      authorize @subscription
     end
   end
 end

@@ -1,18 +1,15 @@
 module RssTogether
   class Groups::MembershipsController < Groups::BaseController
     before_action :prepare_group
-    before_action :prepare_membership, only: [:show, :edit, :update, :destroy]
+    before_action :prepare_membership, only: [:show, :edit, :update]
 
     def show
-      authorize @membership
     end
 
     def edit
-      authorize @membership
     end
 
     def update
-      authorize @membership
       if @membership.update(membership_params)
         redirect_to group_membership_path(@group), status: :see_other
       else
@@ -21,6 +18,7 @@ module RssTogether
     end
 
     def destroy
+      @membership = @group.memberships.find_by(account_id: current_account.id)
       authorize @membership, :leave?
       @membership.destroy
       redirect_to groups_path, status: :see_other
@@ -30,6 +28,7 @@ module RssTogether
 
     def prepare_membership
       @membership = @group.memberships.find_by(account_id: current_account.id)
+      authorize @membership
     end
 
     def membership_params

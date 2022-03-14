@@ -2,20 +2,16 @@ module RssTogether
   module Reader
     class MarksController < BaseController
       before_action :prepare_group, :prepare_item
+      before_action :prepare_mark, only: [:show, :destroy]
 
       def show
-        @mark = current_account.marks.find_by(item: @item)
-        if @mark.present?
-          authorize @mark
-        else
-          skip_authorization
-        end
       end
 
       def create
         @mark = current_account.marks.find_or_initialize_by(item: @item) do |mark|
           mark.source = :user
         end
+        authorize @mark
 
         if @mark.save
           redirect_to reader_group_item_mark_path(@group, @item), status: :see_other
@@ -25,9 +21,15 @@ module RssTogether
       end
 
       def destroy
-        @mark = Mark.find_by(account: current_account, item: @item)
         @mark.destroy if @mark.present?
-        render :show
+        render :show # TODO: redirect instead?
+      end
+
+      private
+
+      def prepare_mark
+        @mark = current_account.marks.find_by(item: @item)
+        @mark.present? ? authorize(@mark) : skip_authorization
       end
     end
   end

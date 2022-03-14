@@ -1,12 +1,12 @@
 module RssTogether
   class GroupsController < ApplicationController
     before_action :prepare_group, only: [:show, :edit, :update, :destroy]
+
     def index
       @groups = policy_scope(current_account.groups)
     end
 
     def show
-      authorize @group
     end
 
     def new
@@ -28,11 +28,9 @@ module RssTogether
     end
 
     def edit
-      authorize @group
     end
 
     def update
-      authorize @group
       if @group.update(group_params)
         redirect_to group_path(@group), status: :see_other
       else
@@ -41,7 +39,6 @@ module RssTogether
     end
 
     def destroy
-      authorize @group
       @group.destroy
       redirect_to groups_path, status: :see_other
     end
@@ -50,6 +47,7 @@ module RssTogether
 
     def prepare_group
       @group = current_account.groups.find(params[:id])
+      authorize @group
     end
 
     def group_params

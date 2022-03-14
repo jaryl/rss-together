@@ -28,5 +28,30 @@ module RssTogether
         it { is_expected.to render_template(:show) }
       end
     end
+
+    describe "POST #create" do
+      context "with an existing mark" do
+        before { create(:mark, account: account, item: item) }
+        before { post :create, params: { group_id: group.id, item_id: item.id } }
+
+        it { expect(assigns(:mark)).to be_persisted }
+        it { is_expected.to redirect_to(reader_group_item_mark_path(group, item)) }
+      end
+
+      context "with no existing mark" do
+        before { post :create, params: { group_id: group.id, item_id: item.id } }
+
+        it { expect(assigns(:mark)).to be_persisted }
+        it { is_expected.to redirect_to(reader_group_item_mark_path(group, item)) }
+      end
+    end
+
+    describe "DELETE #destroy" do
+      before { create(:mark, account: account, item: item) }
+      before { delete :destroy, params: { group_id: group.id, item_id: item.id } }
+
+      it { expect(assigns(:mark)).to be_destroyed }
+      it { is_expected.to render_template(:show) }
+    end
   end
 end

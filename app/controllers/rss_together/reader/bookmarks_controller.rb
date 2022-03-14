@@ -2,14 +2,9 @@ module RssTogether
   module Reader
     class BookmarksController < BaseController
       before_action :prepare_group, :prepare_item
+      before_action :prepare_bookmark, only: [:show, :destroy]
 
       def show
-        @bookmark = current_account.bookmarks.find_by(item: @item)
-        if @bookmark.present?
-          authorize @bookmark
-        else
-          skip_authorization
-        end
       end
 
       def create
@@ -24,16 +19,15 @@ module RssTogether
       end
 
       def destroy
-        @bookmark = Bookmark.find_by(account: current_account, item: @item)
-
-        if @bookmark.present?
-          authorize @bookmark
-          @bookmark.destroy
-        else
-          skip_authorization
-        end
-
+        @bookmark.destroy if @bookmark.present?
         render :show
+      end
+
+      private
+
+      def prepare_bookmark
+        @bookmark = current_account.bookmarks.find_by(item: @item)
+        @bookmark.present? ? authorize(@bookmark) : skip_authorization
       end
     end
   end

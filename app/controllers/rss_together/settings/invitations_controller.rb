@@ -9,12 +9,10 @@ module RssTogether
     end
 
     def show
-      authorize @invitation, :accept?
       @form = AcceptInvitationForm.new(current_account, @invitation)
     end
 
     def destroy
-      authorize @invitation, :accept?
       @form = AcceptInvitationForm.new(current_account, @invitation, accept_invitation_form_params)
       if @form.submit
         @invitation_tokens.delete(@invitation.token)
@@ -28,6 +26,7 @@ module RssTogether
 
     def prepare_invitation
       @invitation = @invitations.find(params[:id])
+      authorize @invitation, :accept?
     end
 
     def accept_invitation_form_params

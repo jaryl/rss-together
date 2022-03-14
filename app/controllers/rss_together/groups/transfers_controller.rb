@@ -9,21 +9,14 @@ module RssTogether
     before_action :redirect_if_transfer_in_flight, only: [:new, :create]
 
     def show
-      if @transfer.present?
-        authorize @transfer
-      else
-        skip_authorization
-      end
     end
 
     def new
       @transfer = @group.build_group_transfer
-      authorize @transfer
     end
 
     def create
       @transfer = @group.build_group_transfer(group_transfer_params)
-      authorize @transfer
 
       ActiveRecord::Base.transaction do
         @transfer.save!
@@ -36,22 +29,14 @@ module RssTogether
     end
 
     def destroy
-      authorize @transfer
       @transfer.destroy
       redirect_to group_transfer_path(@group), status: :see_other
     end
 
     def pending
-      if @transfer.present?
-        authorize @transfer
-      else
-        skip_authorization
-      end
     end
 
     def accept
-      authorize @transfer
-
       ActiveRecord::Base.transaction do
         @transfer.destroy!
         @group.update!(owner: current_account)
@@ -64,10 +49,12 @@ module RssTogether
 
     def prepare_transfer
       @transfer = @group.group_transfer
+      @transfer.present? ? authorize(@transfer) : skip_authorization
     end
 
     def prepare_pending_transfer
       @transfer = @group.group_transfer if @group.group_transfer&.recipient&.account == current_account
+      @transfer.present? ? authorize(@transfer) : skip_authorization
     end
 
     def prepare_membership

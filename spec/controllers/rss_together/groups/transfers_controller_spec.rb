@@ -4,9 +4,9 @@ module RssTogether
   RSpec.describe Groups::TransfersController, type: :controller do
     routes { Engine.routes }
 
-    let(:owner) { create(:account) }
-    let(:group) { create(:group, owner: owner) }
-    let(:owner_membership) { create(:membership, group: group, account: owner) }
+    let(:membership) { create(:membership) }
+    let(:owner) { membership.account }
+    let(:group) { membership.group }
     let(:other_membership) { create(:membership, group: group) }
 
     before { sign_in account }

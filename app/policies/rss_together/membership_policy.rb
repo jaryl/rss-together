@@ -15,7 +15,8 @@ module RssTogether
     end
 
     def leave?
-      record.group.owner != user
+      return false if record.group.owner == user
+      record.account == user
     end
 
     class Scope < Scope

@@ -1,17 +1,24 @@
 module RssTogether
   class BookmarksController < ApplicationController
+    before_action :prepare_bookmark, only: [:show, :destroy]
+
     def index
-      @bookmarks = current_account.bookmarks
+      @bookmarks = policy_scope(current_account.bookmarks)
     end
 
     def show
-      @bookmark = current_account.bookmarks.find(params[:id])
     end
 
     def destroy
-      @bookmark = current_account.bookmarks.find(params[:id])
       @bookmark.destroy
       redirect_to bookmarks_path, status: :see_other
+    end
+
+    private
+
+    def prepare_bookmark
+      @bookmark = current_account.bookmarks.find(params[:id])
+      authorize @bookmark
     end
   end
 end

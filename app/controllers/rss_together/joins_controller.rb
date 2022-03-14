@@ -2,6 +2,7 @@ module RssTogether
   class JoinsController < ApplicationController
     include InvitationTokens
 
+    before_action :skip_authorization
     before_action :prepare_invitation
 
     def show

@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :membership, class: "RssTogether::Membership" do
     account
-    group
+    group { association :group, owner: account }
 
     display_name { Faker::Internet.username }
 

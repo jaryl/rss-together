@@ -4,6 +4,8 @@ module RssTogether
   RSpec.describe GroupsController, type: :controller do
     routes { Engine.routes }
 
+    let(:account) { create(:account) }
+
     let(:membership) { create(:membership) }
     let(:group) { membership.group }
     let(:account) { membership.account }

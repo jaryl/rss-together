@@ -2,18 +2,22 @@ module RssTogether
   class GroupsController < ApplicationController
     before_action :prepare_group, only: [:show, :edit, :update, :destroy]
     def index
-      @groups = current_account.groups
+      @groups = policy_scope(current_account.groups)
     end
 
     def show
+      authorize @group
     end
 
     def new
       @group = current_account.groups.build
+      authorize @group
     end
 
     def create
       @group = current_account.groups.build(group_params)
+      authorize @group
+
       ActiveRecord::Base.transaction do
         @group.save!
         current_account.groups << @group
@@ -24,9 +28,11 @@ module RssTogether
     end
 
     def edit
+      authorize @group
     end
 
     def update
+      authorize @group
       if @group.update(group_params)
         redirect_to group_path(@group), status: :see_other
       else
@@ -35,6 +41,7 @@ module RssTogether
     end
 
     def destroy
+      authorize @group
       @group.destroy
       redirect_to groups_path, status: :see_other
     end

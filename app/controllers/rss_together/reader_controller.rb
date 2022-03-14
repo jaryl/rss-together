@@ -2,6 +2,8 @@ module RssTogether
   class ReaderController < ApplicationController
     layout "reader"
 
+    before_action :skip_authorization
+
     before_action :prepare_group, :prepare_item
     before_action :redirect_if_not_onboarded, only: [:show, :bookmarks]
     before_action :redirect_if_no_group_id, only: [:show]

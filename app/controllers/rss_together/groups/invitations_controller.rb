@@ -3,7 +3,7 @@ module RssTogether
     before_action :prepare_group
 
     def index
-      @invitations = policy_scope(@group.invitations)
+      @invitations = policy_scope(@group.invitations.includes(:sender))
     end
 
     def new

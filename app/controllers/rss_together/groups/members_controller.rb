@@ -4,7 +4,7 @@ module RssTogether
     before_action :prepare_membership, only: [:destroy]
 
     def index
-      @memberships = policy_scope(@group.memberships.includes(account: :profile))
+      @memberships = policy_scope(@group.memberships.includes(:account))
     end
 
     def destroy

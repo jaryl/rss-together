@@ -9,8 +9,7 @@ module RssTogether
     end
 
     def destroy?
-      update?
+      update? && user.owned_groups.length.zero?
     end
-
   end
 end

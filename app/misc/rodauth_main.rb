@@ -119,6 +119,11 @@ class RodauthMain < Rodauth::Rails::Auth
       )
     end
 
+    before_close_account do
+      # TODO: pundit check for account closure
+      # throw_error_status(422, "display_name", "must be present") if param("display_name").empty?
+    end
+
     # Do additional cleanup after the account is closed.
     after_close_account do
       RssTogether::Profile.find_by!(account_id: account_id).destroy

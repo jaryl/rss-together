@@ -3,7 +3,7 @@ module RssTogether
     before_action :prepare_group
 
     def index
-      @invitations = policy_scope(@group.invitations.includes(:sender))
+      @invitations = policy_scope(@group.invitations.includes(:sender, account: :profile))
     end
 
     def new
@@ -15,8 +15,10 @@ module RssTogether
       @form = NewInvitationForm.new(@group, current_membership, new_invitation_form_params)
       authorize @form.invitation
       if @form.submit
+        flash[:success] = "Your invitation will be sent shortly"
         redirect_to group_invitations_path(@group), status: :see_other
       else
+        flash.now[:error] = "We found some input errors, fix them and submit the form again"
         render :new, status: :unprocessable_entity
       end
     end
@@ -25,6 +27,8 @@ module RssTogether
       @invitation = @group.invitations.find(params[:id])
       authorize @invitation
       @invitation.destroy
+
+      flash[:notice] = "Invitation to #{@invitation.email} deleted"
       redirect_to group_invitations_path(@group), status: :see_other
     end
 

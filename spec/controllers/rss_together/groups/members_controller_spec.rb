@@ -29,8 +29,7 @@ module RssTogether
       context "with invalid params" do
         let(:perform_request) { delete :destroy, params: { group_id: group.id, id: membership.account.id } }
 
-        it { expect { perform_request }.to raise_error(Pundit::NotAuthorizedError) }
-        # TODO: change when handling for authorization errors is improved
+        it { expect(assigns(:membership)).not_to be_present }
       end
     end
   end

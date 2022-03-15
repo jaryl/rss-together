@@ -21,7 +21,7 @@ module RssTogether
       @membership = @group.memberships.find_by(account_id: current_account.id)
       authorize @membership, :leave?
       @membership.destroy
-      redirect_to groups_path, status: :see_other
+      render :destroy
     end
 
     private

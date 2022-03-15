@@ -16,9 +16,5 @@ module RssTogether
       return false if record.group.owner == user
       record.recipient.account == user
     end
-
-    def pending?
-      record.group.accounts.include?(user)
-    end
   end
 end

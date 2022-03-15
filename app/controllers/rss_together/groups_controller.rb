@@ -40,7 +40,7 @@ module RssTogether
 
     def destroy
       @group.destroy
-      redirect_to groups_path, status: :see_other
+      render :destroy
     end
 
     private

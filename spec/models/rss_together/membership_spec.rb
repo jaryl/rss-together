@@ -7,6 +7,7 @@ module RssTogether
 
     it { is_expected.to have_one(:group_transfer) }
 
+    it { is_expected.to have_many(:invitations) }
     it { is_expected.to have_many(:marks) }
     it { is_expected.to have_many(:reactions) }
     it { is_expected.to have_many(:comments) }

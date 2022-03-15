@@ -1,7 +1,7 @@
 module RssTogether
   module Reader
     class ItemsController < BaseController
-      ITEM_LIMIT = 10
+      ITEM_LIMIT = 20
 
       before_action :prepare_group
 

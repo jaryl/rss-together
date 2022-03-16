@@ -15,10 +15,10 @@ module RssTogether
       @form = NewInvitationForm.new(@group, current_membership, new_invitation_form_params)
       authorize @form.invitation
       if @form.submit
-        flash[:success] = "Your invitation will be sent shortly"
+        flash[:success] = "Invitation will be sent shortly"
         redirect_to group_invitations_path(@group), status: :see_other
       else
-        flash.now[:error] = "We found some input errors, fix them and submit the form again"
+        flash.now[:alert] = "We found some input errors, fix them and submit the form again"
         render :new, status: :unprocessable_entity
       end
     end
@@ -28,7 +28,7 @@ module RssTogether
       authorize @invitation
       @invitation.destroy
 
-      flash[:notice] = "Invitation to #{@invitation.email} deleted"
+      flash[:success] = "Invitation to #{@invitation.email} deleted"
       redirect_to group_invitations_path(@group), status: :see_other
     end
 

@@ -16,8 +16,10 @@ module RssTogether
       @form = AcceptInvitationForm.new(current_account, @invitation, accept_invitation_form_params)
       if @form.submit
         @invitation_tokens.delete(@invitation.token)
+        flash[:success] = "Joined the group"
         redirect_to settings_invitations_path, status: :see_other
       else
+        flash.now[:alert] = "We found some input errors, fix them and submit the form again"
         render :show, status: :unprocessable_entity
       end
     end

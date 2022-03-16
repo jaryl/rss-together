@@ -22,8 +22,11 @@ module RssTogether
         @group.save!
         current_account.groups << @group
       end
+
+      flash[:success] = "New group created"
       redirect_to reader_path(group_id: @group.id), status: :see_other
     rescue ActiveRecord::RecordInvalid
+      flash.now[:alert] = "We found some input errors, fix them and submit the form again"
       render :new, status: :unprocessable_entity
     end
 
@@ -32,14 +35,17 @@ module RssTogether
 
     def update
       if @group.update(group_params)
+        flash[:success] = "Changes saved"
         redirect_to group_path(@group), status: :see_other
       else
+        flash.now[:alert] = "We found some input errors, fix them and submit the form again"
         render :edit, status: :unprocessable_entity
       end
     end
 
     def destroy
       @group.destroy
+      flash[:success] = "Group deleted"
       render :destroy
     end
 

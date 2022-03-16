@@ -16,14 +16,17 @@ module RssTogether
       @form = NewSubscriptionForm.new(current_account, @group, new_subscription_form_params)
       authorize @form.subscription
       if @form.submit
+        flash[:success] = "Your new subscription will be available shortly"
         redirect_to group_subscriptions_path(@group), status: :see_other
       else
+        flash.now[:alert] = "We found some input errors, fix them and submit the form again"
         render :new, status: :unprocessable_entity
       end
     end
 
     def destroy
       @subscription.destroy
+      flash[:success] = "Subscription removed"
       redirect_to group_subscriptions_path(@group), status: :see_other
     end
 

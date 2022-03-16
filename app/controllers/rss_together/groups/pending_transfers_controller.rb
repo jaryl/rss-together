@@ -13,6 +13,7 @@ module RssTogether
         @group.update!(owner: current_account)
       end
 
+      flash[:success] = "You are now the owner of the group"
       redirect_to group_transfer_path(@group), status: :see_other
     end
 

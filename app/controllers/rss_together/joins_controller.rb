@@ -11,6 +11,7 @@ module RssTogether
       if rodauth.logged_in?
         redirect_to rss_together.reader_path(anchor: "invitations")
       else
+        session[rodauth.login_redirect_session_key] = request.fullpath
         render :show
       end
     end

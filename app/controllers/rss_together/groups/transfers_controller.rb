@@ -21,12 +21,15 @@ module RssTogether
         after_commit { GroupMailer.with(transfer: @transfer).transfer_email.deliver_later }
       end
 
+      flash[:success] = "Group transfer initiated"
       redirect_to group_transfer_path(@group)
     rescue ActiveRecord::RecordInvalid
+      flash.now[:alert] = "We found some input errors, fix them and submit the form again"
       render :new, status: :unprocessable_entity
     end
 
     def destroy
+      flash[:success] = "Group transfer cancelled"
       @transfer.destroy
       redirect_to group_transfer_path(@group), status: :see_other
     end

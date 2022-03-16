@@ -13,8 +13,8 @@ module RssTogether
     end
 
     def user_not_authorized
-      flash[:error] = "You are not authorized to perform this action."
-      # flash[:error] = t "#{policy_name}.#{exception.query}", scope: "pundit", default: :default
+      flash[:alert] = "You are not authorized to perform this action."
+      # flash[:alert] = t "#{policy_name}.#{exception.query}", scope: "pundit", default: :default
 
       respond_to do |format|
         format.html { redirect_to reader_path }

@@ -1,7 +1,7 @@
 module RssTogether
   class Groups::MembershipsController < Groups::BaseController
     before_action :prepare_group
-    before_action :prepare_membership, only: [:show, :edit, :update, :destroy]
+    before_action :prepare_membership, only: [:show, :edit, :update]
 
     def show
     end
@@ -20,7 +20,9 @@ module RssTogether
     end
 
     def destroy
+      @membership = @group.memberships.find_by(account: current_account)
       authorize @membership, :leave?
+
       @membership.destroy
 
       flash.now[:success] = "You have left the group"
@@ -30,7 +32,7 @@ module RssTogether
     private
 
     def prepare_membership
-      @membership = @group.memberships.find_by(account_id: current_account.id)
+      @membership = @group.memberships.find_by(account: current_account)
       authorize @membership
     end
 

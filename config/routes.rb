@@ -2,35 +2,18 @@ RssTogether::Engine.routes.draw do
   resource :join, only: [:show]
 
   constraints Rodauth::Rails.authenticated do
-    root to: "reader#show"
+    namespace :reader do
+      resources :bookmarks, only: [:index, :show]
 
-    resource :reader, only: [:show], controller: "reader" do # TODO: extract into representational controller
-      get :bookmarks # TODO: move into own controller
-
-      scope module: :reader do
-        resources :groups, only: [:index] do
-          resources :items, only: [:index, :show] do
-            resource :mark, only: [:show, :create, :destroy]
-            resource :bookmark, only: [:show, :create, :destroy] # TODO: move out of groups
-            resource :reaction, only: [:show, :edit, :update, :destroy]
-            # resources :comments, only: [:index, :new, :create, :edit ,:update, :destroy]
-          end
+      resources :groups, only: [:index] do
+        resources :items, only: [:index, :show] do
+          resource :mark, only: [:show, :create, :destroy]
+          resource :bookmark, only: [:show, :create, :destroy]
+          resource :reaction, only: [:show, :edit, :update, :destroy]
+          # resources :comments, only: [:index, :new, :create, :edit ,:update, :destroy]
         end
       end
     end
-
-    # namespace :reader do
-    #   resources :bookmarks, only: [:index, :show]
-
-    #   resources :groups, only: [:index] do
-    #     resources :items, only: [:index, :show] do
-    #       resource :mark, only: [:show, :create, :destroy]
-    #       resource :bookmark, only: [:show, :create, :destroy]
-    #       resource :reaction, only: [:show, :edit, :update, :destroy]
-    #       # resources :comments, only: [:index, :new, :create, :edit ,:update, :destroy]
-    #     end
-    #   end
-    # end
 
     resources :bookmarks, only: [:index, :show, :destroy]
 

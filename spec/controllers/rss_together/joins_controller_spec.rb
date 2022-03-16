@@ -17,7 +17,7 @@ module RssTogether
         before { sign_in(account); perform_request }
 
         it { expect(assigns(:invitation)).to be_present }
-        it { expect(response).to redirect_to(reader_path(anchor: "invitations")) }
+        it { expect(response).to redirect_to(main_app.root_path(anchor: "invitations")) }
       end
 
       context "not logged in" do

@@ -5,6 +5,7 @@ module RssTogether
 
     has_one :group_transfer, foreign_key: "recipient_id"
 
+    has_many :subscription_requests, dependent: :destroy
     has_many :invitations, foreign_key: "sender_id", dependent: :destroy
     has_many :marks, foreign_key: "reader_id", dependent: :destroy
     has_many :reactions, dependent: :destroy

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_03_11_121825) do
+ActiveRecord::Schema[7.0].define(version: 2022_03_17_122508) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "plpgsql"
@@ -18,6 +18,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_03_11_121825) do
   # Custom types defined in this database.
   # Note that some types may not work with other database engines. Be careful if changing database.
   create_enum "mark_source", ["system", "user"]
+  create_enum "subscription_request_status", ["pending", "success", "failure"]
 
   create_table "rss_together_account_login_change_keys", force: :cascade do |t|
     t.string "key", null: false
@@ -172,6 +173,16 @@ ActiveRecord::Schema[7.0].define(version: 2022_03_11_121825) do
     t.index ["membership_id"], name: "index_rss_together_reactions_on_membership_id"
   end
 
+  create_table "rss_together_subscription_requests", force: :cascade do |t|
+    t.bigint "membership_id", null: false
+    t.enum "status", default: "pending", null: false, enum_type: "subscription_request_status"
+    t.string "target_url", null: false
+    t.string "original_url", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["membership_id"], name: "index_rss_together_subscription_requests_on_membership_id"
+  end
+
   create_table "rss_together_subscriptions", force: :cascade do |t|
     t.bigint "group_id", null: false
     t.bigint "feed_id", null: false
@@ -206,6 +217,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_03_11_121825) do
   add_foreign_key "rss_together_profiles", "rss_together_accounts", column: "account_id"
   add_foreign_key "rss_together_reactions", "rss_together_items", column: "item_id"
   add_foreign_key "rss_together_reactions", "rss_together_memberships", column: "membership_id"
+  add_foreign_key "rss_together_subscription_requests", "rss_together_memberships", column: "membership_id"
   add_foreign_key "rss_together_subscriptions", "rss_together_accounts", column: "account_id"
   add_foreign_key "rss_together_subscriptions", "rss_together_feeds", column: "feed_id"
   add_foreign_key "rss_together_subscriptions", "rss_together_groups", column: "group_id"

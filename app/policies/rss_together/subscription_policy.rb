@@ -1,11 +1,7 @@
 module RssTogether
   class SubscriptionPolicy < ApplicationPolicy
-    def create?
-      record.group.accounts.include?(user)
-    end
-
     def destroy?
-      create?
+      record.group.accounts.include?(user)
     end
 
     class Scope < Scope

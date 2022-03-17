@@ -8,13 +8,13 @@ module RssTogether
     end
 
     def new
-      @form = NewSubscriptionForm.new(current_account, @group)
-      authorize @form.subscription
+      @form = NewSubscriptionRequestForm.new(current_membership)
+      authorize @form.subscription_request
     end
 
     def create
-      @form = NewSubscriptionForm.new(current_account, @group, new_subscription_form_params)
-      authorize @form.subscription
+      @form = NewSubscriptionRequestForm.new(current_membership, new_subscription_request_form_params)
+      authorize @form.subscription_request
       if @form.submit
         flash[:success] = "Your new subscription will be available shortly"
         redirect_to group_subscriptions_path(@group), status: :see_other
@@ -36,8 +36,8 @@ module RssTogether
       params.require(:subscription).permit(:feed_id)
     end
 
-    def new_subscription_form_params
-      params.require(:new_subscription_form).permit(:url)
+    def new_subscription_request_form_params
+      params.require(:new_subscription_request_form).permit(:target_url)
     end
 
     def prepare_subscription

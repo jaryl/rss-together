@@ -26,21 +26,21 @@ module RssTogether
     end
 
     describe "POST #create" do
-      before { allow_any_instance_of(FeedProcessor).to receive(:process!).and_return(true) }
-      before { post :create, params: { group_id: group.id, new_subscription_form: params } }
+      before { post :create, params: { group_id: group.id, new_subscription_request_form: params } }
 
       context "with valid params" do
         let(:url) { Faker::Internet.url }
-        let(:params) { { url: url } }
+        let(:params) { { target_url: url } }
         let(:feed) { Feed.find_by(link: url) }
 
-        it { expect(assigns(:group).subscriptions.collect(&:feed)).to include(feed) }
+        it { expect(assigns(:form).subscription_request).to be_persisted }
         it { expect(response).to redirect_to(group_subscriptions_path(group)) }
       end
 
       context "with invalid params" do
-        let(:params) { { url: "" } }
-        it { expect(assigns(:form)).not_to be_valid }
+        let(:params) { { target_url: "some-invalid-url" } }
+
+        it { expect(assigns(:form).subscription_request).not_to be_persisted }
         it { expect(response).to render_template(:new) }
       end
     end

@@ -8,6 +8,7 @@ module RssTogether
 
     belongs_to :membership
     has_one :group, through: :membership
+    has_one :account, through: :membership
 
     before_validation :preserve_original_url
 

@@ -26,7 +26,7 @@ module RssTogether
 
         after_commit do
           if resolved_feed.present?
-            # SubscriptionRequestToSubscriptionJob.perform_later(subscription_request: subscription_request, feed: resolved_feed)
+            SubscriptionRequestToSubscriptionJob.perform_later(subscription_request: subscription_request, feed: resolved_feed)
           else
             # ResolveNewFeedJob.perform_later(subscription_request: subscription_request)
           end

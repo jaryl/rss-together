@@ -70,6 +70,8 @@ RSpec.configure do |config|
 
   config.include RssTogether::Test::AuthHelpers, type: :controller
 
+  config.include ActiveJob::TestHelper, type: :job
+
   config.include FactoryBot::Syntax::Methods
 
   FactoryBot.definition_file_paths = %w(spec/factories)

@@ -1,5 +1,7 @@
 module RssTogether
   class SubscriptionRequestToSubscriptionJob < ApplicationJob
+    include AfterCommitEverywhere
+
     queue_as :default
 
     def perform(subscription_request:, feed:)
@@ -17,9 +19,9 @@ module RssTogether
 
         subscription_request.update!(status: :success)
 
-        # after_commit do
-        #   MarkSubscriptionItemsAsUnreadJob.perform_later(subscription: subscription)
-        # end
+        after_commit do
+          MarkSubscriptionItemsAsUnreadJob.perform_later(subscription: subscription)
+        end
       end
     end
   end

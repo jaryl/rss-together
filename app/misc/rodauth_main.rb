@@ -133,8 +133,8 @@ class RodauthMain < Rodauth::Rails::Auth
     # Redirect to home page after logout.
     logout_redirect "/sign_in"
 
-    login_redirect { rails_routes.reader_path }
-    change_login_redirect { rails_routes.settings_email_path }
+    login_redirect { rails_routes.root_path }
+    change_login_redirect { engine_routes.settings_email_path }
     change_password_redirect { change_password_path }
     remember_redirect { remember_path }
 
@@ -142,8 +142,8 @@ class RodauthMain < Rodauth::Rails::Auth
 
     # Redirect to wherever login redirects to after account verification.
     verify_account_redirect { login_redirect }
-    verify_account_email_sent_redirect { rails_routes.settings_email_path }
-    verify_account_email_recently_sent_redirect { rails_routes.settings_email_path }
+    verify_account_email_sent_redirect { engine_routes.settings_email_path }
+    verify_account_email_recently_sent_redirect { engine_routes.settings_email_path }
 
     # Redirect to login page after password reset.
     reset_password_redirect { login_path }

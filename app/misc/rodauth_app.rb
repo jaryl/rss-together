@@ -5,8 +5,7 @@ class RodauthApp < Rodauth::Rails::App
   # secondary configuration
   # configure RodauthAdmin, :admin
 
-  def rails_routes
-    # Override to use engine routes, was ::Rails.application.routes.url_helpers
+  def engine_routes
     RssTogether::Engine.routes.url_helpers
   end
 

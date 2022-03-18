@@ -187,6 +187,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_03_17_122508) do
     t.bigint "group_id", null: false
     t.bigint "feed_id", null: false
     t.bigint "account_id", null: false
+    t.datetime "processed_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["account_id"], name: "index_rss_together_subscriptions_on_account_id"

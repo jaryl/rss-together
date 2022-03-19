@@ -2,7 +2,11 @@ require 'rails_helper'
 
 module RssTogether
   RSpec.describe NewSubscriptionRequestForm, type: :form do
+    include ActiveJob::TestHelper
+
     subject { described_class.new(membership, params) }
+
+    after { clear_enqueued_jobs }
 
     let(:membership) { create(:membership) }
     let(:params) { {} }
@@ -15,11 +19,8 @@ module RssTogether
 
       it "enqueues ResolveNewFeedJob" do
         ActiveJob::Base.queue_adapter = :test
-
         subject.submit
-
-        # expect(ResolveNewFeedJob).to have_been_enqueued.with(subscription_request: subject.subscription_request)
-        expect(SubscriptionRequestToSubscriptionJob).not_to have_been_enqueued
+        expect(ResolveNewFeedJob).to have_been_enqueued.with(subscription_request: subject.subscription_request)
       end
     end
 
@@ -34,34 +35,23 @@ module RssTogether
       let(:feed) { create(:feed) }
       let(:params) { { target_url: feed.link } }
 
-      it "enqueues SubscriptionRequestToSubscriptionJob" do
-        ActiveJob::Base.queue_adapter = :test
-
+      it "creates a subscription immediately" do
         subject.submit
-
-        expect(SubscriptionRequestToSubscriptionJob).to have_been_enqueued.with(
-          subscription_request: subject.subscription_request,
-          feed: feed,
-        )
-        # expect(ResolveNewFeedJob).not_to have_been_enqueued
+        expect(feed.subscriptions).to be_present
+        expect(ResolveNewFeedJob).not_to have_been_enqueued
       end
     end
 
     context "when #resolved_feed is resolved through #similar_request" do
       let(:feed) { create(:feed) }
-      let(:similar_request) { create(:subscription_request, target_url: Faker::Internet.url, target_url: feed.link) }
+      let(:similar_request) { create(:subscription_request, target_url: feed.link) }
       let(:params) { { target_url: similar_request.original_url } }
 
-      it "enqueues SubscriptionRequestToSubscriptionJob" do
-        ActiveJob::Base.queue_adapter = :test
-
+      it "creates a subscription immediately" do
         subject.submit
 
-        expect(SubscriptionRequestToSubscriptionJob).to have_been_enqueued.with(
-          subscription_request: subject.subscription_request,
-          feed: feed,
-        )
-        # expect(ResolveNewFeedJob).not_to have_been_enqueued
+        expect(feed.subscriptions).to be_present
+        expect(ResolveNewFeedJob).not_to have_been_enqueued
       end
     end
 

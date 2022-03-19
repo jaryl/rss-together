@@ -21,15 +21,24 @@ module RssTogether
     def submit
       raise ActiveRecord::RecordInvalid if invalid?
 
+      if resolved_feed.blank?
+        subscription_request.save!
+        ResolveNewFeedJob.perform_later(subscription_request: subscription_request)
+        return true
+      end
+
       ActiveRecord::Base.transaction do
         subscription_request.save!
 
+        subscription = resolved_feed.subscriptions.create!({
+          group: subscription_request.group,
+          account: subscription_request.account,
+        })
+
+        subscription_request.update!(status: :success)
+
         after_commit do
-          if resolved_feed.present?
-            SubscriptionRequestToSubscriptionJob.perform_later(subscription_request: subscription_request, feed: resolved_feed)
-          else
-            # ResolveNewFeedJob.perform_later(subscription_request: subscription_request)
-          end
+          MarkSubscriptionItemsAsUnreadJob.perform_later(subscription: subscription)
         end
       end
 

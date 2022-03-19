@@ -19,7 +19,7 @@ module RssTogether
     private
 
     def preserve_original_url
-      self.original_url = target_url
+      self.original_url ||= target_url
     end
   end
 end

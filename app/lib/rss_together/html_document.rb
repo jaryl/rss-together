@@ -12,7 +12,18 @@ module RssTogether
     end
 
     def link_to_feed
-      document.css("link[type='application/rss+xml']").map{ |link| link[:href] }.first
+      @link_to_feed ||= [
+        document.css("link[type='application/atom+xml']").map{ |link| link[:href] }.first,
+        document.css("link[type='application/rss+xml']").map{ |link| link[:href] }.first,
+      ].reject(&:blank?).first
+    end
+
+    def atom?
+      false
+    end
+
+    def rss?
+      false
     end
   end
 end

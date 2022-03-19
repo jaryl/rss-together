@@ -20,8 +20,12 @@ module RssTogether
       probe = UrlProbe.from(url: subscription_request.target_url)
       if probe.atom? || probe.rss?
         process_feed_directly!(subscription_request: subscription_request, document: probe.document)
-      elsif link_to_feed = probe.link_to_feed
-        follow_link_to_feed!(subscription_request: subscription_request, follows: follows)
+      elsif probe.link_to_feed.present?
+        follow_link_to_feed!(
+          subscription_request: subscription_request,
+          link: probe.link_to_feed,
+          follows: follows
+        )
       else
         error_on_no_feed_found!(subscription_request: subscription_request)
       end
@@ -75,7 +79,9 @@ module RssTogether
       end
     end
 
-    def follow_link_to_feed!(subscription_request:, follows:)
+    def follow_link_to_feed!(subscription_request:, link:, follows:)
+      resolved_url = URI(link).host.nil? ? URI.join(subscription_request.target_url, link) : link
+
       ActiveRecord::Base.transaction do
         subscription_request.update!(target_url: resolved_url)
 

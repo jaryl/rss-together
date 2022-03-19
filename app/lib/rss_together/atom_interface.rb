@@ -30,7 +30,7 @@ module RssTogether
           content: content.blank? ? summary : content,
           link: entry.at_xpath("link")["href"],
           description: strip_tags([summary, content].reject(&:blank?).first)&.strip&.truncate(140),
-          author: entry.at_xpath("author/name").text,
+          author: entry.at_xpath("author/name")&.text,
           published_at: DateTime.parse(entry.at_xpath("published").text),
           guid: entry.at_xpath("id").text,
           updated_at: DateTime.parse(entry.at_xpath("updated").text),

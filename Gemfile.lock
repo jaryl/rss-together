@@ -3,6 +3,9 @@ PATH
   specs:
     rss_together (0.1.0)
       email_validator
+      faraday
+      faraday-follow_redirects
+      faraday-retry
       pg
       pundit
       rails (>= 7.0.2)
@@ -103,6 +106,13 @@ GEM
       railties (>= 5.0.0)
     faker (2.20.0)
       i18n (>= 1.8.11, < 2)
+    faraday (2.2.0)
+      faraday-net_http (~> 2.0)
+      ruby2_keywords (>= 0.0.4)
+    faraday-follow_redirects (0.2.0)
+      faraday (>= 2, < 3)
+    faraday-net_http (2.0.1)
+    faraday-retry (1.0.3)
     globalid (1.0.0)
       activesupport (>= 5.0)
     i18n (1.10.0)
@@ -210,6 +220,7 @@ GEM
     rss (0.2.9)
       rexml
     ruby-next-core (0.14.1)
+    ruby2_keywords (0.0.5)
     sequel (5.54.0)
     sequel-activerecord_connection (1.2.8)
       activerecord (>= 4.2, < 8)
@@ -256,6 +267,9 @@ DEPENDENCIES
   after_commit_everywhere
   factory_bot_rails
   faker
+  faraday
+  faraday-follow_redirects
+  faraday-retry
   isolator
   puma (~> 5.2)
   pundit

@@ -9,7 +9,7 @@ gem "sprockets-rails"
 # Start debugger with binding.b [https://github.com/ruby/debug]
 # gem "debug", ">= 1.0.0"
 
-#  Slim is a template language whose goal is to reduce the syntax to the essential parts without becoming cryptic.
+#  Slim is a template language whose goal is to reduce the syntax to the essential parts without becoming cryptic
 gem "slim"
 # RSS reading and writing
 gem "rss"
@@ -21,6 +21,12 @@ gem "rodauth-rails", "~> 1.2"
 gem "after_commit_everywhere"
 # Minimal authorization through OO design and pure Ruby classes
 gem "pundit"
+# Simple, but flexible HTTP client library, with support for multiple backends
+gem "faraday"
+# Catches exceptions and retries each request a limited number of times
+gem "faraday-retry"
+# Faraday 2.x compatible extraction of FaradayMiddleware::FollowRedirects
+gem "faraday-follow_redirects"
 
 group :development, :test do
   # Simple one-liner tests for common Rails functionality

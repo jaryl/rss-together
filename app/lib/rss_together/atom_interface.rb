@@ -18,6 +18,9 @@ module RssTogether
         language: document.at_xpath("/").root["lang"],
         updated_at: DateTime.parse(document.at_xpath("//updated").text),
       })
+
+    rescue StandardError => e
+      raise AtomDocumentParsingError, e.message
     end
 
     def items
@@ -37,6 +40,9 @@ module RssTogether
           categories: entry.xpath("category").collect { |e| e["label"] || e["term"] },
         })
       end
+
+    rescue StandardError => e
+      raise AtomDocumentParsingError, e.message
     end
   end
 end

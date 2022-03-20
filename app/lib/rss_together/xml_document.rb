@@ -11,7 +11,7 @@ module RssTogether
       elsif document.root.name == "rss"
         RssInterface.new(xml_document)
       else
-        NullInterace.new(xml_document)
+        NullInterface.new(xml_document)
       end
     end
 

@@ -9,5 +9,13 @@ FactoryBot.define do
       link { "" }
       description { "" }
     end
+
+    trait :enabled do
+      enabled { true }
+    end
+
+    trait :disabled do
+      enabled { false }
+    end
   end
 end

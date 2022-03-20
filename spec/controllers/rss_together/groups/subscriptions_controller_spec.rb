@@ -26,6 +26,8 @@ module RssTogether
     end
 
     describe "POST #create" do
+      before { allow(ResolveNewFeedJob).to receive(:perform_later) }
+
       before { post :create, params: { group_id: group.id, new_subscription_request_form: params } }
 
       context "with valid params" do

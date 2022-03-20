@@ -16,6 +16,8 @@ module RssTogether
         document.css("link[type='application/atom+xml']").map{ |link| link[:href] }.first,
         document.css("link[type='application/rss+xml']").map{ |link| link[:href] }.first,
       ].reject(&:blank?).first
+    rescue StandardError => e
+      raise HtmlDocumentParsingError, e.message
     end
 
     def atom?

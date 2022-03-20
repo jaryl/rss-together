@@ -1,21 +1,40 @@
 module RssTogether
-  class NoFeedFoundError < Error; end
-
   class ResolveNewFeedJob < ApplicationJob
     include AfterCommitEverywhere
 
-    MAX_FOLLOWS = 3
-
-    discard_on NoFeedFoundError do |job, error|
-      # TODO: report error
-    end
-
     queue_as :default
 
+    MAX_LINKS_TO_FOLLOW = 3
+
+    attr_reader :subscription_request
+
+    discard_on NoFeedAtTargetUrlError do |job, error|
+      job.fail_with_feedback(
+        message: "No RSS or Atom feed was found at this URL",
+        error: error,
+      )
+    end
+
+    discard_on DocumentParsingError do |job, error|
+      job.fail_with_feedback(
+        message: "There was a problem processing the content at this URL",
+        error: error,
+      )
+    end
+
+    discard_on Faraday::Error do |job, error|
+      job.fail_with_feedback(
+        message: "Encountered a server error at this URL",
+        error: error,
+      )
+    end
+
     def perform(subscription_request:, follows: 0)
+      @subscription_request = subscription_request
+
       return unless subscription_request.pending?
 
-      error_on_no_feed_found!(subscription_request: subscription_request) if follows > MAX_FOLLOWS
+      raise NoFeedAtTargetUrlError if follows + 1 > MAX_LINKS_TO_FOLLOW
 
       probe = UrlProbe.from(url: subscription_request.target_url)
       if probe.atom? || probe.rss?
@@ -27,68 +46,38 @@ module RssTogether
           follows: follows
         )
       else
-        error_on_no_feed_found!(subscription_request: subscription_request)
+        raise NoFeedAtTargetUrlError
+      end
+    end
+
+    def fail_with_feedback(message:, error:)
+      ActiveRecord::Base.transaction do
+        subscription_request.update!(status: :failure)
+        # TODO: create resource feedback
+        # ResourceFeedback.create!(resource: subscription_request, message: message)
       end
     end
 
     private
 
-    def error_on_no_feed_found!(subscription_request:)
-      ActiveRecord::Base.transaction do
-        subscription_request.update!(status: :failure)
-        # TODO: create resource feedback
-
-        after_commit do
-          raise NoFeedFoundError
-        end
-      end
-    end
-
     def process_feed_directly!(subscription_request:, document:)
-      feed = Feed.find_or_initialize_by(link: subscription_request.target_url) do |f|
-        f.title = document.feed.title
-        f.description = document.feed.description
-        f.language = document.feed.language
-      end
-
-      document.items.each do |item|
-        feed.items.build({
-          title: item.title,
-          content: item.content,
-          link: item.link,
-          description: item.description,
-          author: item.author,
-          published_at: item.published_at,
-          guid: item.guid,
-        })
-      end
-
       ActiveRecord::Base.transaction do
-        feed.save!
+        ProcessFeedAndItemsService.call(
+          target_url: subscription_request.target_url,
+          document: document,
+        ) => { feed: }
 
-        subscription = feed.subscriptions.create!({
-          group: subscription_request.group,
-          account: subscription_request.account,
-        })
-
-        subscription_request.update!(status: :success)
-
-        after_commit do
-          MarkSubscriptionItemsAsUnreadJob.perform_later(subscription: subscription)
-        end
+        CompleteSubscriptionRequestWithFeedService.call(
+          subscription_request: subscription_request,
+          feed: feed,
+        ) => { subscription: }
       end
     end
 
     def follow_link_to_feed!(subscription_request:, link:, follows:)
       resolved_url = URI(link).host.nil? ? URI.join(subscription_request.target_url, link) : link
-
-      ActiveRecord::Base.transaction do
-        subscription_request.update!(target_url: resolved_url)
-
-        after_commit do
-          ResolveNewFeedJob.perform_later(subscription_request: subscription_request, follows: follows + 1)
-        end
-      end
+      subscription_request.update!(target_url: resolved_url)
+      ResolveNewFeedJob.perform_later(subscription_request: subscription_request, follows: follows + 1)
     end
   end
 end

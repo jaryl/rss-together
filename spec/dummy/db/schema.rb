@@ -81,6 +81,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_03_17_122508) do
     t.string "description"
     t.string "language"
     t.datetime "processed_at"
+    t.boolean "enabled", default: true, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["link"], name: "index_rss_together_feeds_on_link", unique: true

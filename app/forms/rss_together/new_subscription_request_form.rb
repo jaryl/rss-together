@@ -30,16 +30,10 @@ module RssTogether
       ActiveRecord::Base.transaction do
         subscription_request.save!
 
-        subscription = resolved_feed.subscriptions.create!({
-          group: subscription_request.group,
-          account: subscription_request.account,
-        })
-
-        subscription_request.update!(status: :success)
-
-        after_commit do
-          MarkSubscriptionItemsAsUnreadJob.perform_later(subscription: subscription)
-        end
+        CompleteSubscriptionRequestWithFeedService.call(
+          subscription_request: subscription_request,
+          feed: resolved_feed,
+        ) => { subscription: }
       end
 
       true

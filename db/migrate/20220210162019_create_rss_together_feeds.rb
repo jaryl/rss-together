@@ -8,6 +8,7 @@ class CreateRssTogetherFeeds < ActiveRecord::Migration[7.0]
       t.string :language, null: true
 
       t.datetime :processed_at, null: true
+      t.boolean :enabled, null: false, default: true
 
       t.timestamps
 

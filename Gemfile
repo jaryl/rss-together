@@ -43,4 +43,11 @@ group :development, :test do
 
   # Detect non-atomic interactions within DB transactions
   gem "isolator"
+
+
+end
+
+group :test do
+  # Library for stubbing and setting expectations on HTTP requests in Ruby
+  gem "webmock"
 end

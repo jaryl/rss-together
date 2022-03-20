@@ -18,6 +18,8 @@ module RssTogether
         language: "",
         updated_at: DateTime.parse(document.at_xpath("//channel/lastBuildDate").text),
       })
+    rescue StandardError => e
+      raise RssDocumentParsingError, e.message
     end
 
     def items
@@ -40,6 +42,8 @@ module RssTogether
           categories: item.xpath("category").collect(&:text),
         })
       end
+    rescue StandardError => e
+      raise RssDocumentParsingError, e.message
     end
   end
 end

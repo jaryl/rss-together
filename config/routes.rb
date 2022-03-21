@@ -21,7 +21,10 @@ RssTogether::Engine.routes.draw do
       resource :email, only: [:show, :destroy]
       resource :profile, only: [:show, :edit, :update]
       resource :close, only: [:show]
-      resources :invitations, only: [:index, :show, :destroy]
+      resources :invitations, only: [:index, :show, :destroy] do
+        # post :accept
+        # post :reject
+      end
     end
 
     resources :groups, only: [:index, :show, :new, :create, :edit, :update, :destroy] do
@@ -36,4 +39,12 @@ RssTogether::Engine.routes.draw do
       end
     end
   end
+
+  # constraints Rodauth::Rails.authenticated(:admin) do
+  #   resources :profiles, only: [:index, :show]
+  #   resources :groups, only: [:index, :show]
+  #   resources :feeds, only: [:index, :show] do
+  #     post :toggle
+  #   end
+  # end
 end

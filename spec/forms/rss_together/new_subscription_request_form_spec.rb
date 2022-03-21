@@ -65,6 +65,16 @@ module RssTogether
 
         it { is_expected.not_to be_valid }
       end
+
+      describe "#already_in_flight" do
+        let(:target_url) { Faker::Internet.url }
+        let(:feed) { create(:feed, link: target_url) }
+        let(:params) { { target_url: target_url } }
+
+        before { create(:subscription_request, group: membership.group, target_url: target_url) }
+
+        it { is_expected.not_to be_valid }
+      end
     end
   end
 end

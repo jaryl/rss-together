@@ -3,7 +3,8 @@ module RssTogether
     before_action :prepare_group, only: [:show, :edit, :update, :destroy]
 
     def index
-      @groups = policy_scope(current_account.groups)
+      @memberships = policy_scope(current_account.memberships.includes(:group))
+      @groups = @memberships.collect(&:group)
     end
 
     def show

@@ -13,6 +13,7 @@ module RssTogether
         subscription.group.memberships.each do |membership|
           items_payload = items.map { |item| { reader_id: membership.id, item_id: item.id } }
           membership.marks.insert_all(items_payload)
+          Membership.reset_counters(membership.id, :marks)
         end
 
         subscription.update!(processed_at: Time.current)

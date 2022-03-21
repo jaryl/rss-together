@@ -147,6 +147,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_03_17_122508) do
     t.bigint "account_id", null: false
     t.bigint "group_id", null: false
     t.string "display_name_override"
+    t.integer "unread_count", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["account_id"], name: "index_rss_together_memberships_on_account_id"

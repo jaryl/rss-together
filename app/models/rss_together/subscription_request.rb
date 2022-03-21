@@ -14,7 +14,7 @@ module RssTogether
 
     validates :target_url, url: { no_local: true }, presence: true
 
-    validates :target_url, uniqueness: { scope: :membership_id }
+    validates :target_url, uniqueness: { scope: :membership_id } # TODO: limit uniqueness only to pending requests
 
     private
 

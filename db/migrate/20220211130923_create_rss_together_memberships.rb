@@ -6,6 +6,8 @@ class CreateRssTogetherMemberships < ActiveRecord::Migration[7.0]
 
       t.string :display_name_override, null: true
 
+      t.integer :unread_count, null: false, default: 0
+
       t.timestamps
 
       t.index [:group_id, :account_id], unique: true

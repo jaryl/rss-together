@@ -5,13 +5,17 @@ module RssTogether
     attr_reader :feed
 
     discard_on Faraday::Error do |job, error|
-      # TODO: create resource feedback
-      # ResourceFeedback.create!(resource: job.feed, message: "Server error when requesting this feed")
+      job.fail_with_feedback(resource: job.feed, error: error) do |feedback|
+        feedback.title = "Error processing feed"
+        feedback.message = "Server error when requesting this feed"
+      end
     end
 
     discard_on DocumentParsingError do |job, error|
-      # TODO: create resource feedback
-      # ResourceFeedback.create!(resource: job.feed, message: "There was a problem processing this feed's content")
+      job.fail_with_feedback(resource: job.feed, error: error) do |feedback|
+        feedback.title = "Error processing feed"
+        feedback.message = "There was a problem processing this feed's content"
+      end
     end
 
     def perform(feed:)

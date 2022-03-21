@@ -4,6 +4,8 @@ module RssTogether
     has_many :subscriptions
     has_many :groups, through: :subscriptions
 
+    has_many :feedback, as: :resource, class_name: "ResourceFeedback"
+
     validates :link, presence: true
 
     scope :enabled, -> { where(enabled: true) }

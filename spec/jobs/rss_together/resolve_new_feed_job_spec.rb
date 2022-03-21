@@ -55,18 +55,18 @@ module RssTogether
       let(:probe_target_url) { allow(UrlProbe).to receive(:from).and_raise(DocumentParsingError) }
 
       it { expect(subscription_request.reload).to be_failure }
-      it { expect(MarkSubscriptionItemsAsUnreadJob).not_to have_been_enqueued }
+      it { expect(subscription_request.feedback).to be_present }
 
-      pending "check that resource feedback was created"
+      it { expect(MarkSubscriptionItemsAsUnreadJob).not_to have_been_enqueued }
     end
 
     context "with Faraday::Error" do
       let(:probe_target_url) { allow(UrlProbe).to receive(:from).and_raise(Faraday::Error) }
 
       it { expect(subscription_request.reload).to be_failure }
-      it { expect(MarkSubscriptionItemsAsUnreadJob).not_to have_been_enqueued }
+      it { expect(subscription_request.feedback).to be_present }
 
-      pending "check that resource feedback was created"
+      it { expect(MarkSubscriptionItemsAsUnreadJob).not_to have_been_enqueued }
     end
   end
 end

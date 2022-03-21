@@ -5,6 +5,7 @@ module RssTogether
     it { should have_many(:items) }
     it { should have_many(:subscriptions) }
     it { should have_many(:groups).through(:subscriptions) }
+    it { should have_many(:feedback) }
 
     it { is_expected.to validate_presence_of(:link) }
 

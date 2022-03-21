@@ -1,7 +1,5 @@
 module RssTogether
   class ResolveNewFeedJob < ApplicationJob
-    include AfterCommitEverywhere
-
     queue_as :default
 
     MAX_LINKS_TO_FOLLOW = 3
@@ -9,24 +7,27 @@ module RssTogether
     attr_reader :subscription_request
 
     discard_on NoFeedAtTargetUrlError do |job, error|
-      job.fail_with_feedback(
-        message: "No RSS or Atom feed was found at this URL",
-        error: error,
-      )
+      job.fail_with_feedback(resource: job.subscription_request, error: error) do |feedback|
+        feedback.title = "Error subscribing to feed"
+        feedback.message = "No RSS or Atom feed was found at this URL"
+        job.subscription_request.update!(status: :failure)
+      end
     end
 
     discard_on DocumentParsingError do |job, error|
-      job.fail_with_feedback(
-        message: "There was a problem processing the content at this URL",
-        error: error,
-      )
+      job.fail_with_feedback(resource: job.subscription_request, error: error) do |feedback|
+        feedback.title = "Error subscribing to feed"
+        feedback.message = "There was a problem processing the content at this URL"
+        job.subscription_request.update!(status: :failure)
+      end
     end
 
     discard_on Faraday::Error do |job, error|
-      job.fail_with_feedback(
-        message: "Encountered a server error at this URL",
-        error: error,
-      )
+      job.fail_with_feedback(resource: job.subscription_request, error: error) do |feedback|
+        feedback.title = "Error subscribing to feed"
+        feedback.message = "Encountered a server error at this URL"
+        job.subscription_request.update!(status: :failure)
+      end
     end
 
     def perform(subscription_request:, follows: 0)
@@ -47,14 +48,6 @@ module RssTogether
         )
       else
         raise NoFeedAtTargetUrlError
-      end
-    end
-
-    def fail_with_feedback(message:, error:)
-      ActiveRecord::Base.transaction do
-        subscription_request.update!(status: :failure)
-        # TODO: create resource feedback
-        # ResourceFeedback.create!(resource: subscription_request, message: message)
       end
     end
 

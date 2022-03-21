@@ -46,18 +46,18 @@ module RssTogether
         mock_connection.tap { allow(mock_connection).to receive(:get).and_raise(Faraday::Error, "Faraday::Error") }
       end
 
+      it { expect(feed.feedback).to be_present }
+
       it { expect(ProcessFeedAndItemsService).not_to receive(:call) }
       it { expect(MarkSubscriptionItemsAsUnreadJob).not_to have_been_enqueued }
-
-      pending "check that resource feedback was created"
     end
 
     context "with DocumentParsingError" do
       let(:process_feed_and_items) { allow(ProcessFeedAndItemsService).to receive(:call).and_raise(DocumentParsingError) }
 
-      it { expect(MarkSubscriptionItemsAsUnreadJob).not_to have_been_enqueued }
+      it { expect(feed.feedback).to be_present }
 
-      pending "check that resource feedback was created"
+      it { expect(MarkSubscriptionItemsAsUnreadJob).not_to have_been_enqueued }
     end
   end
 end

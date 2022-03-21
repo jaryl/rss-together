@@ -7,8 +7,11 @@ module RssTogether
     }
 
     belongs_to :membership
+
     has_one :group, through: :membership
     has_one :account, through: :membership
+
+    has_many :feedback, as: :resource, class_name: "ResourceFeedback"
 
     before_validation :preserve_original_url
 

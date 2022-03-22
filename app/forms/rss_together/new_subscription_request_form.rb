@@ -50,7 +50,7 @@ module RssTogether
     end
 
     def already_in_flight
-      errors.add(:target_url, "is already pending subscription") if group.subscription_requests.pending.exists?(target_url: subscription_request.target_url)
+      errors.add(:target_url, "is already pending subscription") if group.subscription_requests.not_success.exists?(target_url: subscription_request.target_url)
     end
 
     def subscription_request_is_valid

@@ -7,6 +7,11 @@ module RssTogether
     it { is_expected.to validate_presence_of(:title) }
     it { is_expected.to validate_presence_of(:message) }
 
+    context do
+      subject { build(:feedback) }
+      it { is_expected.to validate_uniqueness_of(:title).scoped_to(:resource_type, :resource_id) }
+    end
+
     it { expect(build(:feedback)).to be_valid }
     it { expect(build(:feedback, :invalid)).not_to be_valid }
   end

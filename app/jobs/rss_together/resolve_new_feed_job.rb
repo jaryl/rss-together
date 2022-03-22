@@ -9,7 +9,7 @@ module RssTogether
     discard_on NoFeedAtTargetUrlError do |job, error|
       job.fail_with_feedback(resource: job.subscription_request, error: error) do |feedback|
         feedback.title = "Error subscribing to feed"
-        feedback.message = "No RSS or Atom feed was found at this URL"
+        feedback.message = "No RSS or Atom feed was found at %{url}"
         job.subscription_request.update!(status: :failure)
       end
     end
@@ -17,7 +17,7 @@ module RssTogether
     discard_on DocumentParsingError do |job, error|
       job.fail_with_feedback(resource: job.subscription_request, error: error) do |feedback|
         feedback.title = "Error subscribing to feed"
-        feedback.message = "There was a problem processing the content at this URL"
+        feedback.message = "There was a problem processing the content at %{url}"
         job.subscription_request.update!(status: :failure)
       end
     end
@@ -25,7 +25,7 @@ module RssTogether
     discard_on Faraday::Error do |job, error|
       job.fail_with_feedback(resource: job.subscription_request, error: error) do |feedback|
         feedback.title = "Error subscribing to feed"
-        feedback.message = "Encountered a server error at this URL"
+        feedback.message = "Encountered a server error at %{url}"
         job.subscription_request.update!(status: :failure)
       end
     end

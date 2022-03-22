@@ -3,6 +3,8 @@ module RssTogether
     include AfterCommitEverywhere
 
     def fail_with_feedback(resource:, error: nil)
+      # TODO: check if feedback for this resource already exists
+
       ActiveRecord::Base.transaction do
         yield feedback = resource.feedback.build
 

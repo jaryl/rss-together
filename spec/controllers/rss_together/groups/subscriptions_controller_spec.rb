@@ -1,4 +1,4 @@
-require 'rails_helper'
+require "rails_helper"
 
 module RssTogether
   RSpec.describe Groups::SubscriptionsController, type: :controller do
@@ -16,35 +16,6 @@ module RssTogether
 
       it { expect(assigns(:subscriptions)).not_to be_empty }
       it { expect(response).to render_template(:index) }
-    end
-
-    describe "GET #new" do
-      before { get :new, params: { group_id: group.id } }
-
-      it { expect(assigns(:form)).to be_present }
-      it { expect(response).to render_template(:new) }
-    end
-
-    describe "POST #create" do
-      before { allow(ResolveNewFeedJob).to receive(:perform_later) }
-
-      before { post :create, params: { group_id: group.id, new_subscription_request_form: params } }
-
-      context "with valid params" do
-        let(:url) { Faker::Internet.url }
-        let(:params) { { target_url: url } }
-        let(:feed) { Feed.find_by(link: url) }
-
-        it { expect(assigns(:form).subscription_request).to be_persisted }
-        it { expect(response).to redirect_to(group_subscriptions_path(group)) }
-      end
-
-      context "with invalid params" do
-        let(:params) { { target_url: "some-invalid-url" } }
-
-        it { expect(assigns(:form).subscription_request).not_to be_persisted }
-        it { expect(response).to render_template(:new) }
-      end
     end
 
     describe "DELETE #destroy" do

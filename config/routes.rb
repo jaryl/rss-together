@@ -30,9 +30,16 @@ RssTogether::Engine.routes.draw do
     resources :groups, only: [:index, :show, :new, :create, :edit, :update, :destroy] do
       scope module: "groups" do
         resource :membership, only: [:show, :edit, :update, :destroy]
+
         resources :invitations, only: [:index, :new, :create, :destroy]
         resources :members, only: [:index, :destroy]
-        resources :subscriptions, only: [:index, :new, :create, :destroy]
+
+        resources :subscriptions, only: [:index, :destroy]
+        resources :subscriptions, only: [:new, :create], controller: "subscription_requests" do
+          delete :cancel, on: :member
+          get :processing, on: :collection
+        end
+
         resource :transfer, only: [:show, :new, :create, :destroy] do
           resource :pending, only: [:show, :create], controller: "pending_transfers"
         end

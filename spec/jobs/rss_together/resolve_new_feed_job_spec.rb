@@ -40,7 +40,7 @@ module RssTogether
 
     context "with NoFeedAtTargetUrlError" do
       it { expect(subscription_request.reload).to be_failure }
-      pending "check that resource feedback was created"
+      it { expect(subscription_request.feedback).to be_present }
     end
 
     context "with link to follow" do

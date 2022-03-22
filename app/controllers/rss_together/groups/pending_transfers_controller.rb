@@ -1,13 +1,13 @@
 module RssTogether
   class Groups::PendingTransfersController < Groups::BaseController
     before_action :prepare_group
-    before_action :prepare_membership, only: [:show, :create]
-    before_action :prepare_transfer, only: [:show, :create]
+    before_action :prepare_membership, only: [:show, :accept]
+    before_action :prepare_transfer, only: [:show, :accept]
 
     def show
     end
 
-    def create
+    def accept
       ActiveRecord::Base.transaction do
         @transfer.destroy!
         @group.update!(owner: current_account)

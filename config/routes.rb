@@ -41,7 +41,9 @@ RssTogether::Engine.routes.draw do
         end
 
         resource :transfer, only: [:show, :new, :create, :destroy] do
-          resource :pending, only: [:show, :create], controller: "pending_transfers"
+          resource :pending, only: [:show], controller: "pending_transfers" do
+            post :accept
+          end
         end
       end
     end

@@ -22,8 +22,8 @@ module RssTogether
       it { expect(response).to render_template(:show) }
     end
 
-    describe "POST #create" do
-      let(:perform_request) { post :create, params: { group_id: group } }
+    describe "POST #accept" do
+      let(:perform_request) { post :accept, params: { group_id: group } }
 
       before { create(:group_transfer, group: group, recipient: other_membership); perform_request }
 

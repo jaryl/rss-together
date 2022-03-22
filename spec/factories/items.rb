@@ -3,10 +3,10 @@ FactoryBot.define do
     feed
 
     title { Faker::Book.title }
-    content { Faker::Lorem.sentences }
+    content { Faker::Lorem.paragraph }
     link { Faker::Internet.url }
 
-    description { Faker::Lorem.sentences }
+    description { Faker::Lorem.sentence }
     author { Faker::Name.name }
     published_at { Faker::Date.backward(days: 365 * 8) }
 

@@ -3,7 +3,7 @@ FactoryBot.define do
     author factory: :membership
     item
 
-    content { Faker::Lorem.sentences }
+    content { Faker::Lorem.paragraph }
 
     trait :invalid do
       content { nil }

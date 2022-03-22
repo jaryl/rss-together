@@ -3,7 +3,7 @@ FactoryBot.define do
     resource { association :feed }
 
     title { "An error has occurred" }
-    message { Faker::Lorem.sentences }
+    message { Faker::Lorem.paragraph }
 
     trait :invalid do
       title { "" }

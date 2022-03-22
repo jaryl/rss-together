@@ -40,7 +40,7 @@ module RssTogether
     end
 
     def accept_invitation_form_params
-      params.require(:accept_invitation_form).permit(:display_name)
+      params.require(:accept_invitation_form).permit(:display_name_override)
     end
   end
 end

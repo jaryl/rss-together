@@ -24,8 +24,9 @@ module RssTogether
         current_account.groups << @group
       end
 
-      flash[:success] = "New group created"
-      redirect_to main_app.root_path(group_id: @group.id), status: :see_other
+      flash.now[:success] = "New group created"
+      render :create
+      # redirect_to main_app.root_path(group_id: @group.id), status: :see_other
     rescue ActiveRecord::RecordInvalid
       flash.now[:alert] = "We found some input errors, fix them and submit the form again"
       render :new, status: :unprocessable_entity

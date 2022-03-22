@@ -5,7 +5,7 @@ module RssTogether
 
     validate :membership_is_valid
 
-    attr_accessor :display_name
+    attr_accessor :display_name_override
     attr_reader :account, :invitation, :membership
 
     def initialize(account, invitation, params = {})
@@ -42,7 +42,7 @@ module RssTogether
       {
         account: account,
         group: invitation.group,
-        display_name_override: display_name,
+        display_name_override: display_name_override,
       }
     end
   end

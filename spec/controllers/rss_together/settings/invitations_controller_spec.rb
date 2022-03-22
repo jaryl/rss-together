@@ -30,7 +30,7 @@ module RssTogether
       before { post :accept, params: { id:invitation, accept_invitation_form: params } }
 
       context "with valid params" do
-        let(:params) { { display_name: Faker::Internet.username } }
+        let(:params) { { display_name_override: Faker::Internet.username } }
 
         it { expect(assigns(:form).membership).to be_valid }
         it { expect(assigns(:form).errors).to be_empty }
@@ -40,7 +40,7 @@ module RssTogether
       end
 
       context "with invalid params" do
-        let(:params) { { display_name: "." } }
+        let(:params) { { display_name_override: "." } }
 
         it { expect(assigns(:form).membership).not_to be_valid }
         it { expect(assigns(:form).errors).not_to be_empty }

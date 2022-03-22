@@ -11,10 +11,10 @@ module RssTogether
     def update
       if @profile.update(profile_params)
         flash[:success] = "Changes saved"
-        redirect_to settings_profile_path
+        redirect_to settings_profile_path, status: :see_other
       else
         flash.now[:alert] = "We found some input errors, fix them and submit the form again"
-        render :edit
+        render :edit, status: :unprocessable_entity
       end
     end
 

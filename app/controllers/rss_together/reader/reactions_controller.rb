@@ -24,7 +24,7 @@ module RssTogether
         if @reaction.update(reaction_params)
           redirect_to reader_group_item_reaction_path(@group, @item), status: :see_other
         else
-          render :show
+          render :show, status: :unprocessable_entity
         end
       end
 
@@ -33,7 +33,7 @@ module RssTogether
 
         if @reaction.present?
           authorize @reaction
-          @reaction.destroy
+          @reaction.destroy!
         else
           skip_authorization
         end

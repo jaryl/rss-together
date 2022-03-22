@@ -14,8 +14,9 @@ module RssTogether
       authorize @form.subscription_request
       if @form.submit
         flash[:success] = "Your new subscription will be available shortly"
+        render :create
       else
-        flash[:alert] = "We found some input errors, fix them and submit the form again"
+        flash.now[:alert] = "We found some input errors, fix them and submit the form again"
         render :new, status: :unprocessable_entity
       end
     end
@@ -24,7 +25,7 @@ module RssTogether
       @subscription_request = @group.subscription_requests.find(params[:id])
       authorize @subscription_request
 
-      @subscription_request.destroy
+      @subscription_request.destroy!
 
       flash[:success] = "Subscription request cancelled"
       redirect_to processing_group_subscriptions_path(@group), status: :see_other

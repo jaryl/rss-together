@@ -8,7 +8,7 @@ module RssTogether
 
     def destroy
       authorize @account, :update?
-      @account.login_change_key&.destroy
+      @account.login_change_key&.destroy!
 
       flash[:success] = "Email change cancelled"
       redirect_to settings_email_path, status: :see_other

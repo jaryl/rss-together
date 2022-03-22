@@ -8,7 +8,8 @@ module RssTogether
     end
 
     def destroy
-      @membership.destroy
+      @membership.destroy!
+
       flash[:success] = "#{@membership} has been removed from the group"
       redirect_to group_members_path(@group), status: :see_other
     end

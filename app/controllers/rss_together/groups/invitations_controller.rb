@@ -26,7 +26,8 @@ module RssTogether
     def destroy
       @invitation = @group.invitations.find(params[:id])
       authorize @invitation
-      @invitation.destroy
+
+      @invitation.destroy!
 
       flash[:success] = "Invitation to #{@invitation.email} deleted"
       redirect_to group_invitations_path(@group), status: :see_other

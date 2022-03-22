@@ -45,7 +45,8 @@ module RssTogether
     end
 
     def destroy
-      @group.destroy
+      @group.destroy!
+
       flash[:success] = "Group deleted"
       render :destroy
     end

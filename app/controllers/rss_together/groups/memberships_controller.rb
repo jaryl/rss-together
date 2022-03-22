@@ -23,7 +23,7 @@ module RssTogether
       @membership = @group.memberships.find_by(account: current_account)
       authorize @membership, :leave?
 
-      @membership.destroy
+      @membership.destroy!
 
       flash.now[:success] = "You have left the group"
       render :destroy

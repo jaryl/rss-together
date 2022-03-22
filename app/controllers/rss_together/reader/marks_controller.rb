@@ -14,6 +14,7 @@ module RssTogether
         authorize @mark
 
         if @mark.save
+          flash[:success] = "Marked as unread"
           redirect_to reader_group_item_mark_path(@group, @item), status: :see_other
         else
           render :show
@@ -21,8 +22,10 @@ module RssTogether
       end
 
       def destroy
-        @mark.destroy if @mark.present?
-        render :show # TODO: redirect instead?
+        @mark.destroy! if @mark.present?
+
+        flash[:success] = "Marked as read"
+        render :show
       end
 
       private

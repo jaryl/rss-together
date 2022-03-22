@@ -19,7 +19,6 @@ module RssTogether
     private
 
     def prepare_invitation
-      # TODO: enforce expiry
       @invitation = Invitation.find_by(token: params[:token])
       redirect_to groups_path if @invitation.blank?
     end

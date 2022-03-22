@@ -21,9 +21,9 @@ RssTogether::Engine.routes.draw do
       resource :email, only: [:show, :destroy]
       resource :profile, only: [:show, :edit, :update]
       resource :close, only: [:show]
-      resources :invitations, only: [:index, :show, :destroy] do
-        # post :accept
-        # post :reject
+      resources :invitations, only: [:index, :show] do
+        post :accept, on: :member
+        post :reject, on: :member
       end
     end
 

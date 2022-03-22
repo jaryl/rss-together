@@ -1,5 +1,11 @@
 module RssTogether
   class ResourceFeedback < ApplicationRecord
+    enum status: {
+      pending: "pending",
+      resolved: "resolved",
+      dismissed: "dismissed",
+    }
+
     belongs_to :resource, polymorphic: true
 
     validates :title, :message, presence: true

@@ -26,22 +26,36 @@ module RssTogether
       it { expect(response).to render_template(:show) }
     end
 
-    describe "DELETE #destroy" do
-      before { delete :destroy, params: { id:invitation, accept_invitation_form: params } }
+    describe "POST #accept" do
+      before { post :accept, params: { id:invitation, accept_invitation_form: params } }
 
       context "with valid params" do
         let(:params) { { display_name: Faker::Internet.username } }
+
         it { expect(assigns(:form).membership).to be_valid }
         it { expect(assigns(:form).errors).to be_empty }
+        it { expect(assigns(:invitation)).to be_destroyed }
+
         it { expect(response).to redirect_to(settings_invitations_path) }
       end
 
       context "with invalid params" do
         let(:params) { { display_name: "." } }
+
         it { expect(assigns(:form).membership).not_to be_valid }
         it { expect(assigns(:form).errors).not_to be_empty }
+        it { expect(assigns(:invitation)).not_to be_destroyed }
+
         it { expect(response).to render_template(:show) }
       end
+    end
+
+    describe "POST #reject" do
+      before { post :reject, params: { id:invitation } }
+
+      it { expect(assigns(:invitation)).to be_destroyed }
+
+      it { expect(response).to redirect_to(settings_invitations_path) }
     end
   end
 end

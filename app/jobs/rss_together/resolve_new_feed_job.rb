@@ -2,8 +2,6 @@ module RssTogether
   class ResolveNewFeedJob < ApplicationJob
     queue_as :default
 
-    MAX_LINKS_TO_FOLLOW = 3
-
     attr_reader :subscription_request
 
     discard_on NoFeedAtTargetUrlError do |job, error|
@@ -35,7 +33,7 @@ module RssTogether
 
       return unless subscription_request.pending?
 
-      raise NoFeedAtTargetUrlError if follows + 1 > MAX_LINKS_TO_FOLLOW
+      raise NoFeedAtTargetUrlError if follows + 1 > RssTogether.max_links_followed_to_resolve_url
 
       probe = UrlProbe.from(url: subscription_request.target_url)
       if probe.atom? || probe.rss?

@@ -19,6 +19,20 @@ module RssTogether
   class RssDocumentParsingError < DocumentParsingError; end
   class AtomDocumentParsingError < XmlDocumentParsingError; end
 
+  mattr_accessor :feed_processing_interval
+
+  mattr_accessor :items_are_unread_if_published_within
+  mattr_accessor :unread_system_markers_expire_after
+  mattr_accessor :unread_user_markers_expire_after
+
+  mattr_accessor :invitations_expire_after
+
+  mattr_accessor :group_transfers_expire_after
+
+  mattr_accessor :max_links_followed_to_resolve_url
+
+  mattr_accessor :user_agent
+
   class Engine < ::Rails::Engine
   end
 end

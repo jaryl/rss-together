@@ -3,12 +3,10 @@ require "faraday/follow_redirects"
 
 module RssTogether
   module HttpClient
-    USER_AGENT = "RssTogether".freeze
-
     def self.conn
       options = {
         headers: {
-          "User-Agent": USER_AGENT,
+          "User-Agent": RssTogether.user_agent,
         }
       }
 

@@ -16,7 +16,7 @@ module RssTogether
 
     def accept?
       return false if record.group.owner == user
-      return false if record.created_at < GroupTransfer::GROUP_TRANSFER_VALIDITY
+      return false if record.created_at < RssTogether.group_transfers_expire_after.ago
 
       record.recipient.account == user
     end

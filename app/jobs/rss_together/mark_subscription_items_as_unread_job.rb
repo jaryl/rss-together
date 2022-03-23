@@ -2,12 +2,10 @@ module RssTogether
   class MarkSubscriptionItemsAsUnreadJob < ApplicationJob
     queue_as :default
 
-    UNREAD_LIFETIME = 30.days.freeze
-
     def perform(subscription:)
       return unless subscription.requires_processing?
 
-      items = subscription.feed.items.where("published_at > ?", UNREAD_LIFETIME.ago)
+      items = subscription.feed.items.where("published_at > ?", RssTogether.items_are_unread_if_published_within.ago)
 
       ActiveRecord::Base.transaction do
         subscription.group.memberships.each do |membership|

@@ -22,7 +22,8 @@ module RssTogether
       @feed = feed
 
       response = HttpClient.conn.get(feed.link)
-      document = XmlDocument.parse(response.body)
+      raw_document = Nokogiri.parse(response.body)
+      document = XmlDocument.with(document: raw_document)
 
       ProcessFeedAndItemsService.call(
         target_url: feed.link,

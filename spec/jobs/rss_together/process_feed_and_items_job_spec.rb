@@ -12,7 +12,7 @@ module RssTogether
     let(:mock_connection) { double("conn", get: mock_response) }
 
     let(:make_get_request) { allow(HttpClient).to receive(:conn).and_return(mock_connection) }
-    let(:parse_document) { allow(XmlDocument).to receive(:parse) }
+    let(:parse_document) { allow(XmlDocument).to receive(:with) }
     let(:process_feed_and_items) { allow(ProcessFeedAndItemsService).to receive(:call).and_return({ feed: feed }) }
 
     let(:perform) do

@@ -1,9 +1,7 @@
 module RssTogether
   class XmlDocument
-    def self.parse(content)
-      document = Nokogiri::XML(content)
+    def self.with(document:)
       document.remove_namespaces!
-
       xml_document = new(document: document)
 
       if document.root.name == "feed"
@@ -23,6 +21,14 @@ module RssTogether
 
     def link_to_feed
       nil
+    end
+
+    def xml?
+      true
+    end
+
+    def html?
+      false
     end
   end
 end

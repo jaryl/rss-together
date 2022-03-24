@@ -12,11 +12,15 @@ module RssTogether
 
     def self.from(url:)
       response = HttpClient.conn.get(url)
+      raw_document = Nokogiri.parse(response.body)
 
-      if (response.headers["content-type"].include?("xml"))
-        document = XmlDocument.parse(response.body)
+      document = case raw_document
+      when Nokogiri::HTML4::Document
+        HtmlDocument.with(document: raw_document)
+      when Nokogiri::XML::Document
+        XmlDocument.with(document: raw_document)
       else
-        document = HtmlDocument.parse(response.body)
+        raise DocumentParsingError, "Error parsing document as HTML or XML"
       end
 
       new(url: url, document: document)

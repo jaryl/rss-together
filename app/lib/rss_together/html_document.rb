@@ -2,8 +2,7 @@ module RssTogether
   class HtmlDocument
     attr_reader :document
 
-    def self.parse(content)
-      document = Nokogiri::HTML(content)
+    def self.with(document:)
       new(document: document)
     end
 
@@ -26,6 +25,14 @@ module RssTogether
 
     def rss?
       false
+    end
+
+    def xml?
+      false
+    end
+
+    def html?
+      true
     end
   end
 end

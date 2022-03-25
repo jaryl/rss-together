@@ -17,6 +17,16 @@ RssTogether::Engine.routes.draw do
 
     resources :bookmarks, only: [:index, :show, :destroy]
 
+    namespace :onboarding do
+      root to: "invitations#show", as: ""
+
+      resource :invitation, only: [:show] do
+        post :accept
+      end
+
+      resource :group, only: [:show, :create]
+    end
+
     namespace :settings do
       resource :email, only: [:show, :destroy]
       resource :profile, only: [:show, :edit, :update]

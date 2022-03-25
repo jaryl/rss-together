@@ -4,6 +4,7 @@ FactoryBot.define do
 
     display_name { Faker::Internet.username }
     timezone { Faker::Address.time_zone }
+    onboarded { true }
 
     trait :invalid do
       account { nil }

@@ -160,6 +160,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_03_21_110018) do
     t.bigint "account_id", null: false
     t.string "display_name", null: false
     t.string "timezone", null: false
+    t.boolean "onboarded", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["account_id"], name: "index_rss_together_profiles_on_account_id"

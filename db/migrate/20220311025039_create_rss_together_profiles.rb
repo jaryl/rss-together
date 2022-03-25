@@ -6,6 +6,8 @@ class CreateRssTogetherProfiles < ActiveRecord::Migration[7.0]
       t.string :display_name, null: false
       t.string :timezone, null: false
 
+      t.boolean :onboarded, default: false
+
       t.timestamps
     end
   end

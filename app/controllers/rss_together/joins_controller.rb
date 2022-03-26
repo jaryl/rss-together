@@ -2,6 +2,8 @@ module RssTogether
   class JoinsController < ApplicationController
     include InvitationTokens
 
+    skip_before_action :redirect_if_not_onboarded
+
     before_action :skip_authorization
     before_action :prepare_invitation
 

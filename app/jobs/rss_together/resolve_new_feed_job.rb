@@ -13,7 +13,6 @@ module RssTogether
     end
 
     discard_on DocumentParsingError do |job, error|
-      puts error.message
       job.fail_with_feedback(resource: job.subscription_request, error: error) do |feedback|
         feedback.title = "Error subscribing to feed"
         feedback.message = "There was a problem processing the content at %{url}"

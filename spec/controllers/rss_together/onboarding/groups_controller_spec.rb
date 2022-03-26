@@ -4,7 +4,7 @@ module RssTogether
   RSpec.describe Onboarding::GroupsController, type: :controller do
     routes { Engine.routes }
 
-    let(:profile) { create(:profile) }
+    let(:profile) { create(:profile, onboarded: false) }
     let(:account) { profile.account }
 
     before { sign_in account }

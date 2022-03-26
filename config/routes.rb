@@ -22,6 +22,7 @@ RssTogether::Engine.routes.draw do
 
       resource :invitation, only: [:show] do
         post :accept
+        post :reject
       end
 
       resource :group, only: [:show, :create]

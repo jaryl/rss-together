@@ -1,4 +1,8 @@
 class RodauthMain < Rodauth::Rails::Auth
+  def engine_routes
+    RssTogether::Engine.routes.url_helpers
+  end
+
   configure do
     # List of authentication features that are loaded.
     enable :create_account, :verify_account, :verify_account_grace_period,

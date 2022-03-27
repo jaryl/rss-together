@@ -5,10 +5,6 @@ class RodauthApp < Rodauth::Rails::App
   # secondary configuration
   # configure RodauthAdmin, :admin
 
-  def engine_routes
-    RssTogether::Engine.routes.url_helpers
-  end
-
   route do |r|
     rodauth.load_memory # autologin remembered users
 

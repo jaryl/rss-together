@@ -41,13 +41,13 @@ module RssTogether
 
         context "with no transfer in-flight" do
           before { perform_request }
-          it { expect(assigns(:transfer)).to be_new_record }
+          it { expect(assigns(:form).transfer).to be_new_record }
           it { expect(response).to render_template(:new) }
         end
       end
 
       describe "POST #create" do
-        let(:perform_request) { post :create, params: { group_id: group, group_transfer: params } }
+        let(:perform_request) { post :create, params: { group_id: group, group_transfer_form: params } }
 
         context "with transfer in-flight" do
           let(:params) { Hash.new }
@@ -63,13 +63,13 @@ module RssTogether
 
           context "with valid params" do
             let(:params) { { recipient_id: other_membership } }
-            it { expect(assigns(:transfer)).to be_persisted }
+            it { expect(assigns(:form).transfer).to be_persisted }
             it { expect(response).to redirect_to(group_transfer_path(group)) }
           end
 
-          context "with valid params" do
+          context "with invalid params" do
             let(:params) { { recipient_id: "some-invalid-id" } }
-            it { expect(assigns(:transfer)).not_to be_persisted }
+            it { expect(assigns(:form)).not_to be_persisted }
             it { expect(response).to render_template(:new) }
           end
         end

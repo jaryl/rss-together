@@ -5,7 +5,7 @@ RssTogether::Engine.routes.draw do
     namespace :reader do
       resources :bookmarks, only: [:index, :show]
 
-      resources :groups, only: [:index] do
+      resources :groups, only: [] do
         resources :items, only: [:index, :show] do
           resource :mark, only: [:show, :create, :destroy]
           resource :bookmark, only: [:show, :create, :destroy]

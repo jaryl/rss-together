@@ -11,5 +11,11 @@ module RssTogether
     def destroy?
       show?
     end
+
+    class Scope < Scope
+      def resolve
+        scope.where(reader_id: user.membership_ids)
+      end
+    end
   end
 end

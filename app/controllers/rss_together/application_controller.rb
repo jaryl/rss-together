@@ -2,8 +2,8 @@ module RssTogether
   class ApplicationController < ::ApplicationController
     include Pundit::Authorization
 
-    after_action :verify_authorized, except: :index
-    after_action :verify_policy_scoped, only: :index
+    after_action :verify_authorized, except: [:index, :all]
+    after_action :verify_policy_scoped, only: [:index, :all]
 
     before_action :redirect_if_not_onboarded
 

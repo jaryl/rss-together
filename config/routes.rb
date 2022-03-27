@@ -6,6 +6,10 @@ RssTogether::Engine.routes.draw do
       resources :bookmarks, only: [:index, :show]
 
       resources :groups, only: [] do
+        resources :marks, only: [] do
+          delete :all, on: :collection
+        end
+
         resources :items, only: [:index, :show] do
           resource :mark, only: [:show, :create, :destroy]
           resource :bookmark, only: [:show, :create, :destroy]

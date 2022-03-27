@@ -1,12 +1,16 @@
 module RssTogether
   module Reader
     class BaseController < ApplicationController
-      helper_method :current_group, :current_membership
+      helper_method :current_group, :current_item, :current_membership
 
       private
 
       def current_group
-        @current_group ||= current_account.groups.find(params[:group_id])
+        @current_group ||= current_account.groups.find_by(id: params[:group_id])
+      end
+
+      def current_item
+        @current_item ||= Item.find_by(id: params[:item_id])
       end
 
       def current_membership

@@ -51,7 +51,16 @@ module RssTogether
       before { delete :destroy, params: { group_id: group.id, item_id: item.id } }
 
       it { expect(assigns(:mark)).to be_destroyed }
-      it { is_expected.to render_template(:show) }
+      it { is_expected.to redirect_to(reader_group_item_mark_path(group, item)) }
+    end
+
+    describe "DELETE #all" do
+      before { create_list(:item, 3, feed: subscription.feed) }
+      before { Item.all.each { |item| item.marks.create(reader: membership) } }
+      before { delete :all, params: { group_id: group.id, item_id: item.id } }
+
+      it { expect(membership.reload.marks).to be_empty }
+      it { is_expected.to render_template(:all) }
     end
   end
 end

@@ -33,7 +33,11 @@ module RssTogether
 
     def prepare_membership
       @membership = @group.memberships.find_by(account: current_account)
-      authorize @membership
+      if @membership.present?
+        authorize(@membership)
+      else
+        raise ActiveRecord::RecordNotFound
+      end
     end
 
     def membership_params

@@ -51,7 +51,7 @@ module RssTogether
         before { delete :destroy, params: { group_id: group.id, item_id: item.id } }
 
         it { expect(assigns(:bookmark)).not_to be_present }
-        it { expect(response).to render_template(:show) }
+        it { expect(response).to redirect_to(reader_group_item_bookmark_path(group, item)) }
       end
 
       context "with existing bookmark" do
@@ -59,7 +59,7 @@ module RssTogether
         before { delete :destroy, params: { group_id: group.id, item_id: item.id } }
 
         it { expect(assigns(:bookmark)).to be_destroyed }
-        it { expect(response).to render_template(:show) }
+        it { expect(response).to redirect_to(reader_group_item_bookmark_path(group, item)) }
       end
     end
   end

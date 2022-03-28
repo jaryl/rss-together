@@ -11,7 +11,6 @@ module RssTogether
 
     def destroy
       @subscription.destroy!
-
       flash[:success] = "Unsubscribed from #{truncate(@subscription.feed.title, length: 80)}"
       redirect_to group_subscriptions_path(@group), status: :see_other
     end

@@ -24,7 +24,6 @@ module RssTogether
 
     def destroy
       @transfer.destroy!
-
       flash[:success] = "Group transfer cancelled"
       redirect_to group_transfer_path(@group), status: :see_other
     end

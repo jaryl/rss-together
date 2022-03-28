@@ -21,7 +21,7 @@ module RssTogether
         @bookmark.destroy! if @bookmark.present?
 
         flash[:success] = "Bookmark removed"
-        render :show
+        redirect_to reader_group_item_bookmark_path(@group, @item), status: :see_other
       end
 
       private

@@ -5,11 +5,7 @@ module RssTogether
       before_action :prepare_reaction, only: [:show, :destroy]
 
       def show
-        if @reaction.present?
-          authorize @reaction
-        else
-          skip_authorization
-        end
+        @reaction.present? ? authorize(@reaction) : skip_authorization
       end
 
       def edit
@@ -29,15 +25,8 @@ module RssTogether
       end
 
       def destroy
-        @reaction = current_membership.reactions.find_by(item: @item)
-
-        if @reaction.present?
-          authorize @reaction
-          @reaction.destroy!
-        else
-          skip_authorization
-        end
-
+        @reaction.present? ? authorize(@reaction) : skip_authorization
+        @reaction.destroy! if @reaction.present?
         render :show
       end
 

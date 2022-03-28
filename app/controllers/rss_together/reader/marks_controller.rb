@@ -31,20 +31,21 @@ module RssTogether
 
       def all
         @marks = policy_scope(current_membership.marks)
-        @affected_items = @marks.collect(&:item)
+        affected_item_ids = @marks.collect(&:item_id)
 
         ActiveRecord::Base.transaction do
           current_membership.marks.delete_all
           Membership.reset_counters(current_membership.id, :marks)
         end
 
+        @affected_items = Item.includes(:marks).find(affected_item_ids)
         flash.now[:success] = "Marked all as read"
       end
 
       private
 
       def prepare_eager_loaded_item
-        @item = Item.includes(marks: :reader).find(params[:item_id])
+        @item = Item.includes(:marks).find(params[:item_id])
       end
 
       def prepare_mark

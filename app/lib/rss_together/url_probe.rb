@@ -1,6 +1,4 @@
 module RssTogether
-  # TODO: deal with HTTP errors at this abstraction level
-
   class UrlProbe
     attr_reader :url
 

@@ -124,8 +124,7 @@ class RodauthMain < Rodauth::Rails::Auth
     end
 
     before_close_account do
-      # TODO: pundit check for account closure
-      # throw_error_status(422, "display_name", "must be present") if param("display_name").empty?
+      throw_error_status(422, "account_id", "is still an owner of a group") if RssTogether::Group.exists?(owner_id: account[:id])
     end
 
     # Do additional cleanup after the account is closed.

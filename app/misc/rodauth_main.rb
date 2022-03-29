@@ -26,6 +26,10 @@ class RodauthMain < Rodauth::Rails::Auth
     # Store account status in an integer column without foreign key constraint.
     account_status_column :status
 
+    account_unverified_status_value "unverified"
+    account_open_status_value "verified"
+    account_closed_status_value "closed"
+
     # Store password hash in a column instead of a separate table.
     # account_password_hash_column :password_digest
 

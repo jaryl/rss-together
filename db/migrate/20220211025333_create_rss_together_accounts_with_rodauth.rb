@@ -3,14 +3,16 @@
 class CreateRssTogetherAccountsWithRodauth < ActiveRecord::Migration[7.0]
   enable_extension "citext"
 
+  create_enum :account_status, ["unverified", "verified", "closed"]
+
   def change
     create_table :rss_together_accounts do |t|
       t.string :email, null: false, default: ""
-      t.integer :status, null: false, default: 1
+      t.enum :status, enum_type: :account_status, default: "unverified", null: false
 
       t.timestamps null: false
 
-      t.index :email, unique: true, where: "status IN (1, 2)"
+      t.index :email, unique: true, where: "status IN ('unverified', 'verified')"
     end
 
     # Used if storing password hashes in a separate table (default)

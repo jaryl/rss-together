@@ -17,6 +17,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_03_21_110018) do
 
   # Custom types defined in this database.
   # Note that some types may not work with other database engines. Be careful if changing database.
+  create_enum "account_status", ["unverified", "verified", "closed"]
   create_enum "mark_source", ["system", "user"]
   create_enum "resource_feedback_status", ["pending", "resolved", "dismissed"]
   create_enum "subscription_request_status", ["pending", "success", "failure"]
@@ -50,10 +51,10 @@ ActiveRecord::Schema[7.0].define(version: 2022_03_21_110018) do
 
   create_table "rss_together_accounts", force: :cascade do |t|
     t.string "email", default: "", null: false
-    t.integer "status", default: 1, null: false
+    t.enum "status", default: "unverified", null: false, enum_type: "account_status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["email"], name: "index_rss_together_accounts_on_email", unique: true, where: "(status = ANY (ARRAY[1, 2]))"
+    t.index ["email"], name: "index_rss_together_accounts_on_email", unique: true, where: "(status = ANY (ARRAY['unverified'::account_status, 'verified'::account_status]))"
   end
 
   create_table "rss_together_bookmarks", force: :cascade do |t|

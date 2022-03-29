@@ -2,7 +2,11 @@ module RssTogether
   class Account < ApplicationRecord
     include Rodauth::Rails.model
 
-    enum :status, unverified: 1, verified: 2, closed: 3
+    enum status: {
+      unverified: "unverified",
+      verified: "verified",
+      closed: "closed",
+    }
 
     has_one :profile
     has_many :memberships

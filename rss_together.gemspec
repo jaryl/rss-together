@@ -25,7 +25,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency "pg"
   spec.add_dependency "email_validator"
   spec.add_dependency "validate_url"
-  spec.add_dependency "rss"
   spec.add_dependency "rodauth-rails", "~> 1.2"
   spec.add_dependency "pundit"
   spec.add_dependency "faraday"

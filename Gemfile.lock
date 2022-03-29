@@ -10,7 +10,6 @@ PATH
       pundit
       rails (>= 7.0.2)
       rodauth-rails (~> 1.2)
-      rss
       validate_url
 
 GEM
@@ -222,8 +221,6 @@ GEM
       rspec-mocks (~> 3.10)
       rspec-support (~> 3.10)
     rspec-support (3.11.0)
-    rss (0.2.9)
-      rexml
     ruby-next-core (0.15.0)
     ruby2_keywords (0.0.5)
     sequel (5.54.0)
@@ -281,7 +278,6 @@ DEPENDENCIES
   rails-controller-testing
   rodauth-rails (~> 1.2)
   rspec-rails (~> 5.0.0)
-  rss
   rss_together!
   shoulda-matchers (~> 5.0)
   slim

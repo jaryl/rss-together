@@ -11,8 +11,6 @@ gem "sprockets-rails"
 
 #  Slim is a template language whose goal is to reduce the syntax to the essential parts without becoming cryptic
 gem "slim"
-# RSS reading and writing
-gem "rss"
 # URL Validation for Rails
 gem "validate_url"
 # Rails integration for Rodauth authentication framework

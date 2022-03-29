@@ -3,7 +3,7 @@ module RssTogether
     enum source: {
       system: "system",
       user: "user",
-    }
+    }, _suffix: true
 
     belongs_to :reader, class_name: "Membership", counter_cache: :unread_count
     belongs_to :item

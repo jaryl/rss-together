@@ -3,10 +3,10 @@ class RodauthAdmin < Rodauth::Rails::Auth
 
     # ... enable features ...
 
-    prefix "/admin"
-    session_key_prefix "admin_"
-    remember_cookie_key "_admin_remember" # if using remember feature
+    # prefix "/admin"
+    # session_key_prefix "admin_"
+    # remember_cookie_key "_admin_remember" # if using remember feature
 
-    rails_controller { Admin::RodauthController }
+    # rails_controller { Admin::RodauthController }
   end
 end

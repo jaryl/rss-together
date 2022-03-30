@@ -10,7 +10,9 @@ module RssTogether
 
         feedback.save!
 
-        # after_commit {} # TODO: submit report error if exists
+        after_commit do
+          RssTogether.error_reporter.call(error) unless error.nil?
+        end
       end
     end
   end

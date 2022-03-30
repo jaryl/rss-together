@@ -15,7 +15,11 @@ module RssTogether
 
       yield
 
-      cookies.signed[:_rss_together_invitations] = JSON.generate(@invitation_tokens.uniq)
+      cookies.signed[:_rss_together_invitations] = {
+        value: JSON.generate(@invitation_tokens.uniq),
+        same_site: :lax,
+        secure: !Rails.env.development?,
+      }
     end
   end
 end

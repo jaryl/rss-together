@@ -109,6 +109,8 @@ class RodauthMain < Rodauth::Rails::Auth
     # Extend user's remember period when remembered via a cookie
     extend_remember_deadline? true
 
+    remember_cookie_options same_site: :lax
+
     # ==> Hooks
     # Validate custom fields in the create account form.
     before_create_account do

@@ -11,6 +11,8 @@ module RssTogether
 
     def website
       @website ||= URI.parse(link).host
+    rescue
+      @website ||= link
     end
   end
 end

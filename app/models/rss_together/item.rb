@@ -10,9 +10,7 @@ module RssTogether
     validates :title, :description, :link, presence: true
 
     def website
-      @website ||= URI.parse(link).host
-    rescue
-      @website ||= link
+      @website ||= Addressable::URI.parse(link).host
     end
   end
 end

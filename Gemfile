@@ -25,6 +25,8 @@ gem "faraday"
 gem "faraday-retry"
 # Faraday 2.x compatible extraction of FaradayMiddleware::FollowRedirects
 gem "faraday-follow_redirects"
+# Addressable is an alternative implementation to the URI implementation that is part of Ruby's standard library
+gem "addressable"
 
 group :development, :test do
   # Simple one-liner tests for common Rails functionality
@@ -41,8 +43,6 @@ group :development, :test do
 
   # Detect non-atomic interactions within DB transactions
   gem "isolator"
-
-
 end
 
 group :test do

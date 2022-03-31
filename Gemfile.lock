@@ -2,6 +2,7 @@ PATH
   remote: .
   specs:
     rss_together (0.1.0)
+      addressable
       email_validator
       faraday
       faraday-follow_redirects
@@ -266,6 +267,7 @@ PLATFORMS
   arm64-darwin-21
 
 DEPENDENCIES
+  addressable
   after_commit_everywhere
   factory_bot_rails
   faker

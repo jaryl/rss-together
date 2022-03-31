@@ -30,6 +30,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "faraday"
   spec.add_dependency "faraday-retry"
   spec.add_dependency "faraday-follow_redirects"
+  spec.add_dependency "addressable"
 
   spec.add_development_dependency "rspec-rails", "~> 5.0.0"
   spec.add_development_dependency "puma", "~> 5.2"

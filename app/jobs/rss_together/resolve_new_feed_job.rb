@@ -7,7 +7,7 @@ module RssTogether
     discard_on NoFeedAtTargetUrlError do |job, error|
       job.fail_with_feedback(resource: job.subscription_request, error: error) do |feedback|
         feedback.title = "Error subscribing to feed"
-        feedback.message = "No RSS or Atom feed was found at %{url}"
+        feedback.message = error.message
         job.subscription_request.update!(status: :failure)
       end
     end
@@ -33,7 +33,7 @@ module RssTogether
 
       return unless subscription_request.pending?
 
-      raise NoFeedAtTargetUrlError if follows + 1 > RssTogether.max_links_followed_to_resolve_url
+      raise NoFeedAtTargetUrlError.new(url: subscription_request.target_url) if follows + 1 > RssTogether.max_links_followed_to_resolve_url
 
       probe = UrlProbe.from(url: subscription_request.target_url)
       if probe.atom? || probe.rss?
@@ -45,7 +45,7 @@ module RssTogether
           follows: follows
         )
       else
-        raise NoFeedAtTargetUrlError
+        raise NoFeedAtTargetUrlError.new(url: subscription_request.target_url)
       end
     end
 

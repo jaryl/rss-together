@@ -1,5 +1,6 @@
 require "rss_together/version"
 require "rss_together/engine"
+require "rss_together/errors"
 
 require "email_validator"
 require "validate_url"
@@ -10,16 +11,6 @@ require "addressable"
 require "rss_together/test/auth_helpers"
 
 module RssTogether
-  class Error < StandardError; end
-
-  class NoFeedAtTargetUrlError < Error; end
-
-  class DocumentParsingError < Error; end
-  class XmlDocumentParsingError < DocumentParsingError; end
-  class HtmlDocumentParsingError < DocumentParsingError; end
-  class RssDocumentParsingError < DocumentParsingError; end
-  class AtomDocumentParsingError < XmlDocumentParsingError; end
-
   mattr_accessor :feed_processing_interval
 
   mattr_accessor :items_are_unread_if_published_within

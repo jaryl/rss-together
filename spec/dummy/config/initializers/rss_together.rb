@@ -13,5 +13,5 @@ RssTogether.setup do |config|
 
   config.user_agent = "RssTogether"
 
-  config.error_reporter = ->(error) {}
+  config.error_reporter = ->(error, context) {}
 end

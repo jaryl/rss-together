@@ -5,6 +5,7 @@ require "email_validator"
 require "validate_url"
 require "pundit"
 require "faraday"
+require "addressable"
 
 require "rss_together/test/auth_helpers"
 

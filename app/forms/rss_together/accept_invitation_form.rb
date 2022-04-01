@@ -27,9 +27,6 @@ module RssTogether
     rescue ActiveRecord::RecordInvalid
       errors.merge!(membership)
       false
-    rescue ActiveRecord::StatementInvalid
-      errors.add(:base, "Something went wrong")
-      false
     end
 
     private

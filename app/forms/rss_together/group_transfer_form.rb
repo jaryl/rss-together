@@ -29,9 +29,6 @@ module RssTogether
     rescue ActiveRecord::RecordInvalid
       errors.merge!(transfer)
       false
-    rescue ActiveRecord::StatementInvalid
-      errors.add(:base, "Something went wrong")
-      false
     end
 
     def options_for_recipients

@@ -3,7 +3,7 @@ module RssTogether
     belongs_to :account
 
     validates :display_name, :timezone, presence: true
-    validates :timezone, inclusion: { in: ActiveSupport::TimeZone.all.map(&:name) }
+    validates :timezone, inclusion: { in: TZInfo::Timezone.all_identifiers }
 
     before_validation :retrieve_timezone_name
 
@@ -14,7 +14,9 @@ module RssTogether
     private
 
     def retrieve_timezone_name
-      self.timezone = ActiveSupport::TimeZone::MAPPING.find { |key, value| key == timezone || value == timezone }&.first
+      TZInfo::Timezone.get(timezone)
+    rescue TZInfo::InvalidTimezoneIdentifier
+      self.timezone = ActiveSupport::TimeZone::MAPPING.find { |key, value| key == self.timezone }&.last
     end
   end
 end

@@ -21,7 +21,7 @@ module RssTogether
 
         def redirect_if_not_onboarded
           return if !rodauth.logged_in? || current_account.profile.blank?
-          redirect_to onboarding_path unless current_account.profile.onboarded?
+          redirect_to rss_together.onboarding_path unless current_account.profile.onboarded?
         end
 
         def user_not_authorized

@@ -16,21 +16,21 @@ module RssTogether
     context "with enabled feed that requires processing" do
       let(:feed) { create(:feed, :enabled, processed_at: 24.hours.ago) }
       describe "#perform" do
-        it { expect(ProcessFeedAndItemsJob).to have_been_enqueued.with(feed: feed) }
+        it { expect(ProcessFeedAndItemsJob).to have_been_enqueued.with(feed) }
       end
     end
 
     context "with enabled feed that is already processed" do
       let(:feed) { create(:feed, :enabled, processed_at: 1.hour.ago) }
       describe "#perform" do
-        it { expect(ProcessFeedAndItemsJob).not_to have_been_enqueued.with(feed: feed) }
+        it { expect(ProcessFeedAndItemsJob).not_to have_been_enqueued.with(feed) }
       end
     end
 
     context "with feed that is disabled" do
       let(:feed) { create(:feed, :disabled, processed_at: 24.hours.ago) }
       describe "#perform" do
-        it { expect(ProcessFeedAndItemsJob).not_to have_been_enqueued.with(feed: feed) }
+        it { expect(ProcessFeedAndItemsJob).not_to have_been_enqueued.with(feed) }
       end
     end
   end

@@ -18,7 +18,7 @@ module RssTogether
       end
     end
 
-    def perform(feed:)
+    def perform(feed)
       @feed = feed
 
       response = HttpClient.conn.get(feed.link)
@@ -32,7 +32,7 @@ module RssTogether
       )
 
       feed.subscriptions.find_each do |subscription|
-        MarkSubscriptionItemsAsUnreadJob.perform_later(subscription: subscription)
+        MarkSubscriptionItemsAsUnreadJob.perform_later(subscription)
       end
     end
   end

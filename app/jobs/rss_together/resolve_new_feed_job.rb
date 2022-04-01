@@ -28,7 +28,7 @@ module RssTogether
       end
     end
 
-    def perform(subscription_request:, follows: 0)
+    def perform(subscription_request, follows=0)
       @subscription_request = subscription_request
 
       return unless subscription_request.pending?
@@ -68,7 +68,7 @@ module RssTogether
     def follow_link_to_feed!(subscription_request:, link:, follows:)
       resolved_url = URI(link).host.nil? ? URI.join(subscription_request.target_url, link) : link
       subscription_request.update!(target_url: resolved_url)
-      ResolveNewFeedJob.perform_later(subscription_request: subscription_request, follows: follows + 1)
+      ResolveNewFeedJob.perform_later(subscription_request, follows + 1)
     end
   end
 end

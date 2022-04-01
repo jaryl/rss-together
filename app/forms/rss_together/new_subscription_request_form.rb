@@ -23,7 +23,7 @@ module RssTogether
 
       if resolved_feed.blank?
         subscription_request.save!
-        ResolveNewFeedJob.perform_later(subscription_request: subscription_request)
+        ResolveNewFeedJob.perform_later(subscription_request)
         return true
       end
 

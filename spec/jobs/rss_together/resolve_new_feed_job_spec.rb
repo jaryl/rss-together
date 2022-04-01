@@ -16,10 +16,7 @@ module RssTogether
 
     let(:perform) do
       perform_enqueued_jobs(except: [MarkSubscriptionItemsAsUnreadJob]) do
-        described_class.perform_later(
-          subscription_request: subscription_request,
-          follows: 0,
-        )
+        described_class.perform_later(subscription_request, 0)
       end
     end
 

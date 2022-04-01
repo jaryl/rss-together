@@ -26,7 +26,7 @@ module RssTogether
         subscription_request.update!(status: :success)
 
         after_commit do
-          MarkSubscriptionItemsAsUnreadJob.perform_later(subscription: subscription)
+          MarkSubscriptionItemsAsUnreadJob.perform_later(subscription)
         end
       end
 

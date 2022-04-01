@@ -14,7 +14,7 @@ module RssTogether
 
     let(:perform) do
       perform_enqueued_jobs do
-        described_class.perform_later(subscription: subscription)
+        described_class.perform_later(subscription)
       end
     end
 

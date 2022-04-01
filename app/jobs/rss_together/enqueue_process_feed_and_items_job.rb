@@ -7,7 +7,7 @@ module RssTogether
       feeds = feeds.or(Feed.where(processed_at: nil))
 
       feeds.find_each do |feed|
-        ProcessFeedAndItemsJob.perform_later(feed: feed)
+        ProcessFeedAndItemsJob.perform_later(feed)
       end
     end
   end

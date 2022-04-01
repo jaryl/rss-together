@@ -2,7 +2,7 @@ module RssTogether
   class MarkSubscriptionItemsAsUnreadJob < ApplicationJob
     queue_as :default
 
-    def perform(subscription:)
+    def perform(subscription)
       return unless subscription.requires_processing?
 
       items = subscription.feed.items.where("published_at > ?", RssTogether.items_are_unread_if_published_within.ago)

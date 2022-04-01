@@ -20,7 +20,7 @@ module RssTogether
       it "enqueues ResolveNewFeedJob" do
         ActiveJob::Base.queue_adapter = :test
         subject.submit
-        expect(ResolveNewFeedJob).to have_been_enqueued.with(subscription_request: subject.subscription_request)
+        expect(ResolveNewFeedJob).to have_been_enqueued.with(subject.subscription_request)
       end
     end
 

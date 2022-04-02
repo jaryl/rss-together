@@ -7,7 +7,7 @@ module RssTogether
     has_many :comments
     has_many :reactions
 
-    validates :title, :description, :link, presence: true
+    validates :title, :link, presence: true
 
     def website
       @website ||= Addressable::URI.parse(link).host

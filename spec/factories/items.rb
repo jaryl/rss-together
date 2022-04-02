@@ -12,7 +12,6 @@ FactoryBot.define do
 
     trait :invalid do
       title { "" }
-      description { "" }
       link { "" }
     end
   end

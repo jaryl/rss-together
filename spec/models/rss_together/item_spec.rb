@@ -10,7 +10,6 @@ module RssTogether
     it { is_expected.to have_many(:reactions) }
 
     it { is_expected.to validate_presence_of(:title) }
-    it { is_expected.to validate_presence_of(:description) }
     it { is_expected.to validate_presence_of(:link) }
 
     it { expect(build(:item)).to be_valid }

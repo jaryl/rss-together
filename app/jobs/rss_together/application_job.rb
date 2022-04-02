@@ -19,12 +19,13 @@ module RssTogether
         feedback.save!
 
         after_commit do
-          kwargs = {
+          return if error.nil?
+          RssTogether.error_reporter.call(
+            error,
             sync: true,
             tags: "active-job",
             context: context,
-          }
-          RssTogether.error_reporter.call(error, **kwargs) unless error.nil?
+          )
         end
       end
     end

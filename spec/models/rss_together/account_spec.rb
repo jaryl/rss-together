@@ -6,6 +6,7 @@ module RssTogether
 
     it { is_expected.to have_many(:memberships) }
     it { is_expected.to have_many(:groups).through(:memberships) }
+    it { is_expected.to have_many(:subscriptions).through(:groups) }
 
     it { is_expected.to have_many(:bookmarks) }
 

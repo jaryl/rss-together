@@ -13,7 +13,7 @@ module RssTogether
     def feed
       updated_at = DateTime.parse(document.at_xpath("//channel/lastBuildDate").text) rescue nil
       FeedElement.new({
-        link: document.at_xpath("//channel/link").text,
+        link: document.at_xpath("//channel/link").text.strip,
         title: document.at_xpath("//channel/title").text,
         description: document.at_xpath("//channel/description").text,
         language: "",
@@ -35,7 +35,7 @@ module RssTogether
         ItemElement.new({
           title: item.at_xpath("title").text,
           content: content_encoded.blank? ? description : content_encoded,
-          link: item.at_xpath("link").text,
+          link: item.at_xpath("link").text.strip,
           description: strip_tags([description, content_encoded].reject(&:blank?).first)&.strip&.truncate(140),
           author: (creators + authors).reject(&:blank?).uniq.join(", "),
           published_at: pub_date,

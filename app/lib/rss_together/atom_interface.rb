@@ -12,7 +12,7 @@ module RssTogether
 
     def feed
       FeedElement.new({
-        link: document.at_xpath("//link", "rel" => "self")["href"],
+        link: document.at_xpath("//link", "rel" => "self")["href"].strip,
         title: document.at_xpath("//title").text,
         description: "",
         language: document.at_xpath("/").root["lang"],
@@ -31,7 +31,7 @@ module RssTogether
         ItemElement.new({
           title: entry.at_xpath("title").text,
           content: content.blank? ? summary : content,
-          link: entry.at_xpath("link")["href"],
+          link: entry.at_xpath("link")["href"].strip,
           description: strip_tags([summary, content].reject(&:blank?).first)&.strip&.truncate(140),
           author: entry.at_xpath("author/name")&.text,
           published_at: DateTime.parse(entry.at_xpath("published|updated").text),

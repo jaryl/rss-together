@@ -87,6 +87,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_03_21_110018) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["link"], name: "index_rss_together_feeds_on_link", unique: true
+    t.index ["processed_at"], name: "index_rss_together_feeds_on_processed_at"
   end
 
   create_table "rss_together_group_transfers", force: :cascade do |t|
@@ -132,6 +133,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_03_21_110018) do
     t.datetime "updated_at", null: false
     t.index ["created_at"], name: "index_rss_together_items_on_created_at"
     t.index ["feed_id"], name: "index_rss_together_items_on_feed_id"
+    t.index ["published_at"], name: "index_rss_together_items_on_published_at"
   end
 
   create_table "rss_together_marks", force: :cascade do |t|

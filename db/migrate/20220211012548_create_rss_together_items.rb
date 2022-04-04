@@ -15,6 +15,7 @@ class CreateRssTogetherItems < ActiveRecord::Migration[7.0]
       t.timestamps
 
       t.index :created_at
+      t.index :published_at
     end
   end
 end

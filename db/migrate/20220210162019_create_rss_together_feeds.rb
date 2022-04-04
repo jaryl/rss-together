@@ -13,6 +13,7 @@ class CreateRssTogetherFeeds < ActiveRecord::Migration[7.0]
       t.timestamps
 
       t.index :link, unique: true
+      t.index :processed_at
     end
   end
 end

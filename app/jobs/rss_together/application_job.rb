@@ -2,15 +2,9 @@ module RssTogether
   class ApplicationJob < ActiveJob::Base
     include AfterCommitEverywhere
 
-    rescue_from(StandardError) do |error|
-      RssTogether.error_reporter.call(
-        error,
-        sync: true,
-        tags: "active-job",
-      )
-    end
+    rescue_from StandardError, with: :report_error
 
-    def fail_with_feedback(resource:, error: nil, context: {})
+    def fail_with_feedback(resource:, error: nil, **kwargs)
       # TODO: check if feedback for this resource already exists
 
       ActiveRecord::Base.transaction do
@@ -19,15 +13,28 @@ module RssTogether
         feedback.save!
 
         after_commit do
-          return if error.nil?
-          RssTogether.error_reporter.call(
-            error,
-            sync: true,
-            tags: "active-job",
-            context: context,
-          )
+          report_error(error, **kwargs) if error.present?
         end
       end
+    end
+
+    private
+
+    def report_error(error, **kwargs)
+      kwargs[:sync] = true
+      kwargs[:tags] ||= []
+      kwargs[:tags] << "active-job"
+
+      kwargs[:parameters] = arguments.inject({}) do |acc, arg|
+        if arg.respond_to?(:to_global_id)
+          acc[acc.length] = arg.to_global_id.to_s
+        else
+          acc[acc.length] = arg
+        end
+        acc
+      end
+
+      RssTogether.error_reporter.call(error, **kwargs)
     end
   end
 end

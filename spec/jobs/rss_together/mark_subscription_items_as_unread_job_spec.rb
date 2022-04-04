@@ -10,20 +10,35 @@ module RssTogether
     let(:subscription) { create(:subscription, feed: feed, processed_at: last_processed_at) }
     let(:membership) { create(:membership, group: subscription.group, account: subscription.account) }
 
-    before { create_list(:item, 8, feed: feed, published_at: 15.days.ago) }
-
     let(:perform) do
       perform_enqueued_jobs do
         described_class.perform_later(subscription)
       end
     end
 
-    before { membership; perform }
+    before do
+      membership
+      items
+      perform
+    end
 
     describe "#perform" do
-      it "creates the subscription, and updates the request status" do
-        expect(membership.marks.count).to eq(8)
-        expect(subscription.reload.processed_at).not_to eq(last_processed_at)
+      context "with items that should be marked unread" do
+        let(:items) { create_list(:item, 8, feed: feed, published_at: 15.days.ago) }
+
+        it "creates the subscription, and updates the request status" do
+          expect(membership.marks.count).to eq(8)
+          expect(subscription.reload.processed_at).not_to eq(last_processed_at)
+        end
+      end
+
+      context "with items that should not be marked unread" do
+        let(:items) { create_list(:item, 8, feed: feed, published_at: 45.days.ago) }
+
+        it "creates the subscription, and updates the request status" do
+          expect(membership.marks.count).to eq(0)
+          expect(subscription.reload.processed_at).not_to eq(last_processed_at)
+        end
       end
     end
   end

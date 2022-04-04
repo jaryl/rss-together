@@ -10,7 +10,7 @@ module RssTogether
     end
 
     def destroy
-      @bookmark.destroy
+      @bookmark.destroy!
       redirect_to bookmarks_path, status: :see_other
     end
 

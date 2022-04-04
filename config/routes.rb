@@ -3,8 +3,6 @@ RssTogether::Engine.routes.draw do
 
   constraints Rodauth::Rails.authenticated do
     namespace :reader do
-      resources :bookmarks, only: [:index, :show]
-
       resources :groups, only: [] do
         resources :marks, only: [] do
           delete :all, on: :collection

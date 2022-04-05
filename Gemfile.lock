@@ -220,7 +220,7 @@ GEM
       rspec-mocks (~> 3.10)
       rspec-support (~> 3.10)
     rspec-support (3.11.0)
-    ruby-next-core (0.15.0)
+    ruby-next-core (0.15.1)
     ruby2_keywords (0.0.5)
     sequel (5.55.0)
     sequel-activerecord_connection (1.2.9)

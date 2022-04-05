@@ -3,11 +3,11 @@ PATH
   specs:
     rss_together (0.1.0)
       addressable
+      after_commit_everywhere
       email_validator
       faraday
       faraday-follow_redirects
       faraday-retry
-      pg
       pundit
       rails (>= 7.0.2)
       rodauth-rails (~> 1.2)
@@ -265,24 +265,17 @@ PLATFORMS
   arm64-darwin-21
 
 DEPENDENCIES
-  addressable
-  after_commit_everywhere
   factory_bot_rails
   faker
-  faraday
-  faraday-follow_redirects
-  faraday-retry
   isolator
-  puma (~> 5.2)
-  pundit
+  pg (~> 1.3.1)
+  puma (~> 5.0)
   rails-controller-testing
-  rodauth-rails (~> 1.2)
   rspec-rails (~> 5.0.0)
   rss_together!
   shoulda-matchers (~> 5.0)
   slim
   sprockets-rails
-  validate_url
   webmock
 
 BUNDLED WITH

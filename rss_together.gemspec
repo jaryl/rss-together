@@ -5,7 +5,7 @@ Gem::Specification.new do |spec|
   spec.version     = RssTogether::VERSION
   spec.authors     = ["Jaryl Sim"]
   spec.email       = ["jaryl.sim@me.com"]
-  spec.homepage    = "https://example.net"
+  spec.homepage    = "https://github.com/jaryl/rss-together"
   spec.summary     = "Lorem ipsum."
   spec.description = "Lorem ipsum."
 
@@ -14,24 +14,21 @@ Gem::Specification.new do |spec|
   spec.metadata["allowed_push_host"] = "TODO: Set to 'http://mygemserver.com'"
 
   spec.metadata["homepage_uri"] = spec.homepage
-  spec.metadata["source_code_uri"] = "https://example.net"
-  spec.metadata["changelog_uri"] = "https://example.net"
+  spec.metadata["source_code_uri"] = "https://github.com/jaryl/rss-together"
+  spec.metadata["changelog_uri"] = "https://github.com/jaryl/rss-together"
 
   spec.files = Dir.chdir(File.expand_path(__dir__)) do
     Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
   end
 
   spec.add_dependency "rails", ">= 7.0.2"
-  spec.add_dependency "pg"
+  spec.add_dependency "rodauth-rails", "~> 1.2"
+  spec.add_dependency "after_commit_everywhere"
   spec.add_dependency "email_validator"
   spec.add_dependency "validate_url"
-  spec.add_dependency "rodauth-rails", "~> 1.2"
-  spec.add_dependency "pundit"
+  spec.add_dependency "addressable"
   spec.add_dependency "faraday"
   spec.add_dependency "faraday-retry"
   spec.add_dependency "faraday-follow_redirects"
-  spec.add_dependency "addressable"
-
-  spec.add_development_dependency "rspec-rails", "~> 5.0.0"
-  spec.add_development_dependency "puma", "~> 5.2"
+  spec.add_dependency "pundit"
 end

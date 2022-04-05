@@ -2,6 +2,7 @@ require "rss_together/version"
 require "rss_together/engine"
 require "rss_together/errors"
 
+require "rodauth-rails"
 require "email_validator"
 require "validate_url"
 require "pundit"

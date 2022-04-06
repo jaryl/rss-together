@@ -13,5 +13,7 @@ RssTogether.setup do |config|
 
   config.user_agent = "RssTogether"
 
-  config.error_reporter = ->(error, **kwargs) {}
+  config.error_reporter = ->(error, **kwargs) {
+    puts error.inspect if Rails.env.development?
+  }
 end

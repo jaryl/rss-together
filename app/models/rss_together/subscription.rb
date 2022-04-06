@@ -6,7 +6,7 @@ module RssTogether
 
     def requires_processing?
       return true if processed_at.blank? || feed.processed_at.blank?
-      self.processed_at > feed.processed_at
+      self.processed_at < feed.processed_at
     end
   end
 end

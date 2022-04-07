@@ -6,6 +6,8 @@ class CreateRssTogetherMarks < ActiveRecord::Migration[7.0]
       t.references :reader, null: false, foreign_key: { to_table: :rss_together_memberships }, index: true
       t.references :item, null: false, foreign_key: { to_table: :rss_together_items }, index: true
 
+      t.boolean :unread, null: false, default: true
+
       t.enum :source, enum_type: :mark_source, default: "system", null: false
 
       t.timestamps

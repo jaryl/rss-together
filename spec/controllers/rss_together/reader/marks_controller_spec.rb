@@ -31,10 +31,12 @@ module RssTogether
 
     describe "POST #create" do
       context "with an existing mark" do
-        before { create(:mark, reader: membership, item: item) }
+        before { create(:mark, unread: false, reader: membership, item: item) }
         before { post :create, params: { group_id: group.id, item_id: item.id } }
 
         it { expect(assigns(:mark)).to be_persisted }
+        it { expect(assigns(:mark)).to be_unread }
+
         it { is_expected.to redirect_to(reader_group_item_mark_path(group, item)) }
       end
 
@@ -42,16 +44,31 @@ module RssTogether
         before { post :create, params: { group_id: group.id, item_id: item.id } }
 
         it { expect(assigns(:mark)).to be_persisted }
+        it { expect(assigns(:mark)).to be_unread }
+
         it { is_expected.to redirect_to(reader_group_item_mark_path(group, item)) }
       end
     end
 
     describe "DELETE #destroy" do
-      before { create(:mark, reader: membership, item: item) }
-      before { delete :destroy, params: { group_id: group.id, item_id: item.id } }
+      context "with an existing mark" do
+        before { create(:mark, unread: true, reader: membership, item: item) }
+        before { delete :destroy, params: { group_id: group.id, item_id: item.id } }
 
-      it { expect(assigns(:mark)).to be_destroyed }
-      it { is_expected.to redirect_to(reader_group_item_mark_path(group, item)) }
+        it { expect(assigns(:mark)).to be_persisted }
+        it { expect(assigns(:mark)).not_to be_unread }
+
+        it { is_expected.to redirect_to(reader_group_item_mark_path(group, item)) }
+      end
+
+      context "with no existing mark" do
+        before { delete :destroy, params: { group_id: group.id, item_id: item.id } }
+
+        it { expect(assigns(:mark)).to be_persisted }
+        it { expect(assigns(:mark)).not_to be_unread }
+
+        it { is_expected.to redirect_to(reader_group_item_mark_path(group, item)) }
+      end
     end
 
     describe "DELETE #all" do
@@ -59,7 +76,7 @@ module RssTogether
       before { Item.all.each { |item| item.marks.create(reader: membership) } }
       before { delete :all, params: { group_id: group.id, item_id: item.id } }
 
-      it { expect(membership.reload.marks).to be_empty }
+      it { expect(membership.reload.marks.unread).to be_empty }
       it { is_expected.to render_template(:all) }
     end
   end

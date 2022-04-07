@@ -139,6 +139,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_03_21_110018) do
   create_table "rss_together_marks", force: :cascade do |t|
     t.bigint "reader_id", null: false
     t.bigint "item_id", null: false
+    t.boolean "unread", default: true, null: false
     t.enum "source", default: "system", null: false, enum_type: "mark_source"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

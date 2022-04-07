@@ -10,10 +10,11 @@ module RssTogether
       end
 
       def create
-        @mark = current_membership.marks.find_or_initialize_by(item: @item) do |mark|
-          mark.source = :user
-        end
+        @mark = current_membership.marks.find_or_initialize_by(item: @item)
         authorize @mark
+
+        @mark.source = :user
+        @mark.unread = true
 
         if @mark.save
           flash[:success] = "Marked as unread"
@@ -24,9 +25,18 @@ module RssTogether
       end
 
       def destroy
-        @mark.destroy! if @mark.present?
-        flash[:success] = "Marked as read"
-        redirect_to reader_group_item_mark_path(@group, @item), status: :see_other
+        @mark = current_membership.marks.find_or_initialize_by(item: @item)
+        authorize @mark
+
+        @mark.source = :user
+        @mark.unread = false
+
+        if @mark.save
+          flash[:success] = "Marked as read"
+          redirect_to reader_group_item_mark_path(@group, @item), status: :see_other
+        else
+          render :show
+        end
       end
 
       def all
@@ -34,8 +44,8 @@ module RssTogether
         affected_item_ids = @marks.collect(&:item_id)
 
         ActiveRecord::Base.transaction do
-          current_membership.marks.delete_all
-          Membership.reset_counters(current_membership.id, :marks)
+          current_membership.marks.update_all(unread: false)
+          Membership.reset_counters(current_membership.id, :marks) # TODO: replace with conditional count
         end
 
         @affected_items = Item.includes(:marks).find(affected_item_ids)

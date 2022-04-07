@@ -9,7 +9,7 @@ module RssTogether
       elsif document.root.name == "rss"
         RssInterface.new(xml_document)
       else
-        NullInterface.new(xml_document)
+        raise DocumentParsingError, "Did not detect an Atom or RSS feed"
       end
     end
 

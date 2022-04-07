@@ -45,7 +45,7 @@ module RssTogether
 
         ActiveRecord::Base.transaction do
           current_membership.marks.update_all(unread: false)
-          Membership.reset_counters(current_membership.id, :marks) # TODO: replace with conditional count
+          current_membership.update!(unread_count: 0)
         end
 
         @affected_items = Item.includes(:marks).find(affected_item_ids)

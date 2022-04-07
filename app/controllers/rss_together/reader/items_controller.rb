@@ -11,7 +11,7 @@ module RssTogether
           @items = @items.where("published_at < ?", query[:published_at]) if query[:published_at].present?
 
           if "unread" == query[:filter]
-            @items = @items.includes(:marks).where(marks: { reader_id: current_membership })
+            @items = @items.includes(:marks).where(marks: { reader_id: current_membership, unread: true })
           else
             @items = @items.includes(:marks)
           end

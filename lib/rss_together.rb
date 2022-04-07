@@ -8,6 +8,7 @@ require "validate_url"
 require "pundit"
 require "faraday"
 require "addressable"
+require "counter_culture"
 
 require "rss_together/test/auth_helpers"
 

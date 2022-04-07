@@ -31,4 +31,5 @@ Gem::Specification.new do |spec|
   spec.add_dependency "faraday-retry"
   spec.add_dependency "faraday-follow_redirects"
   spec.add_dependency "pundit"
+  spec.add_dependency "counter_culture", "~> 2.0"
 end

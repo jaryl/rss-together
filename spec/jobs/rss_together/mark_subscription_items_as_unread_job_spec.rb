@@ -27,7 +27,7 @@ module RssTogether
         let(:items) { create_list(:item, 8, feed: feed, published_at: 15.days.ago) }
 
         it "creates the subscription, and updates the request status" do
-          expect(membership.marks.count).to eq(8)
+          expect(membership.marks.unread.count).to eq(8)
           expect(subscription.reload.processed_at).not_to eq(last_processed_at)
         end
       end
@@ -36,7 +36,7 @@ module RssTogether
         let(:items) { create_list(:item, 8, feed: feed, published_at: 45.days.ago) }
 
         it "creates the subscription, and updates the request status" do
-          expect(membership.marks.count).to eq(0)
+          expect(membership.marks.unread.count).to eq(0)
           expect(subscription.reload.processed_at).not_to eq(last_processed_at)
         end
       end

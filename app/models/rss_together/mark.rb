@@ -5,12 +5,18 @@ module RssTogether
       user: "user",
     }, _suffix: true
 
-    belongs_to :reader, class_name: "Membership", counter_cache: :unread_count
+    belongs_to :reader, class_name: "Membership"
     belongs_to :item
 
     has_one :account, through: :reader
 
     scope :read, -> () { where(unread: false) }
     scope :unread, -> () { where(unread: true) }
+
+    counter_culture :reader,
+      column_name: proc { |model| model.unread? ? 'unread_count' : nil },
+      column_names: {
+        Mark.unread => 'unread_count',
+      }
   end
 end

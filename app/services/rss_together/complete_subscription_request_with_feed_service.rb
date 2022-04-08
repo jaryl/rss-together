@@ -21,13 +21,11 @@ module RssTogether
         account: subscription_request.account,
       })
 
-      ActiveRecord::Base.transaction do
-        subscription.save!
-        subscription_request.update!(status: :success)
+      subscription.save!
+      subscription_request.update!(status: :success)
 
-        after_commit do
-          MarkSubscriptionItemsAsUnreadJob.perform_later(subscription)
-        end
+      after_commit do
+        MarkSubscriptionItemsAsUnreadJob.perform_later(subscription)
       end
 
       { subscription: subscription }

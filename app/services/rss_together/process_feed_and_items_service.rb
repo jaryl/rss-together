@@ -28,20 +28,18 @@ module RssTogether
         processed_at: Time.current,
       }
 
-      ActiveRecord::Base.transaction do
-        document.items.each do |item|
-          feed.items.find_or_initialize_by(guid: item.guid) do |i|
-            i.title = item.title
-            i.content = item.content
-            i.link = item.link
-            i.description = item.description
-            i.author = item.author
-            i.published_at = item.published_at
-          end
+      document.items.each do |item|
+        feed.items.find_or_initialize_by(guid: item.guid) do |i|
+          i.title = item.title
+          i.content = item.content
+          i.link = item.link
+          i.description = item.description
+          i.author = item.author
+          i.published_at = item.published_at
         end
-
-        feed.save!
       end
+
+      feed.save!
 
       { feed: feed }
     end

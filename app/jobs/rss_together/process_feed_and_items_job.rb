@@ -2,7 +2,10 @@ module RssTogether
   class ProcessFeedAndItemsJob < ApplicationJob
     queue_as :default
 
-    ERROR_KEY = "ProcessFeedAndItemsJob"
+    RESOURCE_FEEDBACK_KEYS = [
+      "RssTogether::DocumentParsingError",
+      "Faraday::Error",
+    ].freeze
 
     attr_reader :feed
 
@@ -27,14 +30,20 @@ module RssTogether
       raw_document = Nokogiri.parse(response.body)
       document = XmlDocument.with(document: raw_document)
 
-      ProcessFeedAndItemsService.call(
-        target_url: feed.link,
-        document: document,
-        feed: feed,
-      )
+      feed.with_lock do
+        ProcessFeedAndItemsService.call(
+          target_url: feed.link,
+          document: document,
+          feed: feed,
+        )
 
-      feed.subscriptions.find_each do |subscription|
-        MarkSubscriptionItemsAsUnreadJob.perform_later(subscription)
+        feed.feedback.where(key: RESOURCE_FEEDBACK_KEYS).destroy_all
+
+        after_commit do
+          feed.subscriptions.find_each do |subscription|
+            MarkSubscriptionItemsAsUnreadJob.perform_later(subscription)
+          end
+        end
       end
     end
   end

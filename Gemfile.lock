@@ -9,6 +9,7 @@ PATH
       faraday
       faraday-follow_redirects
       faraday-retry
+      logtail-rails (~> 0.1.6)
       pundit
       rails (>= 7.0.2)
       rodauth-rails (~> 1.2)
@@ -128,6 +129,15 @@ GEM
       concurrent-ruby (~> 1.0)
     isolator (0.8.0)
       sniffer (>= 0.3.1)
+    logtail (0.1.7)
+      msgpack (~> 1.0)
+    logtail-rack (0.1.6)
+      logtail (~> 0.1)
+      rack (>= 1.2, < 3.0)
+    logtail-rails (0.1.6)
+      logtail (~> 0.1)
+      logtail-rack (~> 0.1)
+      rails (>= 3.0.0)
     loofah (2.16.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
@@ -137,6 +147,7 @@ GEM
     method_source (1.0.0)
     mini_mime (1.1.2)
     minitest (5.15.0)
+    msgpack (1.5.1)
     net-imap (0.2.3)
       digest
       net-protocol

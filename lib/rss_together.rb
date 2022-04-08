@@ -9,6 +9,7 @@ require "pundit"
 require "faraday"
 require "addressable"
 require "counter_culture"
+require "logtail-rails"
 
 require "rss_together/test/auth_helpers"
 
@@ -28,6 +29,7 @@ module RssTogether
   mattr_accessor :user_agent
 
   mattr_accessor :error_reporter
+  mattr_accessor :logger
 
   def self.setup
     yield self

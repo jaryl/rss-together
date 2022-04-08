@@ -32,4 +32,5 @@ Gem::Specification.new do |spec|
   spec.add_dependency "faraday-follow_redirects"
   spec.add_dependency "pundit"
   spec.add_dependency "counter_culture", "~> 2.0"
+  spec.add_dependency "logtail-rails", "~> 0.1.6"
 end

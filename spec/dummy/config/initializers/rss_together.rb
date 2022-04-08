@@ -14,6 +14,8 @@ RssTogether.setup do |config|
   config.user_agent = "RssTogether"
 
   config.error_reporter = ->(error, **kwargs) {
-    puts error.inspect if Rails.env.development?
+    Rails.logger.error error.message, error: error if Rails.env.development?
   }
+
+  config.logger = ActiveSupport::TaggedLogging.new(Rails.logger).tagged("rss-together")
 end

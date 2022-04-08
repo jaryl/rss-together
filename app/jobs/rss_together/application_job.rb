@@ -2,27 +2,29 @@ module RssTogether
   class ApplicationJob < ActiveJob::Base
     include AfterCommitEverywhere
 
-    rescue_from StandardError, with: :report_error
+    rescue_from StandardError, with: :log_and_report_error
 
-    def fail_with_feedback(resource:, error: nil, **kwargs)
-      key = error.present? ? error.class.name : "Unknown"
+    DEFAULT_FEEDBACK_KEY = "Unknown".freeze
+    REPORTING_TAGS = ["active-job"].freeze
+
+    def fail_with_feedback(resource:, error:, **kwargs)
+      key = error.present? ? error.class.name : DEFAULT_FEEDBACK_KEY
       ActiveRecord::Base.transaction do
         yield feedback = resource.feedback.find_or_initialize_by(key: error&.class&.name)
 
         feedback.save!
 
         after_commit do
-          report_error(error, **kwargs) if error.present?
+          log_and_report_error(error, **kwargs) if error.present?
         end
       end
     end
 
     private
 
-    def report_error(error, **kwargs)
-      kwargs[:sync] = true
+    def log_and_report_error(error, **kwargs)
       kwargs[:tags] ||= []
-      kwargs[:tags] << "active-job"
+      kwargs[:tags].concat(REPORTING_TAGS).uniq!
 
       kwargs[:parameters] = arguments.inject({}) do |acc, arg|
         if arg.respond_to?(:to_global_id)
@@ -33,7 +35,10 @@ module RssTogether
         acc
       end
 
-      RssTogether.error_reporter.call(error, **kwargs)
+      puts RssTogether.logger.inspect
+
+      RssTogether.logger.error(error.message, error: error.class.name, **kwargs)
+      RssTogether.error_reporter.call(error, **kwargs.merge(sync: true))
     end
   end
 end

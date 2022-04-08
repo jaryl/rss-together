@@ -35,8 +35,6 @@ module RssTogether
         acc
       end
 
-      puts RssTogether.logger.inspect
-
       RssTogether.logger.error(error.message, error: error.class.name, **kwargs)
       RssTogether.error_reporter.call(error, **kwargs.merge(sync: true))
     end

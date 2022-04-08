@@ -185,7 +185,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_03_21_110018) do
     t.string "resource_type"
     t.bigint "resource_id"
     t.enum "status", default: "pending", null: false, enum_type: "resource_feedback_status"
-    t.string "title", null: false
+    t.string "key", null: false
     t.string "message", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

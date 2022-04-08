@@ -6,7 +6,6 @@ module RssTogether
 
     discard_on NoFeedAtTargetUrlError do |job, error|
       job.fail_with_feedback(resource: job.subscription_request, error: error) do |feedback|
-        feedback.title = "Error subscribing to feed"
         feedback.message = error.message
         job.subscription_request.update!(status: :failure)
       end
@@ -14,16 +13,14 @@ module RssTogether
 
     discard_on DocumentParsingError do |job, error|
       job.fail_with_feedback(resource: job.subscription_request, error: error) do |feedback|
-        feedback.title = "Error subscribing to feed"
-        feedback.message = "There was a problem processing the content at %{url}"
+        feedback.message = "There was a problem processing the content at #{job.subscription_request.target_url}"
         job.subscription_request.update!(status: :failure)
       end
     end
 
     discard_on Faraday::Error do |job, error|
       job.fail_with_feedback(resource: job.subscription_request, error: error) do |feedback|
-        feedback.title = "Error subscribing to feed"
-        feedback.message = "Encountered a server error at %{url}"
+        feedback.message = "Encountered a server error at #{job.subscription_request.target_url}"
         job.subscription_request.update!(status: :failure)
       end
     end

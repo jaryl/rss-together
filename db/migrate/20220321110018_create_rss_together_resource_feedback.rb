@@ -7,7 +7,7 @@ class CreateRssTogetherResourceFeedback < ActiveRecord::Migration[7.0]
 
       t.enum :status, enum_type: :resource_feedback_status, default: "pending", null: false
 
-      t.string :title, null: false
+      t.string :key, null: false
       t.string :message, null: false
 
       t.timestamps

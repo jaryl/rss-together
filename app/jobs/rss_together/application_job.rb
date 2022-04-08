@@ -7,8 +7,10 @@ module RssTogether
     def fail_with_feedback(resource:, error: nil, **kwargs)
       # TODO: check if feedback for this resource already exists
 
+      key = error.present? ? error.class.name : "Unknown"
+
       ActiveRecord::Base.transaction do
-        yield feedback = resource.feedback.build
+        yield feedback = resource.feedback.find_or_initialize_by(key: error&.class&.name)
 
         feedback.save!
 

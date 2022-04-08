@@ -2,18 +2,20 @@ module RssTogether
   class ProcessFeedAndItemsJob < ApplicationJob
     queue_as :default
 
+    ERROR_KEY = "ProcessFeedAndItemsJob"
+
     attr_reader :feed
 
     discard_on Faraday::Error do |job, error|
-      job.fail_with_feedback(resource: job.feed, error: error) do |feedback|
-        feedback.title = "Error processing feed"
+      context = { feed_url: job.feed.link }
+      job.fail_with_feedback(resource: job.feed, error: error, context: context) do |feedback|
         feedback.message = "Server error when requesting this feed"
       end
     end
 
     discard_on DocumentParsingError do |job, error|
-      job.fail_with_feedback(resource: job.feed, error: error) do |feedback|
-        feedback.title = "Error processing feed"
+      context = { feed_url: job.feed.link }
+      job.fail_with_feedback(resource: job.feed, error: error, context: context) do |feedback|
         feedback.message = "There was a problem processing this feed's content"
       end
     end

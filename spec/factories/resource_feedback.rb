@@ -2,11 +2,11 @@ FactoryBot.define do
   factory :feedback, class: "RssTogether::ResourceFeedback" do
     resource { association :feed }
 
-    title { "An error has occurred" }
+    key { "some-error-has-occurred" }
     message { Faker::Lorem.paragraph }
 
     trait :invalid do
-      title { "" }
+      key { "" }
       message { "" }
     end
   end

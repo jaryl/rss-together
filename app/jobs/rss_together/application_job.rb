@@ -1,5 +1,5 @@
 module RssTogether
-  class ApplicationJob < ActiveJob::Base
+  class ApplicationJob < ::ApplicationJob
     include AfterCommitEverywhere
 
     rescue_from StandardError, with: :log_and_report_error
@@ -35,7 +35,7 @@ module RssTogether
         acc
       end
 
-      RssTogether.logger.error(error.message, error: error.class.name, **kwargs)
+      logger.error(error.message, error: error.class.name, **kwargs)
       RssTogether.error_reporter.call(error, **kwargs.merge(sync: true))
     end
   end

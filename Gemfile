@@ -13,6 +13,8 @@ group :development, :test do
   gem "isolator"
   # Sprockets Rails integration
   gem "sprockets-rails"
+  # Ruby on Rails Logtail integration
+  gem "logtail-rails", "~> 0.1.6"
 end
 
 group :development do

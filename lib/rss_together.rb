@@ -9,7 +9,6 @@ require "pundit"
 require "faraday"
 require "addressable"
 require "counter_culture"
-require "logtail-rails"
 
 require "rss_together/test/auth_helpers"
 

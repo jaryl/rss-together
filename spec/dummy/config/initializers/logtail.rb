@@ -5,3 +5,5 @@ elsif Rails.env.test?
 end
 
 Rails.logger = ActiveSupport::TaggedLogging.new(logger)
+
+ActiveJob::Base.logger = Rails.logger

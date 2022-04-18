@@ -206,7 +206,7 @@ GEM
       zeitwerk (~> 2.5)
     rake (13.0.6)
     rexml (3.2.5)
-    roda (3.54.0)
+    roda (3.55.0)
       rack
     rodauth (2.22.0)
       roda (>= 2.6.0)

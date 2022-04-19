@@ -1,5 +1,5 @@
 class CreateRssTogetherMarks < ActiveRecord::Migration[7.0]
-  def change
+  def up
     create_enum :mark_source, ["system", "user"]
 
     create_table :rss_together_marks do |t|

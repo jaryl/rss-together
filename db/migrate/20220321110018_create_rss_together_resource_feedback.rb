@@ -1,5 +1,5 @@
 class CreateRssTogetherResourceFeedback < ActiveRecord::Migration[7.0]
-  def change
+  def up
     create_enum :resource_feedback_status, ["pending", "resolved", "dismissed"]
 
     create_table :rss_together_resource_feedback do |t|
@@ -11,6 +11,14 @@ class CreateRssTogetherResourceFeedback < ActiveRecord::Migration[7.0]
       t.string :message, null: false
 
       t.timestamps
+    end
+
+    def down
+      drop_table :rss_together_resource_feedback
+
+      execute <<-SQL
+        DROP TYPE resource_feedback_status;
+      SQL
     end
   end
 end

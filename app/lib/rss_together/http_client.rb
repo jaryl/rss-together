@@ -7,7 +7,11 @@ module RssTogether
       options = {
         headers: {
           "User-Agent": RssTogether.user_agent,
-        }
+        },
+        request: {
+          open_timeout: 1,
+          timeout: 1,
+        },
       }
 
       Faraday.new(nil, options) do |connection|

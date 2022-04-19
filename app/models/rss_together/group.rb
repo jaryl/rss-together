@@ -14,7 +14,7 @@ module RssTogether
 
     has_many :invitations, dependent: :destroy
 
-    validates :name, presence: true
+    validates :name, presence: true, length: { maximum: 64 }
 
     def initials
       name.split(" ").collect(&:first).join.upcase

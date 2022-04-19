@@ -17,6 +17,7 @@ module RssTogether
     it { is_expected.to have_many(:invitations) }
 
     it { is_expected.to validate_presence_of(:name) }
+    it { is_expected.to validate_length_of(:name).is_at_most(64) }
 
     it { expect(build(:group)).to be_valid }
     it { expect(build(:group, :invalid)).not_to be_valid }

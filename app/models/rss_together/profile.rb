@@ -2,8 +2,8 @@ module RssTogether
   class Profile < ApplicationRecord
     belongs_to :account
 
-    validates :display_name, :timezone, presence: true
-    validates :timezone, inclusion: { in: TZInfo::Timezone.all_identifiers }
+    validates :display_name, presence: true, length: { minimum: 2, maximum: 32 }
+    validates :timezone, presence: true, inclusion: { in: TZInfo::Timezone.all_identifiers }
 
     before_validation :retrieve_timezone_name
 

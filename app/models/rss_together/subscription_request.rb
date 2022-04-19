@@ -15,7 +15,7 @@ module RssTogether
 
     before_validation :preserve_original_url
 
-    validates :target_url, url: { no_local: true }, presence: true
+    validates :target_url, url: { no_local: true }, presence: true, length: { maximum: 2048 }
 
     private
 

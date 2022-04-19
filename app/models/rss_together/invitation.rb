@@ -4,7 +4,7 @@ module RssTogether
     belongs_to :sender, class_name: "Membership"
     has_one :account, through: :sender
 
-    validates :email, presence: true, email: { mode: :strict }
+    validates :email, presence: true, length: { maximum: 512 }, email: { mode: :strict }
 
     before_validation :generate_token, on: :create
 

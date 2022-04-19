@@ -17,6 +17,6 @@ module RssTogether
     has_many :group_transfers, foreign_key: "recipient_id", dependent: :destroy
     has_many :bookmarks
 
-    validates :email, presence: true
+    validates :email, presence: true, length: { maximum: 512 }, email: { mode: :strict }
   end
 end

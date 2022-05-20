@@ -43,7 +43,7 @@ module RssTogether
         @marks = policy_scope(current_membership.marks)
         affected_item_ids = @marks.collect(&:item_id)
 
-        ActiveRecord::Base.transaction do
+        current_membership.with_lock do
           current_membership.marks.update_all(unread: false)
           current_membership.update!(unread_count: 0)
         end

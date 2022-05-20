@@ -2,6 +2,8 @@ require "rails_helper"
 
 module RssTogether
   RSpec.describe Groups::SubscriptionsController, type: :controller do
+    before { ActiveJob::Base.queue_adapter = :test }
+
     routes { Engine.routes }
 
     let(:membership) { create(:membership) }
@@ -21,7 +23,7 @@ module RssTogether
     describe "DELETE #destroy" do
       before { delete :destroy, params: { group_id: group.id, id: subscription.id } }
 
-      it { expect(assigns(:subscription)).to be_destroyed }
+      it { expect(RemoveSubscriptionJob).to have_been_enqueued }
       it { expect(response).to redirect_to(group_subscriptions_path(group)) }
     end
   end

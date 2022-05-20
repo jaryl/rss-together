@@ -11,9 +11,7 @@ module RssTogether
       subscription.with_lock do
         if items_payload.present?
           subscription.group.memberships.each do |membership|
-            membership.lock!
             membership.marks.insert_all(items_payload)
-            membership.update!(unread_count: membership.marks.unread.count)
           end
         end
 

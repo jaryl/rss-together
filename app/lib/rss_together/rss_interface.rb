@@ -33,7 +33,7 @@ module RssTogether
         guid = item.at_xpath("guid").text rescue Digest::MD5.hexdigest(content_encoded.blank? ? description : content_encoded)
 
         ItemElement.new({
-          title: item.at_xpath("title")&.text,
+          title: item.at_xpath("title")&.text || "",
           content: content_encoded.blank? ? description : content_encoded,
           link: item.at_xpath("link").text.strip,
           description: strip_tags([description, content_encoded].reject(&:blank?).first)&.strip&.truncate(140),

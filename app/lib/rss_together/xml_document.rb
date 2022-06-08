@@ -4,9 +4,9 @@ module RssTogether
       document.remove_namespaces!
       xml_document = new(document: document)
 
-      if document.root.name == "feed"
+      if document.root&.name == "feed"
         AtomInterface.new(xml_document)
-      elsif document.root.name == "rss"
+      elsif document.root&.name == "rss"
         RssInterface.new(xml_document)
       else
         raise DocumentParsingError, "Did not detect an Atom or RSS feed"

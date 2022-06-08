@@ -5,6 +5,7 @@ module RssTogether
     attr_reader :subscription_request
 
     discard_on NoFeedAtTargetUrlError do |job, error|
+      context = { feed_url: job.subscription_request.target_url }
       job.fail_with_feedback(resource: job.subscription_request, error: error, context: context) do |feedback|
         feedback.message = error.message
         job.subscription_request.update!(status: :failure)
@@ -12,6 +13,7 @@ module RssTogether
     end
 
     discard_on DocumentParsingError do |job, error|
+      context = { feed_url: job.subscription_request.target_url }
       job.fail_with_feedback(resource: job.subscription_request, error: error, context: context) do |feedback|
         feedback.message = "There was a problem processing the content at #{job.subscription_request.target_url}"
         job.subscription_request.update!(status: :failure)
@@ -19,6 +21,7 @@ module RssTogether
     end
 
     discard_on Faraday::Error do |job, error|
+      context = { feed_url: job.subscription_request.target_url }
       job.fail_with_feedback(resource: job.subscription_request, error: error, context: context) do |feedback|
         feedback.message = "Encountered a server error at #{job.subscription_request.target_url}"
         job.subscription_request.update!(status: :failure)
@@ -66,10 +69,6 @@ module RssTogether
       resolved_url = URI(link).host.nil? ? URI.join(subscription_request.target_url, link) : link
       subscription_request.update!(target_url: resolved_url)
       ResolveNewFeedJob.perform_later(subscription_request, follows + 1)
-    end
-
-    def context
-      { feed_url: subscription_request.target_url }
     end
   end
 end

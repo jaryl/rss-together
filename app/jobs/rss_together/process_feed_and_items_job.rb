@@ -10,12 +10,14 @@ module RssTogether
     attr_reader :feed
 
     discard_on Faraday::Error do |job, error|
+      context = { feed_url: job.feed.link }
       job.fail_with_feedback(resource: job.feed, error: error, context: context) do |feedback|
         feedback.message = "Server error when requesting this feed"
       end
     end
 
     discard_on DocumentParsingError do |job, error|
+      context = { feed_url: job.feed.link }
       job.fail_with_feedback(resource: job.feed, error: error, context: context) do |feedback|
         feedback.message = "There was a problem processing this feed's content"
       end
@@ -43,12 +45,6 @@ module RssTogether
           end
         end
       end
-    end
-
-    private
-
-    def context
-      { feed_url: job.feed.link }
     end
   end
 end

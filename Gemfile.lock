@@ -84,7 +84,7 @@ GEM
       tzinfo (~> 2.0)
     addressable (2.8.0)
       public_suffix (>= 2.0.2, < 5.0)
-    after_commit_everywhere (1.2.0)
+    after_commit_everywhere (1.2.1)
       activerecord (>= 4.2)
       activesupport
     anyway_config (2.3.0)
@@ -192,7 +192,7 @@ GEM
     rails-dom-testing (2.0.3)
       activesupport (>= 4.2.0)
       nokogiri (>= 1.6)
-    rails-html-sanitizer (1.4.2)
+    rails-html-sanitizer (1.4.3)
       loofah (~> 2.3)
     railties (7.0.3)
       actionpack (= 7.0.3)
@@ -210,7 +210,7 @@ GEM
       sequel (>= 4)
     rodauth-model (0.2.0)
       rodauth (~> 2.0)
-    rodauth-rails (1.4.2)
+    rodauth-rails (1.5.0)
       bcrypt
       railties (>= 4.2, < 8)
       roda (~> 3.55)

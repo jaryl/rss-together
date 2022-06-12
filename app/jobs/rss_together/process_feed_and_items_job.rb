@@ -23,6 +23,13 @@ module RssTogether
       end
     end
 
+    retry_on Faraday::TimeoutError, wait: :exponentially_longer, attempts: 10 do |job, error|
+      context = { feed_url: job.feed.link }
+      job.fail_with_feedback(resource: job.feed, error: error, context: context) do |feedback|
+        feedback.message = "Server timed out when requesting this feed"
+      end
+    end
+
     def perform(feed)
       @feed = feed
 

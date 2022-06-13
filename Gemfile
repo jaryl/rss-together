@@ -7,8 +7,6 @@ gemspec
 group :development, :test do
   # A PostgreSQL client library for Ruby
   gem "pg", "~> 1.3.1"
-  # Slim is a template language whose goal is to reduce the syntax to the essential parts without becoming cryptic
-  gem "slim"
   # Detect non-atomic interactions within DB transactions
   gem "isolator"
   # Sprockets Rails integration

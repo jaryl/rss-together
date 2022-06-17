@@ -9,6 +9,8 @@ class CreateRssTogetherProfiles < ActiveRecord::Migration[7.0]
       t.boolean :onboarded, default: false
 
       t.timestamps
+
+      t.index :display_name
     end
   end
 end

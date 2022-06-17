@@ -11,7 +11,6 @@ RssTogether::Engine.routes.draw do
         resources :items, only: [:index, :show] do
           resource :mark, only: [:show, :create, :destroy]
           resource :bookmark, only: [:show, :create, :destroy]
-          resource :reaction, only: [:show, :edit, :update, :destroy]
           resource :recommendation, only: [:show, :create, :destroy]
           # resources :comments, only: [:index, :new, :create, :edit ,:update, :destroy]
         end

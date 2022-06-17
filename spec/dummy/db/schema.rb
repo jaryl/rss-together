@@ -88,6 +88,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_17_101950) do
     t.datetime "updated_at", null: false
     t.index ["link"], name: "index_rss_together_feeds_on_link", unique: true
     t.index ["processed_at"], name: "index_rss_together_feeds_on_processed_at"
+    t.index ["title"], name: "index_rss_together_feeds_on_title"
   end
 
   create_table "rss_together_group_transfers", force: :cascade do |t|
@@ -104,6 +105,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_17_101950) do
     t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_rss_together_groups_on_name"
     t.index ["owner_id"], name: "index_rss_together_groups_on_owner_id"
   end
 
@@ -168,17 +170,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_17_101950) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["account_id"], name: "index_rss_together_profiles_on_account_id"
-  end
-
-  create_table "rss_together_reactions", force: :cascade do |t|
-    t.bigint "membership_id", null: false
-    t.bigint "item_id", null: false
-    t.string "value"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["item_id", "membership_id"], name: "index_rss_together_reactions_on_item_id_and_membership_id", unique: true
-    t.index ["item_id"], name: "index_rss_together_reactions_on_item_id"
-    t.index ["membership_id"], name: "index_rss_together_reactions_on_membership_id"
+    t.index ["display_name"], name: "index_rss_together_profiles_on_display_name"
   end
 
   create_table "rss_together_recommendations", force: :cascade do |t|
@@ -245,8 +237,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_17_101950) do
   add_foreign_key "rss_together_memberships", "rss_together_accounts", column: "account_id"
   add_foreign_key "rss_together_memberships", "rss_together_groups", column: "group_id"
   add_foreign_key "rss_together_profiles", "rss_together_accounts", column: "account_id"
-  add_foreign_key "rss_together_reactions", "rss_together_items", column: "item_id"
-  add_foreign_key "rss_together_reactions", "rss_together_memberships", column: "membership_id"
   add_foreign_key "rss_together_recommendations", "rss_together_items", column: "item_id"
   add_foreign_key "rss_together_recommendations", "rss_together_memberships", column: "membership_id"
   add_foreign_key "rss_together_subscription_requests", "rss_together_memberships", column: "membership_id"

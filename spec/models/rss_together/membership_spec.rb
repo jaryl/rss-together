@@ -10,7 +10,6 @@ module RssTogether
     it { is_expected.to have_many(:subscription_requests) }
     it { is_expected.to have_many(:invitations) }
     it { is_expected.to have_many(:marks) }
-    it { is_expected.to have_many(:reactions) }
     it { is_expected.to have_many(:recommendations) }
     it { is_expected.to have_many(:comments) }
 

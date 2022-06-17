@@ -28,6 +28,7 @@ module RssTogether
         @bookmark = @item.bookmarks.find_by(account: current_account)
         @mark = @item.marks.find_by(reader: current_membership)
         @reaction = @item.reactions.find_by(membership: current_membership)
+        @recommendation = @item.recommendations.find_by(membership: current_membership)
       end
 
       private

@@ -6,6 +6,7 @@ module RssTogether
     has_many :marks
     has_many :comments
     has_many :reactions
+    has_many :recommendations
 
     validates :link, presence: true
 

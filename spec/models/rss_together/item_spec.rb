@@ -8,6 +8,7 @@ module RssTogether
     it { is_expected.to have_many(:marks) }
     it { is_expected.to have_many(:comments) }
     it { is_expected.to have_many(:reactions) }
+    it { is_expected.to have_many(:recommendations) }
 
     it { is_expected.to validate_presence_of(:link) }
 

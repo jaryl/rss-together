@@ -11,6 +11,7 @@ module RssTogether
     it { is_expected.to have_many(:invitations) }
     it { is_expected.to have_many(:marks) }
     it { is_expected.to have_many(:reactions) }
+    it { is_expected.to have_many(:recommendations) }
     it { is_expected.to have_many(:comments) }
 
     it { is_expected.to validate_length_of(:display_name_override).is_at_most(32).is_at_least(2) }

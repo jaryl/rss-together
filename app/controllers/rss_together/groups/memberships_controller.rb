@@ -41,7 +41,7 @@ module RssTogether
     end
 
     def membership_params
-      params.require(:membership).permit(:display_name_override)
+      params.require(:membership).permit(:display_name_override, :recommendation_threshold_override)
     end
   end
 end

@@ -4,6 +4,8 @@ class CreateRssTogetherProfiles < ActiveRecord::Migration[7.0]
       t.references :account, null: false, foreign_key: { to_table: :rss_together_accounts }, index: true
 
       t.string :display_name, null: false
+      t.integer :recommendation_threshold, null: true
+
       t.string :timezone, null: false
 
       t.boolean :onboarded, default: false

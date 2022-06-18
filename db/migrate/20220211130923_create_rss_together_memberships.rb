@@ -5,6 +5,7 @@ class CreateRssTogetherMemberships < ActiveRecord::Migration[7.0]
       t.references :group, null: false, foreign_key: { to_table: :rss_together_groups }, index: true
 
       t.string :display_name_override, null: true
+      t.integer :recommendation_threshold_override, null: true
 
       t.integer :unread_count, null: false, default: 0
 

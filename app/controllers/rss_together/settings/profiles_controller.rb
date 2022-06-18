@@ -26,7 +26,7 @@ module RssTogether
     end
 
     def profile_params
-      params.require(:profile).permit(:display_name, :timezone)
+      params.require(:profile).permit(:display_name, :recommendation_threshold, :timezone)
     end
   end
 end

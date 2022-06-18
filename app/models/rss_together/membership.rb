@@ -22,5 +22,13 @@ module RssTogether
     def recommendation_threshold
       recommendation_threshold_override.present? ? recommendation_threshold_override : profile&.recommendation_threshold
     end
+
+    def marker_processing_scheme
+      if recommendation_threshold.present?
+        MarkerProcessingSchemes::RecommendationRequirementScheme.new(self)
+      else
+        MarkerProcessingSchemes::DefaultScheme.new(self)
+      end
+    end
   end
 end

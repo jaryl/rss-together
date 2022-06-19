@@ -4,6 +4,8 @@ module RssTogether
   RSpec.describe Profile, type: :model do
     it { is_expected.to belong_to(:account) }
 
+    it { is_expected.to have_many(:bookmarks) }
+
     it { is_expected.to validate_presence_of(:display_name) }
     it { is_expected.to validate_length_of(:display_name).is_at_most(32).is_at_least(2) }
 

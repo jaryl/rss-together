@@ -168,6 +168,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_17_101950) do
     t.string "display_name", null: false
     t.integer "recommendation_threshold"
     t.string "timezone", null: false
+    t.integer "bookmarks_count", default: 0, null: false
     t.boolean "onboarded", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

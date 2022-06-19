@@ -8,6 +8,8 @@ class CreateRssTogetherProfiles < ActiveRecord::Migration[7.0]
 
       t.string :timezone, null: false
 
+      t.integer :bookmarks_count, null: false, default: 0
+
       t.boolean :onboarded, default: false
 
       t.timestamps

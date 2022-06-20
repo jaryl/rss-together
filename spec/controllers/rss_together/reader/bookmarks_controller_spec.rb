@@ -9,8 +9,9 @@ module RssTogether
     let(:account) { membership.account }
     let(:subscription) { create(:subscription, group: group) }
     let(:item) { create(:item, feed: subscription.feed) }
+    let(:profile) { create(:profile, account: account) }
 
-    before { sign_in account }
+    before { sign_in profile.account }
 
     describe "GET #show" do
       context "with an existing bookmark" do
@@ -43,6 +44,15 @@ module RssTogether
 
         it { expect(assigns(:bookmark)).to be_present }
         it { expect(response).to redirect_to(reader_group_item_bookmark_path(group, item)) }
+      end
+
+      context "when hit maximum bookmarks" do
+        let(:profile) { create(:profile, account: account, bookmarks_count: Bookmark::MAX_BOOKMARKS) }
+
+        before { post :create, params: { group_id: group.id, item_id: item.id } }
+
+        it { expect(assigns(:bookmark)).not_to be_persisted }
+        it { expect(response).to render_template(:show) }
       end
     end
 

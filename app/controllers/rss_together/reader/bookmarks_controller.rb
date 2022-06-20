@@ -11,10 +11,13 @@ module RssTogether
         @bookmark = current_account.bookmarks.find_or_initialize_by(item: @item)
         authorize @bookmark
 
-        @bookmark.save!
-
-        flash[:success] = "Bookmark saved"
-        redirect_to reader_group_item_bookmark_path(@group, @item), status: :see_other
+        if @bookmark.save
+          flash[:success] = "Bookmark saved"
+          redirect_to reader_group_item_bookmark_path(@group, @item), status: :see_other
+        else
+          flash.now[:alert] = @bookmark.errors.full_messages.join
+          render :show
+        end
       end
 
       def destroy

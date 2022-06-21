@@ -8,7 +8,6 @@ module RssTogether
     let(:recommendation) { create(:recommendation) }
     let(:subscription) { create(:subscription, group: recommendation.group, feed: recommendation.feed) }
     let(:membership) { recommendation.membership }
-    let(:other_membership) { create(:membership, group: membership.group) }
 
     let(:perform) do
       perform_enqueued_jobs do
@@ -24,9 +23,21 @@ module RssTogether
     end
 
     describe "#perform" do
-      it "creates 1 unread marker" do
-        expect(membership.marks.unread.count).to eq(0)
-        expect(other_membership.marks.unread.count).to eq(1)
+      context "with 2 members" do
+        let(:other_membership) { create(:membership, group: membership.group) }
+
+        it "creates 1 unread marker" do
+          expect(membership.marks.unread.count).to eq(0)
+          expect(other_membership.marks.unread.count).to eq(1)
+        end
+      end
+
+      context "with only 1 member" do
+        let(:other_membership) { {} }
+
+        it "creates no unread markers" do
+          expect(membership.marks.unread.count).to eq(0)
+        end
       end
     end
   end

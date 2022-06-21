@@ -8,7 +8,7 @@ module RssTogether
           reader.marker_processing_scheme.process([recommendation.item_id])
         end.flatten.reject(&:empty?)
 
-        Mark.insert_all(payload)
+        Mark.insert_all(payload) unless payload.empty?
 
         target_readers.each do |reader|
           reader.update!(unread_count: reader.marks.unread.count)

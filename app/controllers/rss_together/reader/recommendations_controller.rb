@@ -1,6 +1,8 @@
 module RssTogether
   module Reader
     class RecommendationsController < BaseController
+      include AfterCommitEverywhere
+
       before_action :prepare_group, :prepare_item
       before_action :prepare_recommendation, only: [:show, :destroy]
 
@@ -12,7 +14,10 @@ module RssTogether
         @recommendation = current_membership.recommendations.find_or_initialize_by(item: @item)
         authorize @recommendation
 
-        @recommendation.save!
+        ActiveRecord::Base.transaction do
+          @recommendation.save!
+          after_commit { MarkRecommendedItemAsUnreadJob.perform_later(@recommendation) }
+        end
 
         flash[:success] = "Recommended"
         redirect_to reader_group_item_recommendation_path(@group, @item), status: :see_other

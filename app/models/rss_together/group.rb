@@ -7,6 +7,7 @@ module RssTogether
     has_many :memberships, dependent: :destroy
     has_many :accounts, through: :memberships
     has_many :subscription_requests, through: :memberships
+    has_many :recommendations, through: :memberships
 
     has_many :subscriptions, dependent: :destroy
     has_many :feeds, through: :subscriptions

@@ -9,12 +9,14 @@ module RssTogether
 
       subscription.with_lock do
         if item_ids.present?
-          subscription.group.memberships.each do |membership|
-            items_payload = membership.marker_processing_scheme.process(item_ids)
-            if items_payload.present?
-              membership.marks.insert_all(items_payload)
-              membership.update!(unread_count: membership.marks.unread.count)
-            end
+          payload = subscription.group.memberships.map do |reader|
+            reader.marker_processing_scheme.process(item_ids)
+          end.flatten.reject(&:empty?)
+
+          Mark.insert_all(payload)
+
+          subscription.group.memberships.each do |reader|
+            reader.update!(unread_count: reader.marks.unread.count)
           end
         end
 

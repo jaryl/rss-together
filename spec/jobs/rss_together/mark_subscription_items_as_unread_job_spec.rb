@@ -9,6 +9,7 @@ module RssTogether
     let(:last_processed_at) { 12.hours.ago }
     let(:subscription) { create(:subscription, feed: feed, processed_at: last_processed_at) }
     let(:membership) { create(:membership, group: subscription.group, account: subscription.account) }
+    let(:other_membership) { create(:membership, group: subscription.group) }
     let(:recommendation) {}
 
     let(:perform) do
@@ -19,6 +20,7 @@ module RssTogether
 
     before do
       membership
+      other_membership
       items
       recommendation
       perform
@@ -30,6 +32,7 @@ module RssTogether
 
         it "creates 8 unread markers" do
           expect(membership.marks.unread.count).to eq(8)
+          expect(other_membership.marks.unread.count).to eq(8)
           expect(subscription.reload.processed_at).not_to eq(last_processed_at)
         end
       end
@@ -39,6 +42,7 @@ module RssTogether
 
         it "creates 0 unread markers" do
           expect(membership.marks.unread.count).to eq(0)
+          expect(other_membership.marks.unread.count).to eq(0)
           expect(subscription.reload.processed_at).not_to eq(last_processed_at)
         end
       end
@@ -46,10 +50,11 @@ module RssTogether
       context "with recommendation threshold set" do
         let(:items) { create_list(:item, 8, feed: feed, published_at: 15.days.ago) }
         let(:membership) { create(:membership, recommendation_threshold_override: 1, group: subscription.group, account: subscription.account) }
-        let(:recommendation) { create(:recommendation, item: items.first, membership: membership) }
+        let(:recommendation) { create(:recommendation, item: items.first, membership: other_membership) }
 
         it "creates 1 unread marker" do
-          expect(membership.reload.marks.unread.count).to eq(1)
+          expect(membership.marks.unread.count).to eq(1)
+          expect(other_membership.marks.unread.count).to eq(8)
           expect(subscription.reload.processed_at).not_to eq(last_processed_at)
         end
       end

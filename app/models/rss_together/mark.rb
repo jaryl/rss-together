@@ -9,6 +9,7 @@ module RssTogether
     belongs_to :item
 
     has_one :account, through: :reader
+    has_one :group, through: :reader
 
     scope :read, -> () { where(unread: false) }
     scope :unread, -> () { where(unread: true) }

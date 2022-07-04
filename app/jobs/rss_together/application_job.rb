@@ -35,6 +35,9 @@ module RssTogether
         acc
       end
 
+      kwargs[:context] ||= {}
+      kwargs[:context][:job_class] = self.class.to_s
+
       logger.error(error.message, error: error.class.name, **kwargs)
       RssTogether.error_reporter.call(error, **kwargs.merge(sync: true))
     end

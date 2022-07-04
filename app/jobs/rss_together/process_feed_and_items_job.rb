@@ -9,7 +9,7 @@ module RssTogether
 
     attr_reader :feed
 
-    discard_on Faraday::Error do |job, error|
+    discard_on Faraday::Error, Faraday::ConnectionFailed do |job, error|
       context = { feed_url: job.feed.link }
       job.fail_with_feedback(resource: job.feed, error: error, context: context) do |feedback|
         feedback.message = "Server error when requesting this feed"

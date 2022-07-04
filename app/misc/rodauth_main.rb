@@ -120,6 +120,10 @@ class RodauthMain < Rodauth::Rails::Auth
       throw_error_status(422, "display_name", "must be present") if param("display_name").empty?
     end
 
+    before_login_attempt do
+      throw_error_reason(:account_disabled, 403, login_param, "Your account has been disabled") if account[:enabled] != true
+    end
+
     # Perform additional actions after the account is created.
     after_create_account do
       RssTogether::Profile.create!(

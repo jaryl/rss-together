@@ -52,6 +52,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_17_101950) do
   create_table "rss_together_accounts", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.enum "status", default: "unverified", null: false, enum_type: "account_status"
+    t.boolean "enabled", default: true, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["email"], name: "index_rss_together_accounts_on_email", unique: true, where: "(status = ANY (ARRAY['unverified'::account_status, 'verified'::account_status]))"

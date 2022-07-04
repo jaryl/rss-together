@@ -8,7 +8,9 @@ class CreateRssTogetherAccountsWithRodauth < ActiveRecord::Migration[7.0]
   def change
     create_table :rss_together_accounts do |t|
       t.string :email, null: false, default: ""
+
       t.enum :status, enum_type: :account_status, default: "unverified", null: false
+      t.boolean :enabled, null: false, default: true
 
       t.timestamps null: false
 

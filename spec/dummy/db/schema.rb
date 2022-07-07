@@ -130,8 +130,9 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_17_101950) do
     t.string "link", null: false
     t.string "description"
     t.string "author"
-    t.datetime "published_at"
     t.string "guid"
+    t.datetime "published_at"
+    t.datetime "rejected_published_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["created_at"], name: "index_rss_together_items_on_created_at"

@@ -9,8 +9,10 @@ class CreateRssTogetherItems < ActiveRecord::Migration[7.0]
 
       t.string :description, null: true
       t.string :author, null: true
-      t.datetime :published_at, null: true
       t.string :guid, null: true
+
+      t.datetime :published_at, null: true
+      t.datetime :rejected_published_at, null: true
 
       t.timestamps
 

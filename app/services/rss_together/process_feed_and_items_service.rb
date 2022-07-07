@@ -29,19 +29,29 @@ module RssTogether
       }
 
       document.items.each do |item|
-        feed.items.find_or_initialize_by(guid: item.guid) do |i|
-          i.title = item.title
-          i.content = item.content
-          i.link = item.link
-          i.description = item.description
-          i.author = item.author
-          i.published_at = item.published_at
-        end
+        construct_item(item)
       end
 
       feed.save!
 
       { feed: feed }
+    end
+
+    def construct_item(item)
+      feed.items.find_or_initialize_by(guid: item.guid) do |i|
+        i.title = item.title
+        i.content = item.content
+        i.link = item.link
+        i.description = item.description
+        i.author = item.author
+
+        if item.published_at > Time.current
+          i.published_at = Time.current
+          i.rejected_published_at = item.published_at
+        else
+          i.published_at = item.published_at
+        end
+      end
     end
   end
 end

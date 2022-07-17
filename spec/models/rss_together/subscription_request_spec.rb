@@ -7,8 +7,6 @@ module RssTogether
     it { is_expected.to have_one(:group).through(:membership) }
     it { is_expected.to have_one(:account).through(:membership) }
 
-    it { is_expected.to have_many(:feedback) }
-
     it { is_expected.to validate_presence_of(:target_url) }
     it { is_expected.to validate_length_of(:target_url).is_at_most(2048) }
 

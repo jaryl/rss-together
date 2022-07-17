@@ -1,5 +1,7 @@
 module RssTogether
   class ProcessFeedAndItemsJob < ApplicationJob
+    include AfterCommitEverywhere
+
     queue_as :default
 
     RESOURCE_FEEDBACK_KEYS = [
@@ -44,7 +46,8 @@ module RssTogether
           feed: feed,
         )
 
-        feed.feedback.where(key: RESOURCE_FEEDBACK_KEYS).destroy_all
+        # TODO: re-implement in web
+        # feed.feedback.where(key: RESOURCE_FEEDBACK_KEYS).destroy_all
 
         after_commit do
           feed.subscriptions.find_each do |subscription|

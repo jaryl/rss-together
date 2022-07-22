@@ -11,17 +11,11 @@ module RssTogether
 
     attr_reader :feed
 
-    discard_on Faraday::Error, Faraday::ConnectionFailed do |job, error|
+    retry_on Faraday::ConnectionFailed, wait: :exponentially_longer, attempts: 10 do |job, error|
       context = { feed_url: job.feed.link }
       job.fail_with_feedback(resource: job.feed, error: error, context: context) do |feedback|
-        feedback.message = "Server error when requesting this feed"
-      end
-    end
-
-    retry_on DocumentParsingError, wait: :exponentially_longer, attempts: 3 do |job, error|
-      context = { feed_url: job.feed.link }
-      job.fail_with_feedback(resource: job.feed, error: error, context: context) do |feedback|
-        feedback.message = "There was a problem processing this feed's content"
+        feedback.message = "Failed to connect to server"
+        job.feed.update!(enabled: false)
       end
     end
 
@@ -29,6 +23,23 @@ module RssTogether
       context = { feed_url: job.feed.link }
       job.fail_with_feedback(resource: job.feed, error: error, context: context) do |feedback|
         feedback.message = "Server timed out when requesting this feed"
+        job.feed.update!(enabled: false)
+      end
+    end
+
+    discard_on Faraday::Error do |job, error|
+      context = { feed_url: job.feed.link }
+      job.fail_with_feedback(resource: job.feed, error: error, context: context) do |feedback|
+        feedback.message = "Something went wrong"
+        job.feed.update!(enabled: false)
+      end
+    end
+
+    retry_on DocumentParsingError, wait: :exponentially_longer, attempts: 3 do |job, error|
+      context = { feed_url: job.feed.link }
+      job.fail_with_feedback(resource: job.feed, error: error, context: context) do |feedback|
+        feedback.message = "There was a problem processing this feed's content"
+        job.feed.update!(enabled: false)
       end
     end
 

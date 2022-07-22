@@ -18,7 +18,7 @@ module RssTogether
       end
     end
 
-    discard_on DocumentParsingError do |job, error|
+    retry_on DocumentParsingError, wait: :exponentially_longer, attempts: 3 do |job, error|
       context = { feed_url: job.feed.link }
       job.fail_with_feedback(resource: job.feed, error: error, context: context) do |feedback|
         feedback.message = "There was a problem processing this feed's content"

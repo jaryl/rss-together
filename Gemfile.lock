@@ -213,7 +213,7 @@ GEM
       sequel (>= 4)
     rodauth-model (0.2.0)
       rodauth (~> 2.0)
-    rodauth-rails (1.5.2)
+    rodauth-rails (1.5.4)
       bcrypt
       railties (>= 4.2, < 8)
       roda (~> 3.55)
@@ -261,7 +261,7 @@ GEM
     thor (1.2.1)
     tilt (2.0.10)
     timeout (0.3.0)
-    tzinfo (2.0.4)
+    tzinfo (2.0.5)
       concurrent-ruby (~> 1.0)
     validate_url (1.0.15)
       activemodel (>= 3.0.0)

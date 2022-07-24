@@ -3,32 +3,29 @@ module RssTogether
     queue_as :default
 
     attr_reader :subscription_request
+    alias_method :resource, :subscription_request
+
+    retry_on Faraday::Error, wait: :exponentially_longer, attempts: 10 do |job, error|
+      job.fail_with_resource("Network error at #{job.subscription_request.target_url}") do
+        subscription_request.update!(status: :failure)
+      end
+      job.log_and_report_error(error)
+    end
 
     discard_on NoFeedAtTargetUrlError do |job, error|
-      context = { feed_url: job.subscription_request.target_url }
-      job.fail_with_feedback(resource: job.subscription_request, error: error, context: context) do |feedback|
-        feedback.message = error.message
-        job.subscription_request.update!(status: :failure)
+      job.fail_with_resource(error.message) do
+        subscription_request.update!(status: :failure)
       end
     end
 
     discard_on DocumentParsingError do |job, error|
-      context = { feed_url: job.subscription_request.target_url }
-      job.fail_with_feedback(resource: job.subscription_request, error: error, context: context) do |feedback|
-        feedback.message = "There was a problem processing the content at #{job.subscription_request.target_url}"
-        job.subscription_request.update!(status: :failure)
+      job.fail_with_resource("There was a problem processing the content at #{job.subscription_request.target_url}") do
+        subscription_request.update!(status: :failure)
       end
+      job.log_and_report_error(error)
     end
 
-    discard_on Faraday::Error do |job, error|
-      context = { feed_url: job.subscription_request.target_url }
-      job.fail_with_feedback(resource: job.subscription_request, error: error, context: context) do |feedback|
-        feedback.message = "Encountered a server error at #{job.subscription_request.target_url}"
-        job.subscription_request.update!(status: :failure)
-      end
-    end
-
-    def perform(subscription_request, follows=0)
+    def perform(subscription_request, follows = 0)
       @subscription_request = subscription_request
 
       return unless subscription_request.pending?
@@ -47,6 +44,10 @@ module RssTogether
       else
         raise NoFeedAtTargetUrlError.new(url: subscription_request.target_url)
       end
+    end
+
+    def context
+      { feed_url: subscription_request.target_url }
     end
 
     private

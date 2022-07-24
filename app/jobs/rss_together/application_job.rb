@@ -4,7 +4,18 @@ module RssTogether
 
     REPORTING_TAGS = ["active-job"].freeze
 
-    private
+    def default_context
+      { job_class: self.class.to_s }
+    end
+
+    def resource
+      nil
+    end
+
+    def fail_with_resource(message, &block)
+      instance_eval(&block) if block
+      super
+    end
 
     def log_and_report_error(error, **kwargs)
       kwargs[:tags] ||= []
@@ -19,10 +30,10 @@ module RssTogether
         acc
       end
 
-      kwargs[:context] ||= {}
-      kwargs[:context][:job_class] = self.class.to_s
+      kwargs[:context] = (kwargs[:context] || {}).merge(default_context)
 
       logger.error(error.message, error: error.class.name, **kwargs)
+
       RssTogether.error_reporter.call(error, **kwargs.merge(sync: true))
     end
   end

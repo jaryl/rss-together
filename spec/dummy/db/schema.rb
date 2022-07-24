@@ -19,7 +19,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_17_101950) do
   # Note that some types may not work with other database engines. Be careful if changing database.
   create_enum "account_status", ["unverified", "verified", "closed"]
   create_enum "mark_source", ["system", "user"]
-  create_enum "resource_feedback_status", ["pending", "resolved", "dismissed"]
   create_enum "subscription_request_status", ["pending", "success", "failure"]
 
   create_table "rss_together_account_login_change_keys", force: :cascade do |t|
@@ -186,17 +185,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_17_101950) do
     t.index ["item_id", "membership_id"], name: "index_rss_together_recommendations_on_item_id_and_membership_id", unique: true
     t.index ["item_id"], name: "index_rss_together_recommendations_on_item_id"
     t.index ["membership_id"], name: "index_rss_together_recommendations_on_membership_id"
-  end
-
-  create_table "rss_together_resource_feedback", force: :cascade do |t|
-    t.string "resource_type"
-    t.bigint "resource_id"
-    t.enum "status", default: "pending", null: false, enum_type: "resource_feedback_status"
-    t.string "key", null: false
-    t.string "message", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["resource_type", "resource_id"], name: "index_rss_together_resource_feedback_on_resource"
   end
 
   create_table "rss_together_subscription_requests", force: :cascade do |t|

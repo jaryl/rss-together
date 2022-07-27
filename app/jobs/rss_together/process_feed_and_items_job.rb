@@ -9,14 +9,14 @@ module RssTogether
 
     retry_on Faraday::Error, wait: :exponentially_longer, attempts: 10 do |job, error|
       job.fail_with_resource("Network error at #{job.feed.link}") do
-        feed.update!(enabled: false)
+        job.feed.update!(enabled: false)
       end
       job.log_and_report_error(error)
     end
 
     retry_on DocumentParsingError, wait: :exponentially_longer, attempts: 3 do |job, error|
       job.fail_with_resource("There was a problem processing this feed's content") do
-        feed.update!(enabled: false)
+        job.feed.update!(enabled: false)
       end
       job.log_and_report_error(error)
     end

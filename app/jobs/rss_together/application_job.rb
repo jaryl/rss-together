@@ -12,8 +12,12 @@ module RssTogether
       nil
     end
 
+    after_perform do |job|
+      job.send(:on_resource_success, job.resource)
+    end
+
     def fail_with_resource(message, &block)
-      instance_eval(&block) if block
+      on_resource_failure(resource, message: message, &block)
       super
     end
 
@@ -35,6 +39,17 @@ module RssTogether
       logger.error(error.message, error: error.class.name, **kwargs)
 
       RssTogether.error_reporter.call(error, **kwargs.merge(sync: true))
+    end
+
+    private
+
+    def on_resource_success(resource)
+      # no-op
+    end
+
+    def on_resource_failure(resource, message: nil, error: nil, &block)
+      instance_eval(&block) if block
+      # no-op
     end
   end
 end

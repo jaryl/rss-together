@@ -7,20 +7,20 @@ module RssTogether
 
     retry_on Faraday::Error, wait: :exponentially_longer, attempts: 10 do |job, error|
       job.fail_with_resource("Network error at #{job.subscription_request.target_url}") do
-        subscription_request.update!(status: :failure)
+        job.subscription_request.update!(status: :failure)
       end
       job.log_and_report_error(error)
     end
 
     discard_on NoFeedAtTargetUrlError do |job, error|
       job.fail_with_resource(error.message) do
-        subscription_request.update!(status: :failure)
+        job.subscription_request.update!(status: :failure)
       end
     end
 
     discard_on DocumentParsingError do |job, error|
       job.fail_with_resource("There was a problem processing the content at #{job.subscription_request.target_url}") do
-        subscription_request.update!(status: :failure)
+        job.subscription_request.update!(status: :failure)
       end
       job.log_and_report_error(error)
     end

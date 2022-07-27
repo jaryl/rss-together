@@ -6,7 +6,7 @@ module RssTogether
     alias_method :resource, :subscription_request
 
     retry_on Faraday::Error, wait: :exponentially_longer, attempts: 10 do |job, error|
-      job.fail_with_resource("Network error at #{job.subscription_request.target_url}") do
+      job.fail_with_resource(error.message) do
         job.subscription_request.update!(status: :failure)
       end
       job.log_and_report_error(error)
@@ -19,7 +19,7 @@ module RssTogether
     end
 
     discard_on DocumentParsingError do |job, error|
-      job.fail_with_resource("There was a problem processing the content at #{job.subscription_request.target_url}") do
+      job.fail_with_resource(error.message) do
         job.subscription_request.update!(status: :failure)
       end
       job.log_and_report_error(error)
@@ -33,17 +33,10 @@ module RssTogether
       raise NoFeedAtTargetUrlError.new(url: subscription_request.target_url) if follows + 1 > RssTogether.max_links_followed_to_resolve_url
 
       probe = UrlProbe.from(url: subscription_request.target_url)
-      if probe.atom? || probe.rss?
-        process_feed_directly!(subscription_request: subscription_request, document: probe.document)
-      elsif probe.link_to_feed.present?
-        follow_link_to_feed!(
-          subscription_request: subscription_request,
-          link: probe.link_to_feed,
-          follows: follows
-        )
-      else
-        raise NoFeedAtTargetUrlError.new(url: subscription_request.target_url)
-      end
+
+      probe.valid_feed_found { process_feed_directly!(document: probe.document) }
+      probe.next_feed_found { follow_link_to_feed!(link: probe.document.link_to_feed, follows: follows) }
+      probe.no_feed_found { raise NoFeedAtTargetUrlError.new(url: subscription_request.target_url) }
     end
 
     def context
@@ -52,7 +45,7 @@ module RssTogether
 
     private
 
-    def process_feed_directly!(subscription_request:, document:)
+    def process_feed_directly!(document:)
       ActiveRecord::Base.transaction do
         ProcessFeedAndItemsService.call(
           target_url: subscription_request.target_url,
@@ -66,7 +59,7 @@ module RssTogether
       end
     end
 
-    def follow_link_to_feed!(subscription_request:, link:, follows:)
+    def follow_link_to_feed!(link:, follows:)
       resolved_url = URI(link).host.nil? ? URI.join(subscription_request.target_url, link) : link
       subscription_request.update!(target_url: resolved_url)
       ResolveNewFeedJob.perform_later(subscription_request, follows + 1)

@@ -18,7 +18,7 @@ module RssTogether
 
     def fail_with_resource(message, &block)
       on_resource_failure(resource, message: message, &block)
-      super
+      super if defined?(super)
     end
 
     def log_and_report_error(error, **kwargs)
